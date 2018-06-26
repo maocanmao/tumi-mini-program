@@ -11,7 +11,8 @@ export default class extends wepy.app {
       'pages/message',
       'pages/video',
       'pages/answer-index',
-      'pages/answer-question'
+      'pages/answer-question',
+      'pages/answer-question-complete'
     ],
     window: {
       backgroundTextStyle: 'light',

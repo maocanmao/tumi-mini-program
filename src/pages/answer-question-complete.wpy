@@ -33,17 +33,7 @@ page {
 }
 .question-text-wrapper {
   width: 500rpx;
-  padding: 20rpx;
-}
-.question-number {
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: normal;
-  text-align: center;
-  color: #778899;
-  font-size: 60rpx;
+  padding-left: 20rpx;
 }
 .question-text {
   font-family: PingFangSC;
@@ -55,26 +45,10 @@ page {
   letter-spacing: normal;
   color: #ffffff;
 }
-.answer-wrapper {
-  height: 100rpx;
-  margin-top: 30rpx;
-}
-.answer-indicator.selected {
-  width: 30rpx;
-  height: 30rpx;
-  background-color: red;
-  border-radius: 50%;
-}
-.answer-indicator {
-  width: 30rpx;
-  height: 30rpx;
-  background-color: #778899;
-  border-radius: 50%;
-}
 .confirm-btn-container {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
   position: fixed;
   bottom: 0%;
   width: 100%;
@@ -130,6 +104,10 @@ page {
   margin-top: 90rpx;
   background: #b0c4de;
 }
+.warn {
+  width: 100rpx;
+  height: 100rpx;
+}
 </style>
 
 <template>
@@ -137,25 +115,22 @@ page {
     <scroll-view class='question-container' scroll-y='true'>
       <view class='question-wrapper border'>
         <wxc-cc class='question-number-wrapper border'>
-          <text class='question-number'>1</text>
+          <image class="warn" src="images/warn.png" />
         </wxc-cc>
         <view class='question-text-wrapper border'>
-          <text class='question-text'>在公园看到许多画家帮人画自画像，你心血来潮也想过过做模特儿的瘾，你会选择哪一类型的自画像</text>
-        </view>
-      </view>
-      <view class='question-wrapper answer-wrapper' wx:for="{{answerList}}">
-        <wxc-cc class='question-number-wrapper border'>
-          <view class="answer-indicator {{item.selected?'selected':''}}"></view>
-        </wxc-cc>
-        <view class='question-text-wrapper border' @tap="answerChoosen({{index}})">
-          <text class='question-text'>{{item.text}}</text>
+          <text class='question-text'>
+                准备好了吗？
+                点击返回键回到第一题！
+                点击确认键开始最后步骤！
+            </text>
         </view>
       </view>
     </scroll-view>
     <view class="mask"></view>
     <image class="panel-btn" src="images/triangle.png" @tap="showPopUp()" />
     <view class="confirm-btn-container">
-      <image class="confirm-btn" src="{{answerSelected?'images/check.png':'images/unCheck.png'}}" @tap="confirmAnswer()" />
+      <image class="confirm-btn" src="images/back.png" />
+      <image class="confirm-btn" src="images/check.png" />
     </view>
     <wxc-popup class="J_Popup" animation-mode="bottom" align="bottom" locked="true">
       <view class="popup__content">
@@ -164,7 +139,8 @@ page {
         <view class="popup-image-content">
         </view>
         <view class="confirm-btn-container">
-          <image class="confirm-btn" src="{{answerSelected?'images/check.png':'images/unCheck.png'}}" />
+          <image class="confirm-btn" src="images/back.png" />
+          <image class="confirm-btn" src="images/check.png" />
         </view>
       </view>
     </wxc-popup>
@@ -173,7 +149,7 @@ page {
 
 <script>
 import wepy from 'wepy';
-export default class AnswerQuestion extends wepy.page {
+export default class AnswerQuestionComplete extends wepy.page {
   config = {
     navigationBarTitleText: '',
     navigationBarBackgroundColor: '#778899',
@@ -182,23 +158,8 @@ export default class AnswerQuestion extends wepy.page {
       'wxc-popup': '../../packages/@minui/wxc-popup/dist/index'
     }
   };
-  data = {
-    answerList: [],
-    currentQuestionIndex: null,
-    canMutipleChoose: false,
-    answerSelected: false
-  };
+  data = {};
   methods = {
-    answerChoosen(index) {
-      console.log('this.answerList.length: ', this.answerList.length);
-      if (!this.canMutipleChoose) {
-        for (let i = 0; i < this.answerList.length; i++) {
-          this.answerList[i].selected = false;
-        }
-      }
-      this.answerList[index].selected = true;
-      this.answerSelected = true;
-    },
     showPopUp() {
       let popupComponent = this.$wxpage.selectComponent('.J_Popup');
       popupComponent && popupComponent.show();
@@ -207,36 +168,10 @@ export default class AnswerQuestion extends wepy.page {
       let popupComponent = this.$wxpage.selectComponent('.J_Popup');
       popupComponent && popupComponent.hide();
     },
-    confirmAnswer() {
-      if (this.answerSelected) {
-        //TODO
-        //answer completed
-        wx.navigateTo({
-          url: 'answer-question-complete'
-        });
-      }
-    }
+    confirm() {}
   };
   onLoad() {
     console.log('AnswerQuestion onLoad');
-    this.answerList = [
-      {
-        text: '水彩画或油画',
-        selected: false
-      },
-      {
-        text: '铅笔素描画',
-        selected: false
-      },
-      {
-        text: '俏皮逗趣的漫画',
-        selected: false
-      },
-      {
-        text: '铅笔素描画',
-        selected: false
-      }
-    ];
   }
 }
 </script>
