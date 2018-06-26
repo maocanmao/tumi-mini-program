@@ -1,0 +1,109 @@
+<style lang="less">
+page {
+  overflow-y: hidden;
+  height: 935rpx;
+  background: #778899;
+}
+.container {
+  background: #778899;
+  width: 750rpx;
+  height: 100%;
+}
+.border {
+  border-color: #b0c4de;
+  border-width: 2rpx;
+  border-style: solid;
+}
+.question-container {
+  display: block;
+  width: 100%;
+  margin-top: 50rpx;
+}
+.question-wrapper {
+  display: flex;
+  width: 600rpx;
+  height: 250rpx;
+  margin-left: 25rpx;
+  margin-right: 25rpx;
+  margin: 0 auto;
+}
+.question-number-wrapper {
+  width: 100rpx;
+  background: #b0c4de;
+}
+.question-text-wrapper {
+  width: 500rpx;
+  padding: 20rpx;
+}
+.question-number {
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
+  color: #778899;
+  font-size: 60rpx;
+}
+.question-text {
+  font-family: PingFangSC;
+  font-size: 16px;
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #ffffff;
+}
+
+.answer-wrapper {
+  height: 100rpx;
+  margin-top: 30rpx;
+}
+</style>
+
+<template>
+  <view class="container">
+    <scroll-view class='question-container' scroll-y='true'>
+      <view class='question-wrapper border'>
+        <wxc-cc class='question-number-wrapper border'>
+          <text class='question-number'>1</text>
+        </wxc-cc>
+        <view class='question-text-wrapper border'>
+          <text class='question-text'>在公园看到许多画家帮人画自画像，你心血来潮也想过过做模特儿的瘾，你会选择哪一类型的自画像</text>
+        </view>
+      </view>
+      <view class='question-wrapper answer-wrapper' wx:for="{{answerList}}" item='item' @tap="answerChoosen(item)">
+        <wxc-cc class='question-number-wrapper border'>
+          <text class='question-number'>1</text>
+        </wxc-cc>
+        <view class='question-text-wrapper border'>
+          <text class='question-text'>{{item}}</text>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+export default class AnswerQuestion extends wepy.page {
+  config = {
+    navigationBarTitleText: '',
+    navigationBarBackgroundColor: '#778899',
+    usingComponents: {
+      'wxc-cc': '../../packages/@minui/wxc-cc/dist/index'
+    }
+  };
+  data = {
+    answerList: []
+  };
+  onLoad() {
+    console.log('AnswerQuestion onLoad');
+    this.answerList = ['水彩画或油画', '铅笔素描画', '俏皮逗趣的漫画'];
+  }
+  answerChoosen(item) {
+    console.log('item: ', item);
+  }
+}
+</script>

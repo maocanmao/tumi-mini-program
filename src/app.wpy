@@ -1,0 +1,67 @@
+<style lang="less">
+</style>
+
+<script>
+import wepy from 'wepy';
+
+export default class extends wepy.app {
+  config = {
+    pages: [
+      'pages/index',
+      'pages/message',
+      'pages/video',
+      'pages/answer-index',
+      'pages/answer-question'
+    ],
+    window: {
+      backgroundTextStyle: 'light',
+      navigationBarBackgroundColor: '#b0c4de',
+      navigationBarTitleText: '',
+      navigationBarTextStyle: 'white'
+    },
+    baseUrl: 'https://minibook.codeios.com/miniapp/',
+    tabBar: {
+      color: '#979797',
+      selectedColor: '#5f9920',
+      backgroundColor: '#b0c4de',
+      borderStyle: 'white',
+      list: [
+        {
+          pagePath: 'pages/index',
+          text: '',
+          selectedIconPath: 'pages/images/draw.png',
+          iconPath: 'pages/images/draw-unselect.png'
+        },
+        {
+          pagePath: 'pages/message',
+          text: '',
+          selectedIconPath: 'pages/images/message.png',
+          iconPath: 'pages/images/message-unselect.png'
+        },
+        {
+          pagePath: 'pages/video',
+          text: '',
+          selectedIconPath: 'pages/images/video.png',
+          iconPath: 'pages/images/video-unselect.png'
+        }
+      ]
+    }
+  };
+
+  onLaunch() {
+    console.log('on launch');
+  }
+  constructor() {
+    super();
+    this.use('requestfix');
+    this.use('promisify');
+  }
+  sleep(s) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve('promise resolved');
+      }, s * 1000);
+    });
+  }
+}
+</script>

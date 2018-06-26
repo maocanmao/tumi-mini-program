@@ -1,0 +1,37 @@
+<style lang="less">
+page {
+  overflow-y: hidden;
+  height: 935rpx;
+  background: #b0c4de;
+}
+.container {
+  background: #b0c4de;
+  width: 750rpx;
+  height: 100%;
+}
+</style>
+<template>
+  <view class="container" bindtap="bindtap">
+
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+
+export default class Index extends wepy.page {
+  config = {
+    navigationBarTitleText: ''
+  };
+  onLoad() {
+    console.log('onLoad');
+  }
+
+  bindtap(e) {
+    // 检测tap事件
+    wx.navigateTo({
+      url: 'answer-index'
+    });
+  }
+}
+</script>

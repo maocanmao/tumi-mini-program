@@ -1,0 +1,452 @@
+<style lang="less">
+.screen {
+  display: flex;
+  flex-direction: column;
+}
+.canvas {
+  width: 750rpx;
+  height: 500px;
+  border: 1px;
+}
+.view {
+  display: flex;
+  flex-direction: column;
+}
+.touchWrap {
+  transform-origin: center;
+  position: absolute;
+  z-index: 100;
+}
+.imgWrap {
+  box-sizing: border-box;
+  width: 100%;
+  transform-origin: center;
+  float: left;
+  border: 5rpx transparent dashed;
+}
+.imgWrap image {
+  float: left;
+}
+.x {
+  position: absolute;
+  top: -25rpx;
+  left: -25rpx;
+  z-index: 500;
+  display: none;
+  width: 50rpx;
+  height: 50rpx;
+  overflow: hidden;
+  font-weight: bold;
+  color: #d1e3f1;
+}
+.o {
+  position: absolute;
+  bottom: -25rpx;
+  right: -25rpx;
+  width: 50rpx;
+  height: 50rpx;
+  text-align: center;
+  display: none;
+  overflow: hidden;
+  font-weight: bold;
+  color: #d1e3f1;
+}
+.touchActive {
+  border: 4rpx #fff dashed;
+  z-index: 400;
+}
+.touchActive .x {
+  display: block;
+}
+.touchActive .o {
+  display: block;
+}
+.container {
+  width: 750rpx;
+  height: 800rpx;
+  background: lightblue;
+}
+.canvasWrap {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 999;
+  padding-top: 10px;
+}
+.maskCanvas {
+  margin: auto;
+}
+.btn {
+  margin-bottom: 30rpx;
+}
+.mask-demo_content {
+  width: 350rpx;
+  margin: 400rpx 0 0 180rpx;
+  padding: 20rpx;
+  background: #fff;
+  color: #000;
+}
+</style>
+
+<template>
+  <view class="screen">
+    <view class="container" bindtap="bindtap">
+      <view class="touchWrap" style="transform: scale({{item.scale}});top:{{item.top}}px;left:{{item.left}}px; " wx:for="{{itemList}}" wx:key="{{item.id}}">
+        <view class="imgWrap {{item.active?'touchActive':''}}" style="transform: rotate({{item.angle}}deg);">
+          <image bindload="loadImg" bindtouchend="WraptouchEnd" bindtouchmove="WraptouchMove" bindtouchstart="WraptouchStart" data-id="{{item.id}}" src="{{item.image}}" style="width:{{item.width}}px;height:{{item.height}}px;"></image>
+          <image bindtap="deleteItem" class="x" data-id="{{item.id}}" src="./images/x.png" style="transform: scale({{item.oScale}});transform-origin:center;"></image>
+          <image bindtouchend="touchEnd" bindtouchmove="touchMove" bindtouchstart="touchStart" class="o" data-id="{{item.id}}" src="./images/o.png" style="transform: scale({{item.oScale}});transform-origin:center;"></image>
+        </view>
+      </view>
+    </view>
+    <view>
+      <button bindtap="save()">保存</button>
+    </view>
+    <view bindtap="disappearCanvas" class="canvasWrap" wx:if="{{showCanvas}}">
+      <canvas bindlongtap="saveImg" canvasId="maskCanvas" class="maskCanvas" style="width:{{canvasWidth}}%; height:{{canvasHeight}}px;"></canvas>
+      <button bindtap="saveImg" class="btn">点我生成图片</button>
+    </view>
+    <wxc-mask status="{{maskStatus}}" locked="true">
+      <view class="mask-demo_content">
+        <button bindtap="hideMask">点击我关闭</button>
+      </view>
+    </wxc-mask>
+  </view>
+</template>
+
+<script>
+import wepy from "wepy";
+export default class DrawPanel extends wepy.page {
+  config = {
+    navigationBarTitleText: "TEST",
+    usingComponents: {
+      "wxc-mask": "../../packages/@minui/wxc-mask/dist/index"
+    }
+  };
+  data = {
+    itemList: [],
+    items: [],
+    index: null,
+    sysData: null,
+    canvasTemImg: null,
+    canvasWidth: 79,
+    canvasHeight: null,
+    maskStatus: "hide",
+    showCanvas: false
+  };
+  loadImg(t) {
+    // console.log("loadImg", t);
+    // console.log(this.items[this.items.length - 1]);
+    // this.items[this.items.length - 1].hdw = t.detail.height / t.detail.width;
+    // this.items[this.items.length - 1].height =
+    //   this.items[this.items.length - 1].width *
+    //   this.items[this.items.length - 1].hdw;
+    // this.items[this.items.length - 1].x =
+    //   this.items[this.items.length - 1].left +
+    //   this.items[this.items.length - 1].width / 2;
+    // this.items[this.items.length - 1].y =
+    //   this.items[this.items.length - 1].top +
+    //   this.items[this.items.length - 1].height / 2;
+    // this.itemList = this.items;
+    // console.log("this.itemList : ", this.itemList);
+  }
+  bindtap(e) {
+    // 检测tap事件
+    console.log("检测tap事件");
+    console.log("e.touches[0].x: ", e.touches[0].clientX);
+    console.log("e.touches[0].y: ", e.touches[0].clientY);
+  }
+  // 触摸开始事件  items是this.data.itemList的全局变量，便于赋值  所有的值都应给到对应的对象里
+  touchStart(e) {
+    //找到点击的那个图片对象，并记录
+    for (let i = 0; i < this.items.length; i++) {
+      this.items[i].active = false;
+      if (e.currentTarget.dataset.id == this.items[i].id) {
+        console.log("e.currentTarget.dataset.id", e.currentTarget.dataset.id);
+        this.index = i;
+        // console.log(this.items[this.index]);
+        this.items[this.index].active = true;
+      }
+    }
+    //获取作为移动前角度的坐标
+    this.items[this.index].tx = e.touches[0].clientX;
+    this.items[this.index].ty = e.touches[0].clientY;
+    //移动前的角度
+    this.items[this.index].anglePre = this.countDeg(
+      this.items[this.index].x,
+      this.items[this.index].y,
+      this.items[this.index].tx,
+      this.items[this.index].ty
+    );
+    //获取图片半径
+    this.items[this.index].r = this.getDistancs(
+      this.items[this.index].x,
+      this.items[this.index].y,
+      this.items[this.index].left,
+      this.items[this.index].top
+    );
+  }
+  // 触摸移动事件
+  touchMove(e) {
+    //记录移动后的位置
+    this.items[this.index]._tx = e.touches[0].clientX;
+    this.items[this.index]._ty = e.touches[0].clientY;
+    //移动的点到圆心的距离
+    this.items[this.index].disPtoO = this.getDistancs(
+      this.items[this.index].x,
+      this.items[this.index].y,
+      // this.items[this.index]._tx - this.sysData.windowWidth * 0.125,
+      this.items[this.index]._tx,
+      this.items[this.index]._ty - 10
+    );
+    // console.log(
+    //   " this.items[this.index].disPtoO: ",
+    //   this.items[this.index].disPtoO
+    // );
+    this.items[this.index].scale =
+      this.items[this.index].disPtoO / this.items[this.index].r; //手指滑动的点到圆心的距离与半径的比值作为图片的放大比例
+    this.items[this.index].oScale = 1 / this.items[this.index].scale; //图片放大响应的右下角按钮同比缩小
+    //移动后位置的角度
+    this.items[this.index].angleNext = this.countDeg(
+      this.items[this.index].x,
+      this.items[this.index].y,
+      this.items[this.index]._tx,
+      this.items[this.index]._ty
+    );
+    //角度差
+    this.items[this.index].new_rotate =
+      this.items[this.index].angleNext - this.items[this.index].anglePre;
+    //叠加的角度差
+    this.items[this.index].rotate += this.items[this.index].new_rotate;
+    this.items[this.index].angle = this.items[this.index].rotate; //赋值
+    //用过移动后的坐标赋值为移动前坐标
+    this.items[this.index].tx = e.touches[0].clientX;
+    this.items[this.index].ty = e.touches[0].clientY;
+    this.items[this.index].anglePre = this.countDeg(
+      this.items[this.index].x,
+      this.items[this.index].y,
+      this.items[this.index].tx,
+      this.items[this.index].ty
+    );
+    //赋值setData渲染
+    // this.setData({
+    //     itemList: items
+    // })
+    this.itemList = this.items;
+  }
+  touchEnd(t) {}
+  WraptouchStart(e) {
+    for (let i = 0; i < this.items.length; i++) {
+      //旋转数据找到点击的
+      this.items[i].active = false;
+      if (e.currentTarget.dataset.id == this.items[i].id) {
+        this.index = i; //记录下标
+        this.items[this.index].active = true; //开启点击属性
+      }
+    }
+    this.items[this.index].lx = e.touches[0].clientX; // 记录点击时的坐标值
+    this.items[this.index].ly = e.touches[0].clientY;
+    // this.setData({
+    //   //赋值
+    //   itemList: items
+    // });
+    this.itemList = this.items;
+    // console.log("this.itemList: ", this.itemList);
+  }
+  WraptouchMove(e) {
+    //移动时的坐标值也写图片的属性里
+    this.items[this.index]._lx = e.touches[0].clientX;
+    this.items[this.index]._ly = e.touches[0].clientY;
+    //追加改动值
+    this.items[this.index].left +=
+      this.items[this.index]._lx - this.items[this.index].lx; // x方向
+    this.items[this.index].top +=
+      this.items[this.index]._ly - this.items[this.index].ly; // y方向
+    this.items[this.index].x +=
+      this.items[this.index]._lx - this.items[this.index].lx;
+    this.items[this.index].y +=
+      this.items[this.index]._ly - this.items[this.index].ly;
+    //把新的值赋给老的值
+    this.items[this.index].lx = e.touches[0].clientX;
+    this.items[this.index].ly = e.touches[0].clientY;
+    // this.setData({
+    //   //赋值就移动了
+    //   itemList: items
+    // });
+    this.itemList = this.items;
+    // console.log("this.itemList: ", this.itemList);
+  }
+  WraptouchEnd() {}
+  onLoad(option) {
+    this.init();
+  }
+  setNavBar() {
+    wx.setNavigationBarTitle({
+      title: "TEST"
+    });
+    wx.setNavigationBarColor({
+      frontColor: "#000000",
+      backgroundColor: this.$parent.config.window.navigationBarBackgroundColor,
+      animation: {
+        duration: 400,
+        timingFunc: "easeIn"
+      }
+    });
+    wx.showTabBar({
+      aniamtion: true
+    });
+  }
+  init() {
+    this.initImage();
+    this.sysData = wx.getSystemInfoSync();
+    console.log("this.sysData: ", this.sysData);
+  }
+  countDeg(cx, cy, pointer_x, pointer_y) {
+    var ox = pointer_x - cx;
+    var oy = pointer_y - cy;
+    var to = Math.abs(ox / oy);
+    var angle = Math.atan(to) / (2 * Math.PI) * 360; //鼠标相对于旋转中心的角度
+    // console.log("ox.oy:", ox, oy);
+    if (ox < 0 && oy < 0) {
+      //相对在左上角，第四象限，js中坐标系是从左上角开始的，这里的象限是正常坐标系
+      angle = -angle;
+    } else if (ox <= 0 && oy >= 0) {
+      //左下角,3象限
+      angle = -(180 - angle);
+    } else if (ox > 0 && oy < 0) {
+      //右上角，1象限
+      angle = angle;
+    } else if (ox > 0 && oy > 0) {
+      //右下角，2象限
+      angle = 180 - angle;
+    }
+    return angle;
+  }
+  getDistancs(cx, cy, pointer_x, pointer_y) {
+    var ox = pointer_x - cx;
+    var oy = pointer_y - cy;
+    // console.log("ox.oy:", ox, oy);
+    return Math.sqrt(ox * ox + oy * oy);
+  }
+  getImageList() {
+    return [
+      {
+        id: 1,
+        tempFilePath: "./images/library.png", //图片地址
+        width: 90
+      },
+      {
+        id: 2,
+        tempFilePath: "./images/library.png", //图片地址
+        width: 90
+      },
+      {
+        id: 3,
+        tempFilePath: "./images/library.png", //图片地址
+        width: 90
+      },
+      {
+        id: 4,
+        tempFilePath: "./images/scan.png",
+        width: 90
+      }
+    ];
+  }
+  initImage() {
+    var imageList = this.getImageList();
+    for (var i = 0; i < imageList.length; i++) {
+      let image = {};
+      image.image = imageList[i].tempFilePath;
+      image.id = imageList[i].id;
+      /**image.itemid = t.itemid,**/
+      image.top = 100;
+      image.left = 100;
+      image.width = imageList[i].width;
+      image.scale = 1;
+      image.angle = 0;
+      image.rotate = 0;
+      image.active = false;
+      // image.hdw = t.detail.height / t.detail.width;
+      image.hdw = 1;
+      image.height = image.width * image.hdw;
+      image.x = image.left + image.width / 2;
+      image.y = image.top + image.height / 2;
+      this.items.push(image);
+    }
+    this.itemList = this.items;
+  }
+  saveImg() {
+    wepy
+      .saveImageToPhotosAlbum({
+        filePath: this.canvasTemImg
+      })
+      .then(success => {
+        console.log("success: ", success);
+        wx.showModal({
+          content: "图片已保存到相册",
+          showCancel: false,
+          success: function(res) {
+            if (res.confirm) {
+              console.log("用户点击确定");
+            }
+          }
+        });
+      })
+      .catch(error => console.log(error));
+    console.log("this.canvasTemImg: ", this.canvasTemImg);
+  }
+  save() {
+    this.showCanvas = true;
+    console.log("this.sysData: ", this.sysData);
+    this.canvasHeight = 0.85 * this.sysData.windowHeight;
+    var s = wx.createCanvasContext("maskCanvas");
+    var e = this.sysData.windowWidth * this.canvasWidth / 100;
+    var a = 0.77 * e / (0.75 * this.sysData.windowHeight);
+    for (var r = 0; r < this.itemList.length; r++) {
+      s.save();
+      s.translate(e * (1 - 0.77) / 2, 10);
+      s.beginPath();
+      s.translate(this.items[r].x * a, this.items[r].y * a);
+      s.rotate(this.items[r].angle * Math.PI / 180);
+      s.translate(
+        -this.items[r].width * this.items[r].scale * a / 2,
+        -this.items[r].height * this.items[r].scale * a / 2
+      );
+      s.drawImage(
+        this.items[r].image,
+        0,
+        0,
+        this.items[r].width * this.items[r].scale * a,
+        this.items[r].height * this.items[r].scale * a
+      );
+      s.restore();
+    }
+    var that = this;
+    s.draw(true, function(t) {
+      wx.canvasToTempFilePath(
+        {
+          canvasId: "maskCanvas",
+          success: function(t) {
+            console.log(t);
+            that.canvasTemImg = t.tempFilePath;
+            console.log(that.canvasTemImg);
+          }
+        },
+        this
+      );
+    });
+  }
+  disappearCanvas() {
+    this.showCanvas = false;
+  }
+  showMask() {
+    this.maskStatus = "show";
+  }
+  hideMask() {
+    this.maskStatus = "hide";
+  }
+}
+</script>

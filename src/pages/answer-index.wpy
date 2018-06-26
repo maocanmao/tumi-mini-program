@@ -1,0 +1,53 @@
+<style lang="less">
+page {
+  overflow-y: hidden;
+  height: 935rpx;
+  background: #b0c4de;
+}
+.container {
+  display: block;
+  background: #b0c4de;
+  width: 750rpx;
+  height: 100%;
+}
+.image-btn {
+  width: 100rpx;
+  height: 100rpx;
+  margin: 50rpx;
+  display: inline-block;
+}
+.container-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+</style>
+
+<template>
+  <wxc-cc class="container">
+    <view class='.container-wrapper'>
+      <image class='image-btn' src='images/pen.png' @tap='toQuestionPage()'/>
+      <image class='image-btn' src='images/balloon.png' />
+    </view>
+  </wxc-cc>
+</template>
+
+<script>
+import wepy from 'wepy';
+export default class AnswerIndex extends wepy.page {
+  config = {
+    navigationBarTitleText: '',
+    usingComponents: {
+      'wxc-cc': '../../packages/@minui/wxc-cc/dist/index'
+    }
+  };
+  onLoad() {
+    console.log('answer index onLoad');
+  }
+
+  toQuestionPage() {
+    wx.navigateTo({
+      url: 'answer-question'
+    });
+  }
+}
+</script>

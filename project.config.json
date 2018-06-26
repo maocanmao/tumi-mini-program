@@ -1,0 +1,13 @@
+{
+  "description": "A WePY project",
+  "setting": {
+    "urlCheck": true,
+    "es6": false,
+    "postcss": false,
+    "minified": false
+  },
+  "compileType": "miniprogram",
+  "appid": "wxf9717a4ee8c85617",
+  "projectname": "tumi",
+  "miniprogramRoot": "./dist"
+}
