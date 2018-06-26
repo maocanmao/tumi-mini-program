@@ -14,7 +14,7 @@
     "@minui/wxc-cc": "^1.0.4",
     "@minui/wxc-elip": "^1.0.5",
     "@minui/wxc-popup": "^1.0.9",
-    "wepy": "^1.7.2"
+    "wepy": "^1.7.1"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.1",

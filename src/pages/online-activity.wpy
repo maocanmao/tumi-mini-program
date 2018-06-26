@@ -1,9 +1,9 @@
 <style lang="less">
 page {
-  background: #b0c4de;
+  background: #778899;
 }
 .container {
-  background: #b0c4de;
+  background: #778899;
   width: 750rpx;
 }
 .question-container {
@@ -25,14 +25,14 @@ page {
   flex-direction: column;
   justify-content: space-between;
   width: 100rpx;
-  background: #ffffff;
+  background: #b0c4de;
 }
 .question-text-wrapper {
   width: 500rpx;
   padding: 20rpx;
 }
 .border {
-  border-color: #ffffff;
+  border-color: #b0c4de;
   border-width: 2rpx;
   border-style: solid;
 }
@@ -53,36 +53,31 @@ page {
   width: 100rpx;
   height: 100rpx;
 }
+.confirm-btn-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  bottom: 0%;
+  width: 100%;
+  height: 16%;
+  background-color: #778899;
+}
+.confirm-btn {
+  width: 100rpx;
+  height: 100rpx;
+  margin-top: 50rpx;
+  margin-bottom: 50rpx;
+}
 </style>
 
 <template lang="wxml" minapp="wepy">
   <view class="container">
     <scroll-view class='question-container' scroll-y='true'>
-      <view class='question-wrapper border'>
+      <view class='question-wrapper border' @tap="toDetail()">
         <view class='question-number-wrapper border'>
-          <image class="icon" src="images/user.png" />
-          <image class="icon" src="images/more-with-badge.png" />
-        </view>
-        <view class='question-text-wrapper border'>
-
-        </view>
-      </view>
-      <view class='question-wrapper border'>
-        <view class='question-number-wrapper border'>
-          <image class="icon" src="images/phone.png"/>
-          <image class="icon" src="images/more.png"  @tap="toOnline()"/>
-        </view>
-        <view class='question-text-wrapper border'>
-          <wxc-elip class='question-text' line="2">【壮阔东方潮 奋进新时代——开放40年】建设高素质高颜值的经济特区</wxc-elip>
-          <view style="margin-top:20rpx">
-            <wxc-elip class='question-text small' line="3">改革开放40年来，位于东南沿海前沿的厦门经济特区，始终秉持“先行先试、敢为天下先”的精神，在经济、社会、生态等多个</wxc-elip>
-          </view>
-        </view>
-      </view>
-      <view class='question-wrapper border'>
-        <view class='question-number-wrapper border'>
-          <image class="icon" src="images/activity.png" />
-          <image class="icon" src="images/more.png" @tap="toOffline()"/>
+          <image class="icon" src="images/activity_dark.png" />
+          <image class="icon" src="" />
         </view>
         <view class='question-text-wrapper border'>
           <wxc-elip class='question-text' line="2">【壮阔东方潮 奋进新时代——开放40年】建设高素质高颜值的经济特区</wxc-elip>
@@ -92,30 +87,37 @@ page {
         </view>
       </view>
     </scroll-view>
+    <view class="confirm-btn-container">
+      <image class="confirm-btn" src="images/back.png" @tap="back()" />
+    </view>
   </view>
 </template>
 
 <script>
 import wepy from 'wepy';
-export default class Message extends wepy.page {
+export default class OnlineActivity extends wepy.page {
   config = {
-    navigationBarTitleText: '',
+    navigationBarTitleText: '线上活动',
+    navigationBarBackgroundColor: '#778899',
     usingComponents: {
       'wxc-cc': '../../packages/@minui/wxc-cc/dist/index',
       'wxc-elip': '../../packages/@minui/wxc-elip/dist/index'
     }
   };
   methods = {
-    toOnline() {
-      wepy.navigateTo({ url: 'online-activity' });
+    back() {
+      wepy.navigateBack({
+        delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+      });
     },
-    toOffline() {
-      wepy.navigateTo({ url: 'offline-activity' });
+    toDetail() {
+      wepy.navigateTo({
+        url: 'message-detail'
+      });
     }
   };
-
   onLoad() {
-    console.log('Message onLoad');
+    console.log('onLoad');
   }
 }
 </script>
