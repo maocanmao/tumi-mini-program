@@ -1,7 +1,5 @@
 <style lang="less">
 page {
-  overflow-y: hidden;
-  height: 935rpx;
   background: #b0c4de;
 }
 .container {
@@ -9,11 +7,16 @@ page {
   width: 750rpx;
   height: 100%;
 }
+.image {
+  width: 80rpx;
+  height: 720rpx;
+  margin-top: 80rpx;
+}
 </style>
 <template>
-  <view class="container" bindtap="bindtap">
-
-  </view>
+  <wxc-cc class="container" bindtap="bindtap">
+    <image class="image" src="images/intro.gif"/>
+  </wxc-cc>
 </template>
 
 <script>
@@ -21,7 +24,10 @@ import wepy from 'wepy';
 
 export default class Index extends wepy.page {
   config = {
-    navigationBarTitleText: ''
+    navigationBarTitleText: '',
+    usingComponents: {
+      'wxc-cc': '../../packages/@minui/wxc-cc/dist/index'
+    }
   };
   onLoad() {
     console.log('onLoad');

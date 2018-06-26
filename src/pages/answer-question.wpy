@@ -1,7 +1,5 @@
 <style lang="less">
 page {
-  overflow-y: hidden;
-  height: 935rpx;
   background: #778899;
 }
 .container {
@@ -15,9 +13,11 @@ page {
   border-style: solid;
 }
 .question-container {
-  display: block;
+  display: inherit;
   width: 100%;
   margin-top: 50rpx;
+  height: 100%;
+  margin-bottom: 40%;
 }
 .question-wrapper {
   display: flex;
@@ -55,10 +55,80 @@ page {
   letter-spacing: normal;
   color: #ffffff;
 }
-
 .answer-wrapper {
   height: 100rpx;
   margin-top: 30rpx;
+}
+.answer-indicator.selected {
+  width: 30rpx;
+  height: 30rpx;
+  background-color: red;
+  border-radius: 50%;
+}
+.answer-indicator {
+  width: 30rpx;
+  height: 30rpx;
+  background-color: #778899;
+  border-radius: 50%;
+}
+.confirm-btn-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  bottom: 0%;
+  width: 100%;
+  height: 16%;
+  background-color: #778899;
+}
+.confirm-btn {
+  width: 100rpx;
+  height: 100rpx;
+  margin-top: 50rpx;
+  margin-bottom: 50rpx;
+}
+.mask {
+  position: fixed;
+  bottom: 16.5%;
+  width: 750rpx;
+  height: 10rpx;
+  background-color: #b0c4de;
+}
+.mask-top {
+  position: fixed;
+  bottom: 600rpx;
+  width: 750rpx;
+  height: 10rpx;
+  background-color: #b0c4de;
+}
+.panel-btn {
+  width: 90rpx;
+  height: 56rpx;
+  position: fixed;
+  bottom: 16.5%;
+  right: 10%;
+}
+.panel-btn.down {
+  width: 90rpx;
+  height: 56rpx;
+  position: fixed;
+  bottom: 554rpx;
+  right: 10%;
+}
+.popup__content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 600rpx;
+  background: #778899;
+}
+.popup-image-content {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 360rpx;
+  margin-top: 90rpx;
+  background: #b0c4de;
 }
 </style>
 
@@ -73,15 +143,31 @@ page {
           <text class='question-text'>在公园看到许多画家帮人画自画像，你心血来潮也想过过做模特儿的瘾，你会选择哪一类型的自画像</text>
         </view>
       </view>
-      <view class='question-wrapper answer-wrapper' wx:for="{{answerList}}" item='item' @tap="answerChoosen(item)">
+      <view class='question-wrapper answer-wrapper' wx:for="{{answerList}}">
         <wxc-cc class='question-number-wrapper border'>
-          <text class='question-number'>1</text>
+          <view class="answer-indicator {{item.selected?'selected':''}}"></view>
         </wxc-cc>
-        <view class='question-text-wrapper border'>
-          <text class='question-text'>{{item}}</text>
+        <view class='question-text-wrapper border' @tap="answerChoosen({{index}})">
+          <text class='question-text'>{{item.text}}</text>
         </view>
       </view>
     </scroll-view>
+    <view class="mask"></view>
+    <image class="panel-btn" src="images/triangle.png" @tap="showPopUp()" />
+    <view class="confirm-btn-container">
+      <image class="confirm-btn" src="{{answerSelected?'images/check.png':'images/unCheck.png'}}" @tap="confirmAnswer()"/>
+    </view>
+    <wxc-popup class="J_Popup" animation-mode="bottom" align="bottom" locked="true">
+      <view class="popup__content">
+        <view class="mask-top"></view>
+        <image class="panel-btn down" src="images/triangle_down.png" @tap="hidePopUp()" />
+        <view class="popup-image-content">
+        </view>
+        <view class="confirm-btn-container">
+          <image class="confirm-btn" src="{{answerSelected?'images/check.png':'images/unCheck.png'}}" />
+        </view>
+      </view>
+    </wxc-popup>
   </view>
 </template>
 
@@ -92,18 +178,61 @@ export default class AnswerQuestion extends wepy.page {
     navigationBarTitleText: '',
     navigationBarBackgroundColor: '#778899',
     usingComponents: {
-      'wxc-cc': '../../packages/@minui/wxc-cc/dist/index'
+      'wxc-cc': '../../packages/@minui/wxc-cc/dist/index',
+      'wxc-popup': '../../packages/@minui/wxc-popup/dist/index'
     }
   };
   data = {
-    answerList: []
+    answerList: [],
+    currentQuestionIndex: null,
+    canMutipleChoose: false,
+    answerSelected: false
+  };
+  methods = {
+    answerChoosen(index) {
+      console.log('this.answerList.length: ', this.answerList.length);
+      if (!this.canMutipleChoose) {
+        for (let i = 0; i < this.answerList.length; i++) {
+          this.answerList[i].selected = false;
+        }
+      }
+      this.answerList[index].selected = true;
+      this.answerSelected = true;
+    },
+    showPopUp() {
+      let popupComponent = this.$wxpage.selectComponent('.J_Popup');
+      popupComponent && popupComponent.show();
+    },
+    hidePopUp() {
+      let popupComponent = this.$wxpage.selectComponent('.J_Popup');
+      popupComponent && popupComponent.hide();
+    },
+    confirmAnswer() {
+      if (this.answerSelected) {
+        //TODO
+      }
+    }
   };
   onLoad() {
     console.log('AnswerQuestion onLoad');
-    this.answerList = ['水彩画或油画', '铅笔素描画', '俏皮逗趣的漫画'];
-  }
-  answerChoosen(item) {
-    console.log('item: ', item);
+    this.answerList = [
+      {
+        text: '水彩画或油画',
+        selected: false
+      },
+      {
+        text: '铅笔素描画',
+        selected: false
+      },
+      {
+        text: '俏皮逗趣的漫画',
+        selected: false
+      },
+      {
+        text: '铅笔素描画',
+        selected: false
+      }
+    ];
   }
 }
 </script>
