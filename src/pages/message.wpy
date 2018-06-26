@@ -52,11 +52,10 @@ page {
 .icon {
   width: 100rpx;
   height: 100rpx;
-  padding: 10rpx;
 }
 </style>
 
-<template>
+<template lang="wxml" minapp="wepy">
   <view class="container">
     <scroll-view class='question-container' scroll-y='true'>
       <view class='question-wrapper border'>
@@ -70,7 +69,7 @@ page {
       </view>
       <view class='question-wrapper border'>
         <view class='question-number-wrapper border'>
-          <image class="icon" src="images/phone.png" />
+          <image class="icon" src="images/phone.png"/>
           <image class="icon" src="images/more.png" />
         </view>
         <view class='question-text-wrapper border'>
