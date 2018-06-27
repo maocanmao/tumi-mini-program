@@ -1,4 +1,7 @@
 <style lang="less">
+page {
+  background: #4f4f4f;
+}
 .screen {
   display: flex;
   flex-direction: column;
@@ -6,7 +9,7 @@
 }
 .canvas {
   width: 750rpx;
-  height: 500px;
+  height: 800px;
   border: 1px;
 }
 .view {
@@ -65,7 +68,7 @@
 .container {
   width: 750rpx;
   height: 800rpx;
-  background: lightblue;
+  background: 4f4f4f;
 }
 .canvasWrap {
   position: absolute;
@@ -90,21 +93,69 @@
   background: #fff;
   color: #000;
 }
+.confirm-btn-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  position: fixed;
+  bottom: 0%;
+  width: 100%;
+  height: 16%;
+  background-color: #4f4f4f;
+}
+.mask {
+  position: fixed;
+  width: 750rpx;
+  height: 10rpx;
+  background-color: #b0c4de;
+}
+.mask.bottom {
+  bottom: 0%;
+}
+.mask.bottom.top {
+  bottom: 10%;
+  height: 7rpx;
+}
+.mask-top {
+  top: 0%;
+}
+.mask-top.bottom {
+  top: 7%;
+  height: 7rpx;
+}
+.panel-btn {
+  width: 90rpx;
+  height: 56rpx;
+  position: fixed;
+  margin: 0 auto;
+}
+.panel-btn.down {
+  bottom: 1%;
+}
+.panel-btn.top {
+  top: 0%;
+  left: 45%;
+}
 </style>
-
 <template>
-  <view class="screen">
+  <view class="screen" lang="wxml" minapp="wepy">
     <view class="container" bindtap="bindtap">
+      <view class="mask mask-top"></view>
+      <view class="mask mask-top bottom"></view>
+      <image class="panel-btn top" src="images/triangle_down_dark.png" @tap="showPopUp()" />
+
       <view class="touchWrap" style="transform: scale({{item.scale}});top:{{item.top}}px;left:{{item.left}}px; " wx:for="{{itemList}}" wx:key="{{item.id}}">
         <view class="imgWrap {{item.active?'touchActive':''}}" style="transform: rotate({{item.angle}}deg);">
-          <image bindload="loadImg" bindtouchend="WraptouchEnd" bindtouchmove="WraptouchMove" bindtouchstart="WraptouchStart" data-id="{{item.id}}" src="{{item.image}}" style="width:{{item.width}}px;height:{{item.height}}px;"></image>
-          <image bindtap="deleteItem" class="x" data-id="{{item.id}}" src="./images/x.png" style="transform: scale({{item.oScale}});transform-origin:center;"></image>
-          <image bindtouchend="touchEnd" bindtouchmove="touchMove" bindtouchstart="touchStart" class="o" data-id="{{item.id}}" src="./images/o.png" style="transform: scale({{item.oScale}});transform-origin:center;"></image>
+          <image bindload="loadImg" bindtouchend="WraptouchEnd" bindtouchmove="WraptouchMove" bindtouchstart="WraptouchStart" data-id="{{item.id}}" src="{{item.image}}" style="width:{{item.width}}px;height:{{item.height}}px;" />
+          <image bindtap="deleteItem" class="x" data-id="{{item.id}}" src="./images/x.png" style="transform: scale({{item.oScale}});transform-origin:center;" />
+          <image bindtouchend="touchEnd" bindtouchmove="touchMove" bindtouchstart="touchStart" class="o" data-id="{{item.id}}" src="./images/o.png" style="transform: scale({{item.oScale}});transform-origin:center;" />
         </view>
       </view>
     </view>
-    <view>
-      <button bindtap="save()">保存</button>
+    <view class="confirm-btn-container">
+      <view class="mask bottom top"></view>
+      <view class="mask bottom"></view>
+      <image class="panel-btn down" src="images/triangle_dark.png" @tap="showPopUp()" />
     </view>
     <view bindtap="disappearCanvas" class="canvasWrap" wx:if="{{showCanvas}}">
       <canvas bindlongtap="saveImg" canvasId="maskCanvas" class="maskCanvas" style="width:{{canvasWidth}}%; height:{{canvasHeight}}px;"></canvas>
@@ -352,7 +403,7 @@ export default class DrawPanel extends wepy.page {
       },
       {
         id: 4,
-        tempFilePath: './images/IMG_0928.PNG.png',
+        tempFilePath: './images/IMG_0928.PNG',
         width: 90
       }
     ];

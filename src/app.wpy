@@ -18,7 +18,8 @@ export default class extends wepy.app {
       'pages/offline-activity',
       'pages/message-detail',
       'pages/user-wroks',
-      'pages/works-detail'
+      'pages/works-detail',
+      'pages/draw'
     ],
     window: {
       backgroundTextStyle: 'light',

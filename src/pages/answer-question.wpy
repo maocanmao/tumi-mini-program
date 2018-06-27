@@ -143,11 +143,11 @@ page {
           <text class='question-text'>在公园看到许多画家帮人画自画像，你心血来潮也想过过做模特儿的瘾，你会选择哪一类型的自画像</text>
         </view>
       </view>
-      <view class='question-wrapper answer-wrapper' wx:for="{{answerList}}">
+      <view class='question-wrapper answer-wrapper' wx:for="{{answerList}}" @tap="answerChoosen({{index}})">
         <wxc-cc class='question-number-wrapper border'>
           <view class="answer-indicator {{item.selected?'selected':''}}"></view>
         </wxc-cc>
-        <view class='question-text-wrapper border' @tap="answerChoosen({{index}})">
+        <view class='question-text-wrapper border' >
           <text class='question-text'>{{item.text}}</text>
         </view>
       </view>

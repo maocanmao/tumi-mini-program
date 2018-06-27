@@ -130,7 +130,7 @@ page {
     <image class="panel-btn" src="images/triangle.png" @tap="showPopUp()" />
     <view class="confirm-btn-container">
       <image class="confirm-btn" src="images/back.png" />
-      <image class="confirm-btn" src="images/check.png" />
+      <image class="confirm-btn" src="images/check.png" @tap="confirm()"/>
     </view>
     <wxc-popup class="J_Popup" animation-mode="bottom" align="bottom" locked="true">
       <view class="popup__content">
@@ -140,7 +140,7 @@ page {
         </view>
         <view class="confirm-btn-container">
           <image class="confirm-btn" src="images/back.png" />
-          <image class="confirm-btn" src="images/check.png" />
+          <image class="confirm-btn" src="images/check.png"  @tap="confirm()"/>
         </view>
       </view>
     </wxc-popup>
@@ -168,10 +168,13 @@ export default class AnswerQuestionComplete extends wepy.page {
       let popupComponent = this.$wxpage.selectComponent('.J_Popup');
       popupComponent && popupComponent.hide();
     },
-    confirm() {}
+    confirm() {
+      console.log('to draw');
+      wepy.navigateTo({ url: 'draw' });
+    }
   };
   onLoad() {
-    console.log('AnswerQuestion onLoad');
+    console.log('AnswerQuestion completed onLoad');
   }
 }
 </script>
