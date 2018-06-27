@@ -31,6 +31,17 @@ page {
   width: 500rpx;
   padding: 20rpx;
 }
+.image-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+}
+.works-image {
+  width: 200rpx;
+  height: 250rpx;
+  background-color: #4f4f4f;
+}
 .border {
   border-color: #ffffff;
   border-width: 2rpx;
@@ -61,16 +72,17 @@ page {
       <view class='question-wrapper border'>
         <view class='question-number-wrapper border'>
           <image class="icon" src="images/user.png" />
-          <image class="icon" src="images/more-with-badge.png" />
+          <image class="icon" src="images/more-with-badge.png" @tap="toUserWorks()" />
         </view>
-        <view class='question-text-wrapper border'>
-
+        <view class='question-text-wrapper border image-container'>
+          <image class="works-image" src="images/works_exanple.png" />
+          <image class="works-image" src="images/works_exanple.png" />
         </view>
       </view>
       <view class='question-wrapper border'>
         <view class='question-number-wrapper border'>
-          <image class="icon" src="images/phone.png"/>
-          <image class="icon" src="images/more.png"  @tap="toOnline()"/>
+          <image class="icon" src="images/phone.png" />
+          <image class="icon" src="images/more.png" @tap="toOnline()" />
         </view>
         <view class='question-text-wrapper border'>
           <wxc-elip class='question-text' line="2">【壮阔东方潮 奋进新时代——开放40年】建设高素质高颜值的经济特区</wxc-elip>
@@ -82,7 +94,7 @@ page {
       <view class='question-wrapper border'>
         <view class='question-number-wrapper border'>
           <image class="icon" src="images/activity.png" />
-          <image class="icon" src="images/more.png" @tap="toOffline()"/>
+          <image class="icon" src="images/more.png" @tap="toOffline()" />
         </view>
         <view class='question-text-wrapper border'>
           <wxc-elip class='question-text' line="2">【壮阔东方潮 奋进新时代——开放40年】建设高素质高颜值的经济特区</wxc-elip>
@@ -107,13 +119,19 @@ export default class Message extends wepy.page {
   };
   methods = {
     toOnline() {
-      wepy.navigateTo({ url: 'online-activity' });
+      wepy.navigateTo({
+        url: 'online-activity'
+      });
     },
     toOffline() {
-      wepy.navigateTo({ url: 'offline-activity' });
+      wepy.navigateTo({
+        url: 'offline-activity'
+      });
+    },
+    toUserWorks() {
+      wepy.navigateTo({ url: 'user-wroks' });
     }
   };
-
   onLoad() {
     console.log('Message onLoad');
   }

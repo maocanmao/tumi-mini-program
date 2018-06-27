@@ -1,11 +1,41 @@
 <style lang="less">
 @import '../wxparse/wxParse.wxss';
+page {
+  background: #4f4f4f;
+}
+.container {
+  background: #4f4f4f;
+  width: 750rpx;
+}
+.content {
+  margin-bottom: 16%;
+  height: 1000rpx;
+}
+.confirm-btn-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  position: fixed;
+  bottom: 0%;
+  width: 100%;
+  height: 16%;
+  background-color: #4f4f4f;
+}
+.confirm-btn {
+  width: 100rpx;
+  height: 100rpx;
+  margin-top: 50rpx;
+  margin-bottom: 50rpx;
+}
 </style>
-<template>
+<template lang="wxml" minapp="wepy">
   <view class="container">
-
-    <view class="content">
-      <html2wxml :parserName="name" :parserContent.sync="textContent"></html2wxml>
+    <scroll-view class="content" scroll-y="{{true}}">
+      <html2wxml :parserName="name" :parserContent.sync="textContent" :parserType="html"></html2wxml>
+    </scroll-view>
+    <view class="confirm-btn-container">
+      <image class="confirm-btn" src="images/back_dark.png" @tap="back()"/>
+      <image class="confirm-btn" src="images/share_dark.png" />
     </view>
   </view>
 </template>
@@ -13,27 +43,27 @@
 <script>
 import wepy from 'wepy';
 import html2wxml from '../components/html2wxml';
-
 export default class MessageDetail extends wepy.page {
   config = {
+    navigationBarBackgroundColor: '#4f4f4f',
     navigationBarTitleText: '详情'
   };
-
   components = {
     html2wxml: html2wxml
   };
-
   data = {
     name: 'myHtmlParserKiner',
     textContent: '',
     mock:
-      "<p>JavaScript 是世界上最流行的脚本语言。</p><p>JavaScript 是属于 web 的语言，它适用于 PC、笔记本电脑、平板电脑和移动电话。</p><p>JavaScript 被设计为向 HTML 页面增加交互性。</p><p>许多 HTML 开发者都不是<span style='color: red;'>程序员</span>，但是 JavaScript 却拥有非常简单的语法。几乎每个人都有能力将小的 JavaScript 片段添加到网页中。</p>",
-    mock1:
-      "<p style='color: blue;'>感谢使用，您的star是对我最大的鼓励</p><p>JavaScript 是属于 web 的语言，它适用于 PC、笔记本电脑、平板电脑和移动电话。</p><p>JavaScript 被设计为向 HTML 页面增加交互性。</p><p>许多 HTML 开发者都不是<span style='color: gray;'>程序员</span>，但是 JavaScript 却拥有非常简单的语法。几乎每个人都有能力将小的 JavaScript 片段添加到网页中111。</p>"
+      "<p>JavaScript 是世界上最流行的脚本语言。</p><p>JavaScript 是属于 web 的语言，它适用于 PC、笔记本电脑、平板电脑和移动电话。</p><p>JavaScript 被设计为向 HTML 页面增加交互性。</p><p>许多 HTML 开发者都不是<span style='color: white;'>程序员</span>，但是 JavaScript 却拥有非常简单的语法。几乎每个人都有能力将小的 JavaScript 片段添加到网页中。</p><p>JavaScript 是世界上最流行的脚本语言。</p><p>JavaScript 是属于 web 的语言，它适用于 PC、笔记本电脑、平板电脑和移动电话。</p><p>JavaScript 被设计为向 HTML 页面增加交互性。</p><p>许多 HTML 开发者都不是<span style='color: white;'>程序员</span>，但是 JavaScript 却拥有非常简单的语法。几乎每个人都有能力将小的 JavaScript 片段添加到网页中。</p><p>JavaScript 是世界上最流行的脚本语言。</p><p>JavaScript 是属于 web 的语言，它适用于 PC、笔记本电脑、平板电脑和移动电话。</p><p>JavaScript 被设计为向 HTML 页面增加交互性。</p><p>许多 HTML 开发者都不是<span style='color: white;'>程序员</span>，但是 JavaScript 却拥有非常简单的语法。几乎每个人都有能力将小的 JavaScript 片段添加到网页中。</p>"
   };
-
-  methods = {};
-
+  methods = {
+    back() {
+      wepy.navigateBack({
+        delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+      });
+    }
+  };
   onLoad() {
     this.textContent = this.mock;
     this.$apply();

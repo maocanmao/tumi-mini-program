@@ -1,0 +1,66 @@
+<style lang="less">
+@import '../wxparse/wxParse.wxss';
+page {
+  background: #4f4f4f;
+}
+.container {
+  background: #4f4f4f;
+  width: 750rpx;
+}
+.content {
+  margin-bottom: 16%;
+  height: 1000rpx;
+}
+.confirm-btn-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  position: fixed;
+  bottom: 0%;
+  width: 100%;
+  height: 16%;
+  background-color: #4f4f4f;
+}
+.confirm-btn {
+  width: 100rpx;
+  height: 100rpx;
+  margin-top: 50rpx;
+  margin-bottom: 50rpx;
+}
+</style>
+<template lang="wxml" minapp="wepy">
+  <view class="container">
+    <scroll-view class="content" scroll-y="{{true}}">
+      <wxc-cc class="container">
+        <image src="images/works_exanple.png" />
+      </wxc-cc>
+    </scroll-view>
+    <view class="confirm-btn-container">
+      <image class="confirm-btn" src="images/back_dark.png" @tap="back()" />
+      <image class="confirm-btn" src="images/share_dark.png" />
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+export default class WorksDetail extends wepy.page {
+  config = {
+    navigationBarBackgroundColor: '#4f4f4f',
+    navigationBarTitleText: '作品',
+    usingComponents: {
+      'wxc-cc': '../../packages/@minui/wxc-cc/dist/index'
+    }
+  };
+
+  data = {};
+  methods = {
+    back() {
+      wepy.navigateBack({
+        delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+      });
+    }
+  };
+  onLoad() {}
+}
+</script>

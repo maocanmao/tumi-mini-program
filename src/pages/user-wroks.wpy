@@ -1,0 +1,129 @@
+<style lang="less">
+page {
+  background: #778899;
+}
+.container {
+  background: #778899;
+  width: 750rpx;
+}
+.question-container {
+  display: inherit;
+  width: 100%;
+  height: 900rpx;
+  margin-top: 50rpx;
+}
+.question-wrapper {
+  display: flex;
+  width: 640rpx;
+  margin-left: 15rpx;
+  margin-right: 15rpx;
+  margin: 0 auto;
+  margin-top: 30rpx;
+}
+.question-number-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100rpx;
+  background: #b0c4de;
+}
+.question-text-wrapper {
+  width: 100%;
+  padding: 5rpx;
+  background-color: #4f4f4f;
+}
+.border {
+  border-color: #b0c4de;
+  border-width: 2rpx;
+  border-style: solid;
+}
+
+.icon {
+  width: 100rpx;
+  height: 100rpx;
+}
+.confirm-btn-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  bottom: 0%;
+  width: 100%;
+  height: 16%;
+  background-color: #778899;
+}
+.confirm-btn {
+  width: 100rpx;
+  height: 100rpx;
+  margin-top: 50rpx;
+  margin-bottom: 50rpx;
+}
+.image-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding-left: 10rpx;
+  padding-right: 10rpx;
+  padding-bottom: 20rpx;
+}
+.works-image {
+  width: 250rpx;
+  height: 250rpx;
+  background-color: #4f4f4f;
+}
+</style>
+
+<template lang="wxml" minapp="wepy">
+  <view class="container">
+    <scroll-view class='question-container' scroll-y='true'>
+      <view class='question-wrapper border' @tap="toWorksDetail()">
+        <view class='question-number-wrapper border'>
+          <image class="icon" src="images/user_dark.png" />
+          <image class="icon" src="" />
+        </view>
+        <view class='question-text-wrapper border image-container' >
+          <image class="works-image border" wx:for="{{worksImageList}}" src="{{item}}" />
+        </view>
+      </view>
+    </scroll-view>
+    <view class="confirm-btn-container">
+      <image class="confirm-btn" src="images/back.png" @tap="back()" />
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+export default class UserWorks extends wepy.page {
+  config = {
+    navigationBarTitleText: '作品展示',
+    navigationBarBackgroundColor: '#778899',
+    usingComponents: {}
+  };
+  data = {
+    worksImageList: [
+      'images/works_exanple.png',
+      'images/works_exanple.png',
+      'images/works_exanple.png',
+      'images/works_exanple.png',
+      'images/works_exanple.png',
+      'images/works_exanple.png',
+      'images/works_exanple.png'
+    ]
+  };
+  methods = {
+    back() {
+      wepy.navigateBack({
+        delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+      });
+    },
+    toWorksDetail() {
+      wepy.navigateTo({
+        url: 'works-detail'
+      });
+    }
+  };
+  onLoad() {}
+}
+</script>
