@@ -1,17 +1,116 @@
 <style lang="less">
+page {
+  background: #b0c4de;
+}
+.container {
+  background: #b0c4de;
+  width: 750rpx;
+  height: 100%;
+}
+.question-container {
+  display: inherit;
+  width: 100%;
+  height: 500rpx;
+  margin-top: 50rpx;
+}
+.question-wrapper {
+  display: flex;
+  width: 600rpx;
+  height: 300rpx;
+  margin-left: 25rpx;
+  margin-right: 25rpx;
+  margin: 0 auto;
+  margin-top: 30rpx;
+}
+.question-number-wrapper {
+  width: 100rpx;
+  background: #ffffff;
+}
+.question-text-wrapper {
+  width: 500rpx;
+  padding: 20rpx;
+}
+.question-text {
+  font-family: PingFangSC;
+  font-size: 32rpx;
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #ffffff;
+}
+.small {
+  font-size: 28rpx;
+}
+.border {
+  border-color: #ffffff;
+  border-width: 2rpx;
+  border-style: solid;
+}
+.icon {
+  width: 100rpx;
+  height: 100rpx;
+}
+.video {
+  width: 100%;
+  height: 480rpx;
+}
 </style>
-<template>
+
+<template lang="wxml" minapp="wepy">
   <view class="container">
-    Hello world
+    <video class="video" src="http://wxsnsdy.tc.qq.com/105/20210/snsdyvideodownload?filekey=30280201010421301f0201690402534804102ca905ce620b1241b726bc41dcff44e00204012882540400&bizid=1023&hy=SH&fileparam=302c020101042530230204136ffd93020457e3c4ff02024ef202031e8d7f02030f42400204045a320a0201000400"
+      objectFit="fill" />
+    <scroll-view class='question-container' scroll-y='true'>
+      <view class='question-wrapper border' @tap="toDetail()">
+        <wxc-cc class='question-number-wrapper border'>
+          <image class="icon" src="images/play-with-badge.png" />
+        </wxc-cc>
+        <view class='question-text-wrapper border'>
+          <wxc-elip class='question-text' line="2">【壮阔东方潮 奋进新时代——开放40年】建设高素质高颜值的经济特区</wxc-elip>
+          <view style="margin-top:20rpx">
+            <wxc-elip class='question-text small' line="3">改革开放40年来，位于东南沿海前沿的厦门经济特区，始终秉持“先行先试、敢为天下先”的精神，在经济、社会、生态等多个</wxc-elip>
+          </view>
+        </view>
+      </view>
+
+      <view class='question-wrapper border' @tap="toDetail()">
+        <wxc-cc class='question-number-wrapper border'>
+          <image class="icon" src="images/play-with-badge.png" />
+        </wxc-cc>
+        <view class='question-text-wrapper border'>
+          <wxc-elip class='question-text' line="2">【壮阔东方潮 奋进新时代——开放40年】建设高素质高颜值的经济特区</wxc-elip>
+          <view style="margin-top:20rpx">
+            <wxc-elip class='question-text small' line="3">改革开放40年来，位于东南沿海前沿的厦门经济特区，始终秉持“先行先试、敢为天下先”的精神，在经济、社会、生态等多个</wxc-elip>
+          </view>
+        </view>
+      </view>
+
+      <view class='question-wrapper border' @tap="toDetail()">
+        <wxc-cc class='question-number-wrapper border'>
+          <image class="icon" src="images/play-with-badge.png" />
+        </wxc-cc>
+        <view class='question-text-wrapper border'>
+          <wxc-elip class='question-text' line="2">【壮阔东方潮 奋进新时代——开放40年】建设高素质高颜值的经济特区</wxc-elip>
+          <view style="margin-top:20rpx">
+            <wxc-elip class='question-text small' line="3">改革开放40年来，位于东南沿海前沿的厦门经济特区，始终秉持“先行先试、敢为天下先”的精神，在经济、社会、生态等多个</wxc-elip>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
   </view>
 </template>
 
 <script>
 import wepy from 'wepy';
-
 export default class Video extends wepy.page {
   config = {
-    navigationBarTitleText: ''
+    navigationBarTitleText: '',
+    usingComponents: {
+      'wxc-cc': '../../packages/@minui/wxc-cc/dist/index',
+      'wxc-elip': '../../packages/@minui/wxc-elip/dist/index'
+    }
   };
   onLoad() {
     console.log('onLoad');

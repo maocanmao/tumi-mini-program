@@ -107,7 +107,7 @@ page {
   position: fixed;
   width: 750rpx;
   height: 10rpx;
-  background-color: #b0c4de;
+  background-color: #778899;
 }
 .mask.bottom {
   bottom: 0%;
@@ -134,16 +134,44 @@ page {
 }
 .panel-btn.top {
   top: 0%;
-  left: 45%;
+  right: 43%;
+}
+.bottom-popup-image-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  height: 720rpx;
+  margin-top: 90rpx;
+  background: #b0c4de;
+}
+.bottom-popup-mask-top {
+  position: fixed;
+  bottom: 800rpx;
+  width: 750rpx;
+  height: 10rpx;
+  background-color: #778899;
+}
+.panel-btn-popup.down {
+  width: 90rpx;
+  height: 56rpx;
+  position: fixed;
+  bottom: 755rpx;
+  right: 43%;
+}
+.small-image {
+  width: 185rpx;
+  height: 180rpx;
+  border: solid 1rpx #4f4f4f;
 }
 </style>
+
 <template>
   <view class="screen" lang="wxml" minapp="wepy">
     <view class="container" bindtap="bindtap">
       <view class="mask mask-top"></view>
       <view class="mask mask-top bottom"></view>
       <image class="panel-btn top" src="images/triangle_down_dark.png" @tap="showPopUp()" />
-
       <view class="touchWrap" style="transform: scale({{item.scale}});top:{{item.top}}px;left:{{item.left}}px; " wx:for="{{itemList}}" wx:key="{{item.id}}">
         <view class="imgWrap {{item.active?'touchActive':''}}" style="transform: rotate({{item.angle}}deg);">
           <image bindload="loadImg" bindtouchend="WraptouchEnd" bindtouchmove="WraptouchMove" bindtouchstart="WraptouchStart" data-id="{{item.id}}" src="{{item.image}}" style="width:{{item.width}}px;height:{{item.height}}px;" />
@@ -155,8 +183,17 @@ page {
     <view class="confirm-btn-container">
       <view class="mask bottom top"></view>
       <view class="mask bottom"></view>
-      <image class="panel-btn down" src="images/triangle_dark.png" @tap="showPopUp()" />
+      <image class="panel-btn down" src="images/triangle_dark.png" @tap="showBottomPopUp()" />
     </view>
+    <wxc-popup class="J_Popup" animation-mode="bottom" align="bottom" locked="true" status="{{bottomPopStatus}}">
+      <view class="popup__content">
+        <view class="bottom-popup-mask-top "></view>
+        <image class="panel-btn-popup.down" src="images/triangle_down_dark.png" @tap="hideBottomPopUp()" />
+        <view class="bottom-popup-image-content">
+          <image class="small-image" wx:for="{{smallImageList}}" src="{{item.tempFilePath}}" @tap="addImage({{item}})"/>
+        </view>
+      </view>
+    </wxc-popup>
     <view bindtap="disappearCanvas" class="canvasWrap" wx:if="{{showCanvas}}">
       <canvas bindlongtap="saveImg" canvasId="maskCanvas" class="maskCanvas" style="width:{{canvasWidth}}%; height:{{canvasHeight}}px;"></canvas>
       <button bindtap="saveImg" class="btn">点我生成图片</button>
@@ -176,7 +213,8 @@ export default class DrawPanel extends wepy.page {
     navigationBarTitleText: '画板 ',
     navigationBarBackgroundColor: '#4f4f4f',
     usingComponents: {
-      'wxc-mask': '../../packages/@minui/wxc-mask/dist/index'
+      'wxc-mask': '../../packages/@minui/wxc-mask/dist/index',
+      'wxc-popup': '../../packages/@minui/wxc-popup/dist/index'
     }
   };
   data = {
@@ -188,7 +226,43 @@ export default class DrawPanel extends wepy.page {
     canvasWidth: 79,
     canvasHeight: null,
     maskStatus: 'hide',
-    showCanvas: false
+    showCanvas: false,
+    bottomPopStatus: 'hide',
+    topPopStatus: 'hide',
+    smallImageList: [
+      {
+        id: 1,
+        tempFilePath: './images/IMG_0928.PNG', //图片地址
+        width: 90
+      },
+      {
+        id: 2,
+        tempFilePath: './images/IMG_0930.PNG', //图片地址
+        width: 90
+      },
+      {
+        id: 3,
+        tempFilePath: './images/IMG_0929.PNG', //图片地址
+        width: 90
+      },
+      {
+        id: 4,
+        tempFilePath: './images/IMG_0928.PNG',
+        width: 90
+      }
+    ]
+  };
+  methods = {
+    showBottomPopUp() {
+      this.bottomPopStatus = 'show';
+    },
+    hideBottomPopUp() {
+      this.bottomPopStatus = 'hide';
+    },
+    addImage(item) {
+      console.log('item: ', item);
+      this.initImage(item);
+    }
   };
   loadImg(t) {
     // console.log("loadImg", t);
@@ -208,9 +282,10 @@ export default class DrawPanel extends wepy.page {
   }
   bindtap(e) {
     // 检测tap事件
-    console.log('检测tap事件');
-    console.log('e.touches[0].x: ', e.touches[0].clientX);
-    console.log('e.touches[0].y: ', e.touches[0].clientY);
+    // console.log('检测tap事件');
+    // console.log('e.touches[0].x: ', e.touches[0].clientX);
+    // console.log('e.touches[0].y: ', e.touches[0].clientY);
+    console.log(e.currentTarget.dataset.id);
   }
   // 触摸开始事件  items是this.data.itemList的全局变量，便于赋值  所有的值都应给到对应的对象里
   touchStart(e) {
@@ -353,7 +428,7 @@ export default class DrawPanel extends wepy.page {
     });
   }
   init() {
-    this.initImage();
+    // this.initImage();
     this.sysData = wx.getSystemInfoSync();
     console.log('this.sysData: ', this.sysData);
   }
@@ -408,27 +483,27 @@ export default class DrawPanel extends wepy.page {
       }
     ];
   }
-  initImage() {
-    var imageList = this.getImageList();
-    for (var i = 0; i < imageList.length; i++) {
-      let image = {};
-      image.image = imageList[i].tempFilePath;
-      image.id = imageList[i].id;
-      /**image.itemid = t.itemid,**/
-      image.top = 100;
-      image.left = 100;
-      image.width = imageList[i].width;
-      image.scale = 1;
-      image.angle = 0;
-      image.rotate = 0;
-      image.active = false;
-      // image.hdw = t.detail.height / t.detail.width;
-      image.hdw = 1;
-      image.height = image.width * image.hdw;
-      image.x = image.left + image.width / 2;
-      image.y = image.top + image.height / 2;
-      this.items.push(image);
-    }
+  initImage(item) {
+    // var imageList = this.getImageList();
+    // for (var i = 0; i < imageList.length; i++) {
+    let image = {};
+    image.image = item.tempFilePath;
+    image.id = item.id;
+    /**image.itemid = t.itemid,**/
+    image.top = 100;
+    image.left = 100;
+    image.width = item.width;
+    image.scale = 1;
+    image.angle = 0;
+    image.rotate = 0;
+    image.active = false;
+    // image.hdw = t.detail.height / t.detail.width;
+    image.hdw = 1;
+    image.height = image.width * image.hdw;
+    image.x = image.left + image.width / 2;
+    image.y = image.top + image.height / 2;
+    this.items.push(image);
+    // }
     this.itemList = this.items;
   }
   saveImg() {
