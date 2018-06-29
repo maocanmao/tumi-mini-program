@@ -164,6 +164,61 @@ page {
   height: 180rpx;
   border: solid 1rpx #4f4f4f;
 }
+.top-popup-content-wrapper {
+  display: flex;
+  background: #4f4f4f;
+  border: solid 6rpx #778899;
+}
+.top-popup-image-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  width: 560rpx;
+  height: 370rpx;
+  background: #4f4f4f;
+}
+.top-popup-image-button-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 190rpx;
+  height: 370rpx;
+  background: #778899;
+}
+.top-popup-mask-bottom {
+  position: fixed;
+  top: 350rpx;
+  width: 750rpx;
+  height: 10rpx;
+  background-color: #778899;
+}
+.panel-btn-popup.top {
+  width: 90rpx;
+  height: 56rpx;
+  position: fixed;
+  top: 405rpx;
+  right: 43%;
+}
+.top-popup-mask-bottom {
+  position: fixed;
+  width: 750rpx;
+  height: 10rpx;
+  top: 450rpx;
+  background-color: #778899;
+}
+.top-popup-mask-bottom {
+  position: fixed;
+  height: 400rpx;
+  width: 750rpx;
+  height: 10rpx;
+  background-color: #778899;
+}
+.btn-image {
+  width: 100rpx;
+  height: 100rpx;
+  margin: 0 auto;
+}
 </style>
 
 <template>
@@ -171,7 +226,20 @@ page {
     <view class="container" bindtap="bindtap">
       <view class="mask mask-top"></view>
       <view class="mask mask-top bottom"></view>
-      <image class="panel-btn top" src="images/triangle_down_dark.png" @tap="showPopUp()" />
+      <image class="panel-btn top" src="images/triangle_down_dark.png" @tap="showTopPopUp()" />
+      <wxc-popup class="J_Popup" animation-mode="top" align="top" locked="true" status="{{topPopStatus}}">
+        <view class="popup__content top-popup-content-wrapper">
+          <view class="top-popup-mask-bottom "></view>
+          <image class="panel-btn-popup.top" src="images/triangle_dark.png" @tap="hideTopPopUp()" />
+          <view class="top-popup-image-content">
+            <image class="small-image" wx:for="{{smallImageList}}" src="{{item.tempFilePath}}" @tap="addBackground({{item}})" />
+          </view>
+          <view class="top-popup-image-button-content">
+             <image class="btn-image"  src="images/question.png" @tap="toVideoPage()" />
+             <image class="btn-image"  src="images/check.png" @tap="confirmComplete()" />
+          </view>
+        </view>
+      </wxc-popup>
       <view class="touchWrap" style="transform: scale({{item.scale}});top:{{item.top}}px;left:{{item.left}}px; " wx:for="{{itemList}}" wx:key="{{item.id}}">
         <view class="imgWrap {{item.active?'touchActive':''}}" style="transform: rotate({{item.angle}}deg);">
           <image bindload="loadImg" bindtouchend="WraptouchEnd" bindtouchmove="WraptouchMove" bindtouchstart="WraptouchStart" data-id="{{item.id}}" src="{{item.image}}" style="width:{{item.width}}px;height:{{item.height}}px;" />
@@ -190,7 +258,7 @@ page {
         <view class="bottom-popup-mask-top "></view>
         <image class="panel-btn-popup.down" src="images/triangle_down_dark.png" @tap="hideBottomPopUp()" />
         <view class="bottom-popup-image-content">
-          <image class="small-image" wx:for="{{smallImageList}}" src="{{item.tempFilePath}}" @tap="addImage({{item}})"/>
+          <image class="small-image" wx:for="{{smallImageList}}" src="{{item.tempFilePath}}" @tap="addImage({{item}})" />
         </view>
       </view>
     </wxc-popup>
@@ -254,14 +322,22 @@ export default class DrawPanel extends wepy.page {
   };
   methods = {
     showBottomPopUp() {
+      console.log('showBottomPopUp: ');
       this.bottomPopStatus = 'show';
     },
     hideBottomPopUp() {
+      console.log('hideBottomPopUp: ');
       this.bottomPopStatus = 'hide';
     },
     addImage(item) {
       console.log('item: ', item);
       this.initImage(item);
+    },
+    showTopPopUp() {
+      this.topPopStatus = 'show';
+    },
+    hideTopPopUp() {
+      this.topPopStatus = 'hide';
     }
   };
   loadImg(t) {
@@ -285,7 +361,7 @@ export default class DrawPanel extends wepy.page {
     // console.log('检测tap事件');
     // console.log('e.touches[0].x: ', e.touches[0].clientX);
     // console.log('e.touches[0].y: ', e.touches[0].clientY);
-    console.log(e.currentTarget.dataset.id);
+    // console.log(e.currentTarget.dataset.id);
   }
   // 触摸开始事件  items是this.data.itemList的全局变量，便于赋值  所有的值都应给到对应的对象里
   touchStart(e) {
