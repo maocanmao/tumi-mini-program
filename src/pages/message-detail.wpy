@@ -58,7 +58,22 @@ export default class MessageDetail extends wepy.page {
     name: 'myHtmlParserKiner',
     textContent: '',
     mock:
-      '<p><span style="color:#FFE500;background-color:#FFFFFF;">Think Defferent</span> </p><p><span style="color:#FFE500;background-color:#FFFFFF;">Here’s to the crazy ones. The misfits. The rebels. The troublemakers. The round pegs in the square holes. The ones who see things differently. They’re not fond of rules. And they have no respect for the status quo. You can quote them, disagree with them, glorify or vilify them. About the only thing you can’t do is ignore</span> </p><p><span style="color:#FFE500;background-color:#FFFFFF;"><img src="https://pic3.zhimg.com/50/v2-f456a70d3bd2dc694cf5b80b0d300292_200x112.jpg" alt="" /><br /></span> </p><p><span style="color:#FFE500;background-color:#FFFFFF;">- Apple Inc.</span> </p>'
+      '<p>' +
+      '<p class="one-p" style="font-family:&quot;font-size:16px;">' +
+      '	<span style="color:#FFFFFF;">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#FFFFFF;">&nbsp;</span><img src="http://inews.gtimg.com/newsapp_match/0/4162241459/0" alt="" />' +
+      '</p>' +
+      '<p class="one-p" style="font-family:&quot;font-size:16px;">' +
+      '<span style="color:#FFFFFF;">&nbsp; &nbsp; &nbsp;</span><span style="color:#FFFFFF;">&nbsp;</span><span style="color:#FFFFFF;">最新消息：据新华社快讯，美国马里兰州官员28日说，安纳波利斯市一家媒体办公楼内当天发生枪击导致5人死亡、多人受伤。</span>' +
+      '</p>' +
+      '<p class="one-p" style="font-family:&quot;font-size:16px;">' +
+      '<span style="color:#FFFFFF;">海外网6月29日电 据福克斯新闻报道，美国马里兰州首府安纳波利斯一新闻编辑室发生枪击事件，当地警方表示，枪击造成多人死亡，目前嫌犯已被捕。</span>' +
+      '</p>' +
+      '<p class="one-p" style="font-family:&quot;font-size:16px;">' +
+      '<span style="color:#FFFFFF;">据报道，当地警方称，可能会有更多的枪手，也可能会有炸弹，目前警方正在进一步排查。编辑室的一位记者也表示，当时枪手向很多人开了枪，一些人已经死亡。（海外网 张振）</span>' +
+      '</p></p><p><br /></p>'
+    // mock:
+    //   '<p><span style="color:#FFE500;background-color:#FFFFFF;">Think Defferent</span>' +
+    //   '</p><p><span style="color:#FFE500;background-color:#FFFFFF;">Here’s to the crazy ones. The misfits. The rebels. The troublemakers. The round pegs in the square holes. The ones who see things differently. They’re not fond of rules. And they have no respect for the status quo. You can quote them, disagree with them, glorify or vilify them. About the only thing you can’t do is ignore</span> </p><p><span style="color:#FFE500;background-color:#FFFFFF;"><img src="https://pic3.zhimg.com/50/v2-f456a70d3bd2dc694cf5b80b0d300292_200x112.jpg" alt="" /><br /></span> </p><p><span style="color:#FFE500;background-color:#FFFFFF;">- Apple Inc.</span> </p>'
   };
   methods = {
     back() {
