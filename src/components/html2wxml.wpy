@@ -20,7 +20,8 @@ export default class html2wxml extends wepy.component {
     },
     parserContent: {
       type: String,
-      default: "<p style='font-size: 32rpx; padding: 30rpx 0; text-align: center;'>此处可以在html2wxml.wpy中自行选择删除</p>"
+      default:
+        "<p style='font-size: 32rpx; padding: 30rpx 0; text-align: center;'>此处可以在html2wxml.wpy中自行选择删除</p>"
     },
     parserType: {
       type: String,
@@ -35,7 +36,7 @@ export default class html2wxml extends wepy.component {
     htmlParserTpl: {}
   };
   events = {
-    'htmlParser-broadcast': ($event, ...args) => { }
+    'htmlParser-broadcast': ($event, ...args) => {}
   };
   methods = {
     htmlParserNotice() {

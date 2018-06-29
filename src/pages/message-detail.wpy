@@ -28,13 +28,16 @@ page {
   margin-bottom: 50rpx;
 }
 </style>
+
 <template lang="wxml" minapp="wepy">
   <view class="container">
     <scroll-view class="content" scroll-y="{{true}}">
-      <html2wxml :parserName="name" :parserContent.sync="textContent" :parserType="html"></html2wxml>
+
+      <rich-text nodes="{{mock}}"></rich-text>
+      <!-- <html2wxml :parserName="name" :parserContent.sync="textContent" :parserType="html"></html2wxml> -->
     </scroll-view>
     <view class="confirm-btn-container">
-      <image class="confirm-btn" src="images/back_dark.png" @tap="back()"/>
+      <image class="confirm-btn" src="images/back_dark.png" @tap="back()" />
       <image class="confirm-btn" src="images/share_dark.png" />
     </view>
   </view>
@@ -55,7 +58,7 @@ export default class MessageDetail extends wepy.page {
     name: 'myHtmlParserKiner',
     textContent: '',
     mock:
-      "<p>JavaScript 是世界上最流行的脚本语言。</p><p>JavaScript 是属于 web 的语言，它适用于 PC、笔记本电脑、平板电脑和移动电话。</p><p>JavaScript 被设计为向 HTML 页面增加交互性。</p><p>许多 HTML 开发者都不是<span style='color: white;'>程序员</span>，但是 JavaScript 却拥有非常简单的语法。几乎每个人都有能力将小的 JavaScript 片段添加到网页中。</p><p>JavaScript 是世界上最流行的脚本语言。</p><p>JavaScript 是属于 web 的语言，它适用于 PC、笔记本电脑、平板电脑和移动电话。</p><p>JavaScript 被设计为向 HTML 页面增加交互性。</p><p>许多 HTML 开发者都不是<span style='color: white;'>程序员</span>，但是 JavaScript 却拥有非常简单的语法。几乎每个人都有能力将小的 JavaScript 片段添加到网页中。</p><p>JavaScript 是世界上最流行的脚本语言。</p><p>JavaScript 是属于 web 的语言，它适用于 PC、笔记本电脑、平板电脑和移动电话。</p><p>JavaScript 被设计为向 HTML 页面增加交互性。</p><p>许多 HTML 开发者都不是<span style='color: white;'>程序员</span>，但是 JavaScript 却拥有非常简单的语法。几乎每个人都有能力将小的 JavaScript 片段添加到网页中。</p>"
+      '<p><span style="color:#FFE500;background-color:#FFFFFF;">Think Defferent</span> </p><p><span style="color:#FFE500;background-color:#FFFFFF;">Here’s to the crazy ones. The misfits. The rebels. The troublemakers. The round pegs in the square holes. The ones who see things differently. They’re not fond of rules. And they have no respect for the status quo. You can quote them, disagree with them, glorify or vilify them. About the only thing you can’t do is ignore</span> </p><p><span style="color:#FFE500;background-color:#FFFFFF;"><img src="https://pic3.zhimg.com/50/v2-f456a70d3bd2dc694cf5b80b0d300292_200x112.jpg" alt="" /><br /></span> </p><p><span style="color:#FFE500;background-color:#FFFFFF;">- Apple Inc.</span> </p>'
   };
   methods = {
     back() {
@@ -65,6 +68,7 @@ export default class MessageDetail extends wepy.page {
     }
   };
   onLoad() {
+    console.log('message detail');
     this.textContent = this.mock;
     this.$apply();
     //调用通知接口通知组件更新数据
