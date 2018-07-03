@@ -27,6 +27,16 @@ page {
   margin-top: 50rpx;
   margin-bottom: 50rpx;
 }
+.share-btn {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  margin-left: 0;
+  margin-right: 0;
+  background-size: 100rpx 100rpx;
+  background-repeat: no-repeat;
+  border: none;
+}
 </style>
 
 <template lang="wxml" minapp="wepy">
@@ -37,7 +47,7 @@ page {
     </scroll-view>
     <view class="confirm-btn-container">
       <image class="confirm-btn" src="images/back_dark.png" @tap="back()" />
-      <image class="confirm-btn" src="images/share_dark.png" open-type="share" />
+      <button class="share-btn" src="images/share_dark.png" style="background-image:url(images/share_dark.png);" plain='true' open-type="share" />
     </view>
   </view>
 </template>
