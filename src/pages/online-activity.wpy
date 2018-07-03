@@ -10,6 +10,7 @@ page {
   display: inherit;
   width: 100%;
   margin-top: 50rpx;
+  padding-bottom: 40%;
 }
 .question-wrapper {
   display: flex;
@@ -74,15 +75,15 @@ page {
 <template lang="wxml" minapp="wepy">
   <view class="container">
     <scroll-view class='question-container' scroll-y='true'>
-      <view class='question-wrapper border' @tap="toDetail()">
-        <view class='question-number-wrapper border'>
+      <view class='question-wrapper border' @tap="toDetail({{item.id}})" wx:for="{{newsList}}">
+        <view class='question-number-wrapper border' >
           <image class="icon" src="images/activity_dark.png" />
           <image class="icon" src="" />
         </view>
         <view class='question-text-wrapper border'>
-          <wxc-elip class='question-text' line="2">【壮阔东方潮 奋进新时代——开放40年】建设高素质高颜值的经济特区</wxc-elip>
+          <wxc-elip class='question-text' line="2">{{item.title}}</wxc-elip>
           <view style="margin-top:20rpx">
-            <wxc-elip class='question-text small' line="3">改革开放40年来，位于东南沿海前沿的厦门经济特区，始终秉持“先行先试、敢为天下先”的精神，在经济、社会、生态等多个</wxc-elip>
+            <wxc-elip class='question-text small' line="3">{{item.description}}</wxc-elip>
           </view>
         </view>
       </view>
@@ -104,20 +105,42 @@ export default class OnlineActivity extends wepy.page {
       'wxc-elip': '../../packages/@minui/wxc-elip/dist/index'
     }
   };
+  data = {
+    newsList: []
+  };
   methods = {
     back() {
       wepy.navigateBack({
         delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
       });
     },
-    toDetail() {
+    toDetail(id) {
+      console.log('id: ', id);
       wepy.navigateTo({
-        url: 'message-detail'
+        url: 'message-detail?id=' + id
       });
     }
   };
   onLoad() {
-    console.log('onLoad');
+    this.getNews();
+  }
+  getNews() {
+    wepy.showNavigationBarLoading();
+    this.$parent.getToken().then(token => {
+      wepy
+        .request(this.$parent.config.baseUrl + 'news?type=0&token=' + token)
+        .then(res => {
+          wepy.hideNavigationBarLoading();
+          console.log('get news: ', res);
+          this.newsList = res.data.data;
+          this.$apply();
+        })
+        .catch(error => {
+          wx.stopPullDownRefresh();
+          wepy.hideNavigationBarLoading();
+          console.log('get news error: ', error);
+        });
+    });
   }
 }
 </script>

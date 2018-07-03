@@ -29,9 +29,7 @@ export default class Index extends wepy.page {
       'wxc-cc': '../../packages/@minui/wxc-cc/dist/index'
     }
   };
-  onLoad() {
-    console.log('onLoad');
-  }
+  onLoad() {}
 
   bindtap(e) {
     // 检测tap事件

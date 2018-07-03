@@ -72,7 +72,7 @@ page {
       <view class='question-wrapper border'>
         <view class='question-number-wrapper border'>
           <image class="icon" src="images/user.png" />
-          <image class="icon" src="images/more-with-badge.png" @tap="toUserWorks()" />
+          <image class="icon" src="images/more.png" @tap="toUserWorks()" />
         </view>
         <view class='question-text-wrapper border image-container'>
           <image class="works-image" src="images/works_exanple.png" />
@@ -85,9 +85,9 @@ page {
           <image class="icon" src="images/more.png" @tap="toOnline()" />
         </view>
         <view class='question-text-wrapper border'>
-          <wxc-elip class='question-text' line="2">【壮阔东方潮 奋进新时代——开放40年】建设高素质高颜值的经济特区</wxc-elip>
+          <wxc-elip class='question-text' line="2">{{onlineNewsList[0].title}}</wxc-elip>
           <view style="margin-top:20rpx">
-            <wxc-elip class='question-text small' line="3">改革开放40年来，位于东南沿海前沿的厦门经济特区，始终秉持“先行先试、敢为天下先”的精神，在经济、社会、生态等多个</wxc-elip>
+            <wxc-elip class='question-text small' line="3">{{onlineNewsList[0].description}}</wxc-elip>
           </view>
         </view>
       </view>
@@ -97,9 +97,9 @@ page {
           <image class="icon" src="images/more.png" @tap="toOffline()" />
         </view>
         <view class='question-text-wrapper border'>
-          <wxc-elip class='question-text' line="2">【壮阔东方潮 奋进新时代——开放40年】建设高素质高颜值的经济特区</wxc-elip>
+          <wxc-elip class='question-text' line="2">{{offlineNewsList[0].title}}</wxc-elip>
           <view style="margin-top:20rpx">
-            <wxc-elip class='question-text small' line="3">改革开放40年来，位于东南沿海前沿的厦门经济特区，始终秉持“先行先试、敢为天下先”的精神，在经济、社会、生态等多个</wxc-elip>
+            <wxc-elip class='question-text small' line="3">{{offlineNewsList[0].description}}</wxc-elip>
           </view>
         </view>
       </view>
@@ -116,6 +116,10 @@ export default class Message extends wepy.page {
       'wxc-cc': '../../packages/@minui/wxc-cc/dist/index',
       'wxc-elip': '../../packages/@minui/wxc-elip/dist/index'
     }
+  };
+  data = {
+    onlineNewsList: [],
+    offlineNewsList: []
   };
   methods = {
     toOnline() {
@@ -134,6 +138,42 @@ export default class Message extends wepy.page {
   };
   onLoad() {
     console.log('Message onLoad');
+    this.getNews();
+  }
+
+  getNews() {
+    wepy.showNavigationBarLoading();
+    this.$parent.getToken().then(token => {
+      wepy
+        .request(this.$parent.config.baseUrl + 'news?type=0&token=' + token)
+        .then(res => {
+          wepy.hideNavigationBarLoading();
+          console.log('get news: ', res);
+          this.onlineNewsList = res.data.data;
+          this.$apply();
+        })
+        .catch(error => {
+          wx.stopPullDownRefresh();
+          wepy.hideNavigationBarLoading();
+          console.log('get news error: ', error);
+        });
+    });
+
+    this.$parent.getToken().then(token => {
+      wepy
+        .request(this.$parent.config.baseUrl + 'news?type=1&token=' + token)
+        .then(res => {
+          wepy.hideNavigationBarLoading();
+          console.log('get news: ', res);
+          this.offlineNewsList = res.data.data;
+          this.$apply();
+        })
+        .catch(error => {
+          wx.stopPullDownRefresh();
+          wepy.hideNavigationBarLoading();
+          console.log('get news error: ', error);
+        });
+    });
   }
 }
 </script>
