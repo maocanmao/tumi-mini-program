@@ -32,10 +32,10 @@ export default class Index extends wepy.page {
   onLoad() {}
 
   bindtap(e) {
-    // 检测tap事件
-    // wx.navigateTo({
-    //   url: 'answer-index'
-    // });
+    // 检测tap事件;
+    wx.navigateTo({
+      url: 'answer-index'
+    });
   }
 }
 </script>

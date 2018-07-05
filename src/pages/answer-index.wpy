@@ -42,8 +42,8 @@ export default class AnswerIndex extends wepy.page {
   };
   onLoad() {
     console.log('answer index onLoad');
-    this.$parent.getUserInfo().then(res => {
-      console.log('get user info: ', res);
+    this.$parent.getToken().then(res => {
+      console.log('get token: ', res);
     });
   }
 

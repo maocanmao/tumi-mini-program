@@ -105,7 +105,7 @@ page {
   width: 90rpx;
   height: 56rpx;
   position: fixed;
-  bottom: 16.5%;
+  bottom: 16.3%;
   right: 10%;
 }
 .panel-btn.down {
@@ -125,10 +125,18 @@ page {
 .popup-image-content {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   width: 100%;
   height: 360rpx;
   margin-top: 90rpx;
   background: #b0c4de;
+  flex-wrap: wrap;
+}
+.answer-iamge {
+  width: 24%;
+  height: 160rpx;
+  border-left: solid 1rpx #778899;
+  border-bottom: solid 1rpx #778899;
 }
 </style>
 
@@ -140,15 +148,15 @@ page {
           <text class='question-number'>1</text>
         </wxc-cc>
         <view class='question-text-wrapper border'>
-          <text class='question-text'>在公园看到许多画家帮人画自画像，你心血来潮也想过过做模特儿的瘾，你会选择哪一类型的自画像</text>
+          <text class='question-text'>{{questionsList[currentQuestionIndex].question}}</text>
         </view>
       </view>
       <view class='question-wrapper answer-wrapper' wx:for="{{answerList}}" @tap="answerChoosen({{index}})">
         <wxc-cc class='question-number-wrapper border'>
           <view class="answer-indicator {{item.selected?'selected':''}}"></view>
         </wxc-cc>
-        <view class='question-text-wrapper border' >
-          <text class='question-text'>{{item.text}}</text>
+        <view class='question-text-wrapper border'>
+          <text class='question-text'>{{item.name}}</text>
         </view>
       </view>
     </scroll-view>
@@ -162,6 +170,8 @@ page {
         <view class="mask-top"></view>
         <image class="panel-btn down" src="images/triangle_down.png" @tap="hidePopUp()" />
         <view class="popup-image-content">
+          <image src="{{item.imageSrc}}" class="answer-iamge" wx:for="{{userAnswer}}"/>
+
         </view>
         <view class="confirm-btn-container">
           <image class="confirm-btn" src="{{answerSelected?'images/check.png':'images/unCheck.png'}}" />
@@ -183,14 +193,15 @@ export default class AnswerQuestion extends wepy.page {
     }
   };
   data = {
+    questionsList: [],
     answerList: [],
+    userAnswer: [],
     currentQuestionIndex: null,
     canMutipleChoose: false,
     answerSelected: false
   };
   methods = {
     answerChoosen(index) {
-      console.log('this.answerList.length: ', this.answerList.length);
       if (!this.canMutipleChoose) {
         for (let i = 0; i < this.answerList.length; i++) {
           this.answerList[i].selected = false;
@@ -198,6 +209,17 @@ export default class AnswerQuestion extends wepy.page {
       }
       this.answerList[index].selected = true;
       this.answerSelected = true;
+      //
+      this.userAnswer[this.currentQuestionIndex].imageSrc = this.answerList[
+        index
+      ].imageSrc;
+      this.userAnswer[this.currentQuestionIndex].question = this.questionsList[
+        this.currentQuestionIndex
+      ].question;
+      this.userAnswer[this.currentQuestionIndex].answer = this.answerList[
+        index
+      ].name;
+      console.log('userAnswer: ', this.userAnswer);
     },
     showPopUp() {
       let popupComponent = this.$wxpage.selectComponent('.J_Popup');
@@ -210,33 +232,62 @@ export default class AnswerQuestion extends wepy.page {
     confirmAnswer() {
       if (this.answerSelected) {
         //TODO
-        //answer completed
-        wx.navigateTo({
-          url: 'answer-question-complete'
-        });
+        if (this.currentQuestionIndex == 7) {
+          //answer completed
+          wx.navigateTo({
+            url: 'answer-question-complete'
+          });
+        } else if (this.currentQuestionIndex < 7) {
+          this.toNextQuestion();
+        }
       }
     }
   };
   onLoad() {
     console.log('AnswerQuestion onLoad');
-    this.answerList = [
-      {
-        text: '水彩画或油画',
-        selected: false
-      },
-      {
-        text: '铅笔素描画',
-        selected: false
-      },
-      {
-        text: '俏皮逗趣的漫画',
-        selected: false
-      },
-      {
-        text: '铅笔素描画',
-        selected: false
-      }
-    ];
+    this.currentQuestionIndex = 0;
+    this.initUserAnswer();
+    this.getQuestions();
+  }
+  getQuestions() {
+    wepy.showNavigationBarLoading();
+    this.$parent.getToken().then(token => {
+      wepy
+        .request(this.$parent.config.baseUrl + 'questions?token=' + token)
+        .then(res => {
+          wepy.hideNavigationBarLoading();
+          console.log('get questions: ', res);
+          this.questionsList = res.data.data;
+          this.answerList = this.questionsList[0].answers;
+          this.$apply();
+        })
+        .catch(error => {
+          wx.stopPullDownRefresh();
+          wepy.hideNavigationBarLoading();
+          console.log('get questions error: ', error);
+        });
+    });
+  }
+  toNextQuestion() {
+    this.answerSelected = false;
+    this.currentQuestionIndex++;
+    console.log('this.currentQuestionIndex: ', this.currentQuestionIndex);
+    this.answerList = [];
+    this.answerList = this.questionsList[this.currentQuestionIndex].answers;
+    for (let i = 0; i < this.answerList.length; i++) {
+      this.answerList[i].imageSrc = './images/IMG_0930.PNG';
+    }
+  }
+
+  initUserAnswer() {
+    let answer = {
+      imageSrc: '',
+      question: '',
+      answer: ''
+    };
+    for (let i = 0; i < 8; i++) {
+      this.userAnswer.push(answer);
+    }
   }
 }
 </script>
