@@ -121,7 +121,8 @@ export default class OnlineActivity extends wepy.page {
       });
     }
   };
-  onLoad() {
+  onLoad() {}
+  onShow() {
     this.getNews();
   }
   getNews() {

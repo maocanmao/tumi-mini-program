@@ -60,44 +60,41 @@ page {
 
 <template lang="wxml" minapp="wepy">
   <view class="container">
-    <video class="video" src="http://wxsnsdy.tc.qq.com/105/20210/snsdyvideodownload?filekey=30280201010421301f0201690402534804102ca905ce620b1241b726bc41dcff44e00204012882540400&bizid=1023&hy=SH&fileparam=302c020101042530230204136ffd93020457e3c4ff02024ef202031e8d7f02030f42400204045a320a0201000400"
-      objectFit="fill" />
+    <video class="video" src="{{videoSrc}}" objectFit="fill" />
     <scroll-view class='question-container' scroll-y='true'>
-      <view class='question-wrapper border' @tap="toDetail()">
+      <view class='question-wrapper border' @tap="toDetail({{item}})" wx:for="{{videoList}}">
         <wxc-cc class='question-number-wrapper border'>
           <image class="icon" src="images/play-with-badge.png" />
         </wxc-cc>
         <view class='question-text-wrapper border'>
-          <wxc-elip class='question-text' line="2">【壮阔东方潮 奋进新时代——开放40年】建设高素质高颜值的经济特区</wxc-elip>
+          <wxc-elip class='question-text' line="2">{{item.title}}</wxc-elip>
           <view style="margin-top:20rpx">
-            <wxc-elip class='question-text small' line="3">改革开放40年来，位于东南沿海前沿的厦门经济特区，始终秉持“先行先试、敢为天下先”的精神，在经济、社会、生态等多个</wxc-elip>
+            <wxc-elip class='question-text small' line="3">{{item.description}}</wxc-elip>
           </view>
         </view>
       </view>
-
-      <view class='question-wrapper border' @tap="toDetail()">
-        <wxc-cc class='question-number-wrapper border'>
-          <image class="icon" src="images/play-with-badge.png" />
-        </wxc-cc>
-        <view class='question-text-wrapper border'>
-          <wxc-elip class='question-text' line="2">【壮阔东方潮 奋进新时代——开放40年】建设高素质高颜值的经济特区</wxc-elip>
-          <view style="margin-top:20rpx">
-            <wxc-elip class='question-text small' line="3">改革开放40年来，位于东南沿海前沿的厦门经济特区，始终秉持“先行先试、敢为天下先”的精神，在经济、社会、生态等多个</wxc-elip>
+      <!-- <view class='question-wrapper border' @tap="toDetail()">
+          <wxc-cc class='question-number-wrapper border'>
+            <image class="icon" src="images/play-with-badge.png" />
+          </wxc-cc>
+          <view class='question-text-wrapper border'>
+            <wxc-elip class='question-text' line="2">【壮阔东方潮 奋进新时代——开放40年】建设高素质高颜值的经济特区</wxc-elip>
+            <view style="margin-top:20rpx">
+              <wxc-elip class='question-text small' line="3">改革开放40年来，位于东南沿海前沿的厦门经济特区，始终秉持“先行先试、敢为天下先”的精神，在经济、社会、生态等多个</wxc-elip>
+            </view>
           </view>
         </view>
-      </view>
-
-      <view class='question-wrapper border' @tap="toDetail()">
-        <wxc-cc class='question-number-wrapper border'>
-          <image class="icon" src="images/play-with-badge.png" />
-        </wxc-cc>
-        <view class='question-text-wrapper border'>
-          <wxc-elip class='question-text' line="2">【壮阔东方潮 奋进新时代——开放40年】建设高素质高颜值的经济特区</wxc-elip>
-          <view style="margin-top:20rpx">
-            <wxc-elip class='question-text small' line="3">改革开放40年来，位于东南沿海前沿的厦门经济特区，始终秉持“先行先试、敢为天下先”的精神，在经济、社会、生态等多个</wxc-elip>
+        <view class='question-wrapper border' @tap="toDetail()">
+          <wxc-cc class='question-number-wrapper border'>
+            <image class="icon" src="images/play-with-badge.png" />
+          </wxc-cc>
+          <view class='question-text-wrapper border'>
+            <wxc-elip class='question-text' line="2">【壮阔东方潮 奋进新时代——开放40年】建设高素质高颜值的经济特区</wxc-elip>
+            <view style="margin-top:20rpx">
+              <wxc-elip class='question-text small' line="3">改革开放40年来，位于东南沿海前沿的厦门经济特区，始终秉持“先行先试、敢为天下先”的精神，在经济、社会、生态等多个</wxc-elip>
+            </view>
           </view>
-        </view>
-      </view>
+        </view> -->
     </scroll-view>
   </view>
 </template>
@@ -112,8 +109,38 @@ export default class Video extends wepy.page {
       'wxc-elip': '../../packages/@minui/wxc-elip/dist/index'
     }
   };
-  onLoad() {
-    console.log('onLoad');
+  data = {
+    videoList: [],
+    videoSrc: ''
+  };
+  methods = {
+    toDetail(item) {
+      this.videoSrc = item.url;
+      console.log('this.videoSrc: ', this.videoSrc);
+    }
+  };
+  onLoad() {}
+  onShow() {
+    this.getVideos();
+  }
+  getVideos() {
+    wepy.showNavigationBarLoading();
+    this.$parent.getToken().then(token => {
+      wepy
+        .request(this.$parent.config.baseUrl + 'videos?token=' + token)
+        .then(res => {
+          wepy.hideNavigationBarLoading();
+          this.videoList = res.data.data;
+          console.log('this.videoList: ', this.videoList);
+          this.videoSrc = this.videoList[0].src;
+          this.$apply();
+        })
+        .catch(error => {
+          wx.stopPullDownRefresh();
+          wepy.hideNavigationBarLoading();
+          console.log('get videos error: ', error);
+        });
+    });
   }
 }
 </script>

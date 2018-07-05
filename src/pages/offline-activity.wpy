@@ -118,10 +118,11 @@ export default class OfflineActivity extends wepy.page {
       wepy.navigateTo({ url: 'message-detail?id=' + id });
     }
   };
-  onLoad() {
+  onLoad() {}
+
+  onShow() {
     this.getNews();
   }
-
   getNews() {
     wepy.showNavigationBarLoading();
     this.$parent.getToken().then(token => {

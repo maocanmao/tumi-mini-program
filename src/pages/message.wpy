@@ -69,20 +69,20 @@ page {
 <template lang="wxml" minapp="wepy">
   <view class="container">
     <scroll-view class='question-container' scroll-y='true'>
-      <view class='question-wrapper border'>
+      <view class='question-wrapper border' @tap="toUserWorks()" >
         <view class='question-number-wrapper border'>
           <image class="icon" src="images/user.png" />
-          <image class="icon" src="images/more.png" @tap="toUserWorks()" />
+          <image class="icon" src="images/more.png" />
         </view>
         <view class='question-text-wrapper border image-container'>
           <image class="works-image" src="images/works_exanple.png" />
           <image class="works-image" src="images/works_exanple.png" />
         </view>
       </view>
-      <view class='question-wrapper border'>
+      <view class='question-wrapper border' @tap="toOnline()">
         <view class='question-number-wrapper border'>
           <image class="icon" src="images/phone.png" />
-          <image class="icon" src="images/more.png" @tap="toOnline()" />
+          <image class="icon" src="images/more.png"  />
         </view>
         <view class='question-text-wrapper border'>
           <wxc-elip class='question-text' line="2">{{onlineNewsList[0].title}}</wxc-elip>
@@ -91,10 +91,10 @@ page {
           </view>
         </view>
       </view>
-      <view class='question-wrapper border'>
+      <view class='question-wrapper border' @tap="toOffline()">
         <view class='question-number-wrapper border'>
           <image class="icon" src="images/activity.png" />
-          <image class="icon" src="images/more.png" @tap="toOffline()" />
+          <image class="icon" src="images/more.png"  />
         </view>
         <view class='question-text-wrapper border'>
           <wxc-elip class='question-text' line="2">{{offlineNewsList[0].title}}</wxc-elip>
@@ -138,6 +138,9 @@ export default class Message extends wepy.page {
   };
   onLoad() {
     console.log('Message onLoad');
+  }
+
+  onShow() {
     this.getNews();
   }
 
