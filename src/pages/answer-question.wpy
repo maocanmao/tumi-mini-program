@@ -78,7 +78,7 @@ page {
   position: fixed;
   bottom: 0%;
   width: 100%;
-  height: 16%;
+  // height: 16%;
   background-color: #778899;
 }
 .confirm-btn {
@@ -96,7 +96,7 @@ page {
 }
 .mask-top {
   position: fixed;
-  bottom: 600rpx;
+  bottom: 620rpx;
   width: 750rpx;
   height: 10rpx;
   background-color: #b0c4de;
@@ -112,14 +112,14 @@ page {
   width: 90rpx;
   height: 56rpx;
   position: fixed;
-  bottom: 554rpx;
+  bottom: 574rpx;
   right: 10%;
 }
 .popup__content {
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 600rpx;
+  height: 620rpx;
   background: #778899;
 }
 .popup-image-content {
@@ -128,15 +128,20 @@ page {
   justify-content: space-between;
   width: 100%;
   height: 360rpx;
-  margin-top: 90rpx;
-  background: #b0c4de;
+  margin-top: 60rpx;
+  background: #778899;
   flex-wrap: wrap;
 }
+.answer-iamge-wrapper {
+  width: 24.8%;
+  height: 179rpx;
+  background: #b0c4de;
+}
 .answer-iamge {
-  width: 24%;
-  height: 160rpx;
-  border-left: solid 1rpx #778899;
-  border-bottom: solid 1rpx #778899;
+  width: 100%;
+  height: 100%;
+  // border-left: solid 1rpx #778899;
+  // border-bottom: solid 1rpx #778899;
 }
 </style>
 
@@ -170,7 +175,10 @@ page {
         <view class="mask-top"></view>
         <image class="panel-btn down" src="images/triangle_down.png" @tap="hidePopUp()" />
         <view class="popup-image-content">
-          <image src="{{item.imageSrc}}" class="answer-iamge" wx:for="{{userAnswer}}"/>
+          <view class="answer-iamge-wrapper" wx:for="{{userAnswer}}">
+            <image mode="aspectFill" src="{{item.imageSrc}}" class="answer-iamge" />
+          </view>
+
 
         </view>
         <view class="confirm-btn-container">
@@ -209,7 +217,11 @@ export default class AnswerQuestion extends wepy.page {
       }
       this.answerList[index].selected = true;
       this.answerSelected = true;
-      //
+      console.log(
+        'this.userAnswer[this.currentQuestionIndex]: ',
+        this.userAnswer[this.currentQuestionIndex]
+      );
+      //赋值用户答题数据
       this.userAnswer[this.currentQuestionIndex].imageSrc = this.answerList[
         index
       ].imageSrc;
@@ -219,6 +231,9 @@ export default class AnswerQuestion extends wepy.page {
       this.userAnswer[this.currentQuestionIndex].answer = this.answerList[
         index
       ].name;
+      this.userAnswer[this.currentQuestionIndex].index = this.answerList[
+        index
+      ].index;
       console.log('userAnswer: ', this.userAnswer);
     },
     showPopUp() {
@@ -234,9 +249,11 @@ export default class AnswerQuestion extends wepy.page {
         //TODO
         if (this.currentQuestionIndex == 7) {
           //answer completed
-          wx.navigateTo({
-            url: 'answer-question-complete'
-          });
+          wepy.redirectTo({ url: 'answer-question-complete' });
+
+          // wx.navigateTo({
+          //   url: 'answer-question-complete'
+          // });
         } else if (this.currentQuestionIndex < 7) {
           this.toNextQuestion();
         }
@@ -259,6 +276,7 @@ export default class AnswerQuestion extends wepy.page {
           console.log('get questions: ', res);
           this.questionsList = res.data.data;
           this.answerList = this.questionsList[0].answers;
+          this.setAnswerImage();
           this.$apply();
         })
         .catch(error => {
@@ -274,19 +292,29 @@ export default class AnswerQuestion extends wepy.page {
     console.log('this.currentQuestionIndex: ', this.currentQuestionIndex);
     this.answerList = [];
     this.answerList = this.questionsList[this.currentQuestionIndex].answers;
+    this.setAnswerImage();
+  }
+
+  setAnswerImage() {
     for (let i = 0; i < this.answerList.length; i++) {
-      this.answerList[i].imageSrc = './images/IMG_0930.PNG';
+      this.answerList[i].imageSrc = './images/IMG_0928.PNG';
     }
   }
 
   initUserAnswer() {
-    let answer = {
-      imageSrc: '',
-      question: '',
-      answer: ''
-    };
+    // let answer = {
+    //   imageSrc: '',
+    //   question: '',
+    //   answer: '',
+    //   index: ''
+    // };
     for (let i = 0; i < 8; i++) {
-      this.userAnswer.push(answer);
+      this.userAnswer.push({
+        imageSrc: '',
+        question: '',
+        answer: '',
+        index: ''
+      });
     }
   }
 }
