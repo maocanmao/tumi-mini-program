@@ -23,7 +23,7 @@ export default class extends wepy.app {
     ],
     window: {
       backgroundTextStyle: 'light',
-      navigationBarBackgroundColor: '#b0c4de',
+      navigationBarBackgroundColor: '#041516',
       navigationBarTitleText: '',
       navigationBarTextStyle: 'white'
     },
@@ -31,7 +31,7 @@ export default class extends wepy.app {
     tabBar: {
       color: '#979797',
       selectedColor: '#5f9920',
-      backgroundColor: '#b0c4de',
+      backgroundColor: '#041516',
       borderStyle: 'white',
       list: [
         {

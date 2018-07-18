@@ -1,21 +1,20 @@
 <style lang="less">
 page {
-  background: #b0c4de;
+  background: #041516;
 }
 .container {
-  background: #b0c4de;
+  background: #041516;
   width: 750rpx;
   height: 100%;
 }
 .image {
-  width: 80rpx;
-  height: 720rpx;
-  margin-top: 80rpx;
+  width: 652rpx;
+  height: 1000rpx;
 }
 </style>
 <template>
   <wxc-cc class="container" bindtap="bindtap">
-    <image class="image" src="images/intro.gif"/>
+    <image class="image" src="images/home_background.png"/>
   </wxc-cc>
 </template>
 
