@@ -1,0 +1,48 @@
+<style lang="less">
+page {
+  background: #041516;
+}
+.container {
+  background: #041516;
+  width: 750rpx;
+  height: 100%;
+}
+.image {
+  width: 652rpx;
+  height: 1000rpx;
+}
+</style>
+<template>
+  <wxc-cc class="container">
+    <image class="image" src="{{imageUrl}}" @tap="bindtap()" />
+  </wxc-cc>
+</template>
+
+<script>
+import wepy from 'wepy';
+export default class Welcome extends wepy.page {
+  config = {
+    navigationBarTitleText: '',
+    usingComponents: {
+      'wxc-cc': '../../packages/@minui/wxc-cc/dist/index'
+    }
+  };
+  data = {
+    clickTimes: 1,
+    imageUrl: null
+  };
+  onLoad() {
+    this.imageUrl = 'images/welcome' + this.clickTimes + '.png';
+  }
+  bindtap() {
+    if (this.clickTimes < 3) {
+      this.clickTimes++;
+      this.imageUrl = 'images/welcome' + this.clickTimes + '.png';
+    } else {
+      wx.navigateTo({
+        url: 'letusgo'
+      });
+    }
+  }
+}
+</script>

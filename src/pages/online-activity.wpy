@@ -1,16 +1,15 @@
 <style lang="less">
 page {
-  background: #778899;
+  background: #041516;
 }
 .container {
-  background: #778899;
+  background: #041516;
   width: 750rpx;
 }
 .question-container {
   display: inherit;
   width: 100%;
-  margin-top: 50rpx;
-  padding-bottom: 40%;
+  margin-top: 50rpx; // padding-bottom: 40%;
 }
 .question-wrapper {
   display: flex;
@@ -26,14 +25,13 @@ page {
   flex-direction: column;
   justify-content: space-between;
   width: 100rpx;
-  background: #b0c4de;
 }
 .question-text-wrapper {
   width: 500rpx;
   padding: 20rpx;
 }
 .border {
-  border-color: #b0c4de;
+  border-color: #d7be71;
   border-width: 2rpx;
   border-style: solid;
 }
@@ -45,7 +43,7 @@ page {
   font-stretch: normal;
   line-height: normal;
   letter-spacing: normal;
-  color: #ffffff;
+  color: #d7be71;
 }
 .small {
   font-size: 28rpx;
@@ -54,29 +52,13 @@ page {
   width: 100rpx;
   height: 100rpx;
 }
-.confirm-btn-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: fixed;
-  bottom: 0%;
-  width: 100%;
-  height: 16%;
-  background-color: #778899;
-}
-.confirm-btn {
-  width: 100rpx;
-  height: 100rpx;
-  margin-top: 50rpx;
-  margin-bottom: 50rpx;
-}
 </style>
 
 <template lang="wxml" minapp="wepy">
   <view class="container">
     <scroll-view class='question-container' scroll-y='true'>
       <view class='question-wrapper border' @tap="toDetail({{item.id}})" wx:for="{{newsList}}">
-        <view class='question-number-wrapper border' >
+        <view class='question-number-wrapper border'>
           <image class="icon" src="images/activity_dark.png" />
           <image class="icon" src="" />
         </view>
@@ -88,9 +70,6 @@ page {
         </view>
       </view>
     </scroll-view>
-    <view class="confirm-btn-container">
-      <image class="confirm-btn" src="images/back.png" @tap="back()" />
-    </view>
   </view>
 </template>
 
@@ -99,7 +78,7 @@ import wepy from 'wepy';
 export default class OnlineActivity extends wepy.page {
   config = {
     navigationBarTitleText: '线上活动',
-    navigationBarBackgroundColor: '#778899',
+    navigationBarBackgroundColor: '#041516',
     usingComponents: {
       'wxc-cc': '../../packages/@minui/wxc-cc/dist/index',
       'wxc-elip': '../../packages/@minui/wxc-elip/dist/index'

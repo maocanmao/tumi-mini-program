@@ -1,9 +1,9 @@
 <style lang="less">
 page {
-  background: #b0c4de;
+  background: #041516;
 }
 .container {
-  background: #b0c4de;
+  background: #041516;
   width: 750rpx;
   height: 100%;
 }
@@ -38,13 +38,13 @@ page {
   font-stretch: normal;
   line-height: normal;
   letter-spacing: normal;
-  color: #ffffff;
+  color: #d7be71;
 }
 .small {
   font-size: 28rpx;
 }
 .border {
-  border-color: #ffffff;
+  border-color: #d7be71;
   border-width: 2rpx;
   border-style: solid;
 }
@@ -103,7 +103,7 @@ page {
 import wepy from 'wepy';
 export default class Video extends wepy.page {
   config = {
-    navigationBarTitleText: '',
+    navigationBarTitleText: '教学',
     usingComponents: {
       'wxc-cc': '../../packages/@minui/wxc-cc/dist/index',
       'wxc-elip': '../../packages/@minui/wxc-elip/dist/index'

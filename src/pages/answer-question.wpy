@@ -1,14 +1,14 @@
 <style lang="less">
 page {
-  background: #778899;
+  background: #041516;
 }
 .container {
-  background: #778899;
+  background: #041516;
   width: 750rpx;
   height: 100%;
 }
 .border {
-  border-color: #b0c4de;
+  border-color: #d7be71;
   border-width: 2rpx;
   border-style: solid;
 }
@@ -29,7 +29,6 @@ page {
 }
 .question-number-wrapper {
   width: 100rpx;
-  background: #b0c4de;
 }
 .question-text-wrapper {
   width: 500rpx;
@@ -42,7 +41,7 @@ page {
   line-height: normal;
   letter-spacing: normal;
   text-align: center;
-  color: #778899;
+  color: #d7be71;
   font-size: 60rpx;
 }
 .question-text {
@@ -53,7 +52,7 @@ page {
   font-stretch: normal;
   line-height: normal;
   letter-spacing: normal;
-  color: #ffffff;
+  color: #d7be71;
 }
 .answer-wrapper {
   height: 100rpx;
@@ -62,13 +61,13 @@ page {
 .answer-indicator.selected {
   width: 30rpx;
   height: 30rpx;
-  background-color: red;
+  background-color: #d7be71;
   border-radius: 50%;
 }
 .answer-indicator {
   width: 30rpx;
   height: 30rpx;
-  background-color: #778899;
+  background-color: #041516;
   border-radius: 50%;
 }
 .confirm-btn-container {
@@ -79,7 +78,7 @@ page {
   bottom: 0%;
   width: 100%;
   // height: 16%;
-  background-color: #778899;
+  background-color: #041516;
 }
 .confirm-btn {
   width: 100rpx;
@@ -92,14 +91,14 @@ page {
   bottom: 16.5%;
   width: 750rpx;
   height: 10rpx;
-  background-color: #b0c4de;
+  background-color: #d7be71;
 }
 .mask-top {
   position: fixed;
   bottom: 620rpx;
   width: 750rpx;
   height: 10rpx;
-  background-color: #b0c4de;
+  background-color: #d7be71;
 }
 .panel-btn {
   width: 90rpx;
@@ -120,7 +119,7 @@ page {
   flex-direction: column;
   width: 100%;
   height: 620rpx;
-  background: #778899;
+  background: #041516;
 }
 .popup-image-content {
   display: flex;
@@ -129,13 +128,13 @@ page {
   width: 100%;
   height: 360rpx;
   margin-top: 60rpx;
-  background: #778899;
+  background: #041516;
   flex-wrap: wrap;
 }
 .answer-iamge-wrapper {
   width: 24.8%;
   height: 179rpx;
-  background: #b0c4de;
+  background: #041516;
 }
 .answer-iamge {
   width: 100%;
@@ -150,7 +149,7 @@ page {
     <scroll-view class='question-container' scroll-y='true'>
       <view class='question-wrapper border'>
         <wxc-cc class='question-number-wrapper border'>
-          <text class='question-number'>1</text>
+          <text class='question-number'>{{currentQuestionIndex+1}}</text>
         </wxc-cc>
         <view class='question-text-wrapper border'>
           <text class='question-text'>{{questionsList[currentQuestionIndex].question}}</text>
@@ -194,7 +193,7 @@ import wepy from 'wepy';
 export default class AnswerQuestion extends wepy.page {
   config = {
     navigationBarTitleText: '',
-    navigationBarBackgroundColor: '#778899',
+    navigationBarBackgroundColor: '#041516',
     usingComponents: {
       'wxc-cc': '../../packages/@minui/wxc-cc/dist/index',
       'wxc-popup': '../../packages/@minui/wxc-popup/dist/index'

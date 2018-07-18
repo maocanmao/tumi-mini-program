@@ -13,26 +13,32 @@ page {
 }
 </style>
 <template>
-  <wxc-cc class="container" >
-    <image class="image" src="images/home_background.png" @tap="bindtap()"/>
+  <wxc-cc class="container">
+    <image class="image" src="{{imageUrl}}" @tap="bindtap()" />
   </wxc-cc>
 </template>
 
 <script>
 import wepy from 'wepy';
-
-export default class Index extends wepy.page {
+export default class LetusGo extends wepy.page {
   config = {
     navigationBarTitleText: '',
     usingComponents: {
       'wxc-cc': '../../packages/@minui/wxc-cc/dist/index'
     }
   };
-  onLoad() {}
-
+  data = {
+    imageUrl: null
+  };
+  onLoad() {
+    this.imageUrl = this.$parent.globalData.ossImageUrl + 'letusgo.png';
+  }
   bindtap() {
+    if (this.welcome <= 3) {
+      this.welcome++;
+    }
     wx.navigateTo({
-      url: 'agreement'
+      url: 'answer-question'
     });
   }
 }

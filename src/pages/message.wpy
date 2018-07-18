@@ -1,9 +1,9 @@
 <style lang="less">
 page {
-  background: #b0c4de;
+  background: #041516;
 }
 .container {
-  background: #b0c4de;
+  background: #041516;
   width: 750rpx;
 }
 .question-container {
@@ -25,7 +25,6 @@ page {
   flex-direction: column;
   justify-content: space-between;
   width: 100rpx;
-  background: #ffffff;
 }
 .question-text-wrapper {
   width: 500rpx;
@@ -40,10 +39,9 @@ page {
 .works-image {
   width: 200rpx;
   height: 250rpx;
-  background-color: #4f4f4f;
 }
 .border {
-  border-color: #ffffff;
+  border-color: #d6bd76;
   border-width: 2rpx;
   border-style: solid;
 }

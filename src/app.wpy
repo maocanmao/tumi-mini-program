@@ -9,6 +9,8 @@ export default class extends wepy.app {
     pages: [
       'pages/index',
       'pages/agreement',
+      'pages/welcome',
+      'pages/letusgo',
       'pages/message',
       'pages/video',
       'pages/answer-index',
@@ -33,7 +35,7 @@ export default class extends wepy.app {
       color: '#979797',
       selectedColor: '#5f9920',
       backgroundColor: '#041516',
-      borderStyle: 'white',
+      borderStyle: 'black',
       list: [
         {
           pagePath: 'pages/index',
@@ -45,19 +47,20 @@ export default class extends wepy.app {
           pagePath: 'pages/message',
           text: '',
           selectedIconPath: 'pages/images/message.png',
-          iconPath: 'pages/images/message-unselect.png'
+          iconPath: 'pages/images/message.png'
         },
         {
           pagePath: 'pages/video',
           text: '',
           selectedIconPath: 'pages/images/video.png',
-          iconPath: 'pages/images/video-unselect.png'
+          iconPath: 'pages/images/video.png'
         }
       ]
     }
   };
   globalData = {
-    userInfo: null
+    userInfo: null,
+    ossImageUrl: 'https://tumi-miniprogram.oss-cn-beijing.aliyuncs.com/images/'
   };
   onLaunch() {
     console.log('on launch');
@@ -99,10 +102,10 @@ export default class extends wepy.app {
           });
         }
         if (p.statusCode != 200) {
-          wx.showModal({
-            content: '内部错误，请稍后再试',
-            showCancel: false
-          });
+          // wx.showModal({
+          //   content: '内部错误，请稍后再试',
+          //   showCancel: false
+          // });
         }
         return p;
       },

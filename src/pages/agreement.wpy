@@ -44,7 +44,7 @@ page {
 
 <template>
   <view>
-    <wxc-cc class="container" bindtap="bindtap">
+    <wxc-cc class="container">
       <text class="text">
               1、本程序代码著作权由郑之孩所有，用户不得以本程序从事任何违反法律法规、社会公序以及侵犯第三人在先权利的行为。\n
               2、本程序产生的图腾为艺术创作产物，不可作为判断其他事实的依据。\n
@@ -61,7 +61,7 @@ page {
 
 <script>
 import wepy from 'wepy';
-export default class Index extends wepy.page {
+export default class Agreement extends wepy.page {
   config = {
     navigationBarTitleText: '',
     usingComponents: {
@@ -79,7 +79,7 @@ export default class Index extends wepy.page {
   toNext() {
     // 检测tap事件;
     wx.navigateTo({
-      url: 'answer-index'
+      url: 'welcome'
     });
   }
 }
