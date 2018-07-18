@@ -8,6 +8,7 @@ export default class extends wepy.app {
   config = {
     pages: [
       'pages/index',
+      'pages/agreement',
       'pages/message',
       'pages/video',
       'pages/answer-index',

@@ -33,7 +33,7 @@ export default class Index extends wepy.page {
   bindtap(e) {
     // 检测tap事件;
     wx.navigateTo({
-      url: 'answer-index'
+      url: 'agreement'
     });
   }
 }

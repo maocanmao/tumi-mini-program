@@ -1,0 +1,86 @@
+<style lang="less">
+page {
+  background: #041516;
+}
+.container {
+  background: #041516;
+  width: 750rpx;
+  height: 100%;
+}
+.text {
+  margin-right: 40rpx;
+  margin-left: 40rpx;
+  color: #c9a063;
+  font-size: 35rpx;
+  line-height: 1.5;
+}
+.confirm-btn-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  position: fixed;
+  bottom: 0%;
+  width: 100%;
+  height: 16%;
+  background-color: #041516;
+}
+.confirm-btn {
+  width: 100rpx;
+  height: 100rpx;
+  margin-top: 50rpx;
+  margin-bottom: 50rpx;
+}
+.share-btn {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  margin-left: 0;
+  margin-right: 0;
+  background-size: 100rpx 100rpx;
+  background-repeat: no-repeat;
+  border: none;
+}
+</style>
+
+<template>
+  <view>
+    <wxc-cc class="container" bindtap="bindtap">
+      <text class="text">
+              1、本程序代码著作权由郑之孩所有，用户不得以本程序从事任何违反法律法规、社会公序以及侵犯第三人在先权利的行为。\n
+              2、本程序产生的图腾为艺术创作产物，不可作为判断其他事实的依据。\n
+              3、本程序产生的图腾作品著作权由图靡团队享有，用户仅具有无偿使用、推广以及制作衍生物品的权利，不得用于注册商标、批量生产销售等商业行为。\n
+              4、图靡团队对本程序未尽事宜享有最终解释权。\n
+            </text>
+    </wxc-cc>
+    <view class="confirm-btn-container">
+      <image class="confirm-btn" src="images/back.png" @tap="back()" />
+      <image class="share-btn" src="images/check.png" @tap="toNext()" />
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+export default class Index extends wepy.page {
+  config = {
+    navigationBarTitleText: '',
+    usingComponents: {
+      'wxc-cc': '../../packages/@minui/wxc-cc/dist/index'
+    }
+  };
+  methods = {
+    back() {
+      wepy.navigateBack({
+        delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+      });
+    }
+  };
+  onLoad() {}
+  toNext() {
+    // 检测tap事件;
+    wx.navigateTo({
+      url: 'answer-index'
+    });
+  }
+}
+</script>
