@@ -1,11 +1,11 @@
 <style lang="less">
 page {
-  background: #4f4f4f;
+  background: #041516;
 }
 .screen {
   display: flex;
   flex-direction: column;
-  background: #4f4f4f;
+  background: #041516;
 }
 .canvas {
   width: 750rpx;
@@ -67,8 +67,9 @@ page {
 }
 .container {
   width: 750rpx;
-  height: 800rpx;
-  background: 4f4f4f;
+  height: 1000rpx;
+  background: #041516;
+  margin-top: 11%;
 }
 .canvasWrap {
   position: absolute;
@@ -101,13 +102,13 @@ page {
   bottom: 0%;
   width: 100%;
   height: 16%;
-  background-color: #4f4f4f;
+  background-color: #041516;
 }
 .mask {
   position: fixed;
   width: 750rpx;
   height: 10rpx;
-  background-color: #778899;
+  background-color: #d7be71;
 }
 .mask.bottom {
   bottom: 0%;
@@ -143,14 +144,14 @@ page {
   width: 100%;
   height: 720rpx;
   margin-top: 90rpx;
-  background: #b0c4de;
+  background: #041516;
 }
 .bottom-popup-mask-top {
   position: fixed;
   bottom: 800rpx;
-  width: 750rpx;
+  width: 2800rpx;
   height: 10rpx;
-  background-color: #778899;
+  background-color: #d7be71;
 }
 .panel-btn-popup.down {
   width: 90rpx;
@@ -160,23 +161,28 @@ page {
   right: 43%;
 }
 .small-image {
-  width: 185rpx;
+  width: 180rpx;
   height: 180rpx;
-  border: solid 1rpx #4f4f4f;
+  border: solid 1rpx #d7be71;
+}
+.image-background {
+  width: 225rpx;
+  height: 360rpx; // border: solid 1rpx #d7be71;
 }
 .top-popup-content-wrapper {
   display: flex;
   background: #4f4f4f;
-  border: solid 6rpx #778899;
+  border: solid 6rpx #d7be71;
 }
 .top-popup-image-content {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-  flex-wrap: wrap;
-  width: 560rpx;
+  flex-wrap: nowrap;
+  width: 2800rpx;
   height: 370rpx;
-  background: #4f4f4f;
+  background: #041516;
+  overflow: hidden;
 }
 .top-popup-image-button-content {
   display: flex;
@@ -184,14 +190,14 @@ page {
   justify-content: space-around;
   width: 190rpx;
   height: 370rpx;
-  background: #778899;
+  background: #041516;
 }
 .top-popup-mask-bottom {
   position: fixed;
   top: 350rpx;
   width: 750rpx;
   height: 10rpx;
-  background-color: #778899;
+  background-color: #041516;
 }
 .panel-btn-popup.top {
   width: 90rpx;
@@ -205,41 +211,41 @@ page {
   width: 750rpx;
   height: 10rpx;
   top: 450rpx;
-  background-color: #778899;
-}
-.top-popup-mask-bottom {
-  position: fixed;
-  height: 400rpx;
-  width: 750rpx;
-  height: 10rpx;
-  background-color: #778899;
+  background-color: #d7be71;
 }
 .btn-image {
   width: 100rpx;
   height: 100rpx;
   margin: 0 auto;
 }
+.top-scrollview {
+  background: #041516;
+  width: 560rpx;
+}
 </style>
 
-<template>
-  <view class="screen" lang="wxml" minapp="wepy">
-    <view class="container" bindtap="bindtap">
-      <view class="mask mask-top"></view>
-      <view class="mask mask-top bottom"></view>
-      <image class="panel-btn top" src="images/triangle_down_dark.png" @tap="showTopPopUp()" />
-      <wxc-popup class="J_Popup" animation-mode="top" align="top" locked="true" status="{{topPopStatus}}">
-        <view class="popup__content top-popup-content-wrapper">
-          <view class="top-popup-mask-bottom "></view>
-          <image class="panel-btn-popup.top" src="images/triangle_dark.png" @tap="hideTopPopUp()" />
+<template lang="wxml" minapp="wepy">
+  <view class="screen">
+    <view class="mask mask-top"></view>
+    <view class="mask mask-top bottom"></view>
+    <image class="panel-btn top" src="images/triangle_down_dark.png" @tap="showTopPopUp()" />
+    <wxc-popup class="J_Popup" animation-mode="top" align="top" locked="true" status="{{topPopStatus}}">
+      <view class="popup__content top-popup-content-wrapper">
+        <view class="top-popup-mask-bottom "></view>
+        <image class="panel-btn-popup.top" src="images/triangle_dark.png" @tap="hideTopPopUp()" />
+        <scroll-view class="top-scrollview"  scroll-x="true">
           <view class="top-popup-image-content">
-            <image class="small-image" wx:for="{{smallImageList}}" src="{{item.tempFilePath}}" @tap="addBackground({{item}})" />
+            <image class="image-background" wx:for="{{smallImageList}}" src="{{item.tempFilePath}}" @tap="addBackground({{item}})" />
           </view>
-          <view class="top-popup-image-button-content">
-             <image class="btn-image"  src="images/question.png" @tap="toVideoPage()" />
-             <image class="btn-image"  src="images/check.png" @tap="confirmComplete()" />
-          </view>
+
+        </scroll-view>
+        <view class="top-popup-image-button-content">
+          <image class="btn-image" src="images/question.png" @tap="toVideoPage()" />
+          <image class="btn-image" src="images/check.png" @tap="confirmComplete()" />
         </view>
-      </wxc-popup>
+      </view>
+    </wxc-popup>
+    <view class="container" bindtap="bindtap">
       <view class="touchWrap" style="transform: scale({{item.scale}});top:{{item.top}}px;left:{{item.left}}px; " wx:for="{{itemList}}" wx:key="{{item.id}}">
         <view class="imgWrap {{item.active?'touchActive':''}}" style="transform: rotate({{item.angle}}deg);">
           <image bindload="loadImg" bindtouchend="WraptouchEnd" bindtouchmove="WraptouchMove" bindtouchstart="WraptouchStart" data-id="{{item.id}}" src="{{item.image}}" style="width:{{item.width}}px;height:{{item.height}}px;" />
@@ -315,6 +321,36 @@ export default class DrawPanel extends wepy.page {
       },
       {
         id: 4,
+        tempFilePath: './images/IMG_0928.PNG',
+        width: 90
+      },
+      {
+        id: 5,
+        tempFilePath: './images/IMG_0928.PNG',
+        width: 90
+      },
+      {
+        id: 6,
+        tempFilePath: './images/IMG_0928.PNG',
+        width: 90
+      },
+      {
+        id: 7,
+        tempFilePath: './images/IMG_0928.PNG',
+        width: 90
+      },
+      {
+        id: 8,
+        tempFilePath: './images/IMG_0928.PNG',
+        width: 90
+      },
+      {
+        id: 9,
+        tempFilePath: './images/IMG_0928.PNG',
+        width: 90
+      },
+      {
+        id: 10,
         tempFilePath: './images/IMG_0928.PNG',
         width: 90
       }

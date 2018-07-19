@@ -32,7 +32,7 @@ export default class Index extends wepy.page {
 
   bindtap() {
     wx.navigateTo({
-      url: 'agreement'
+      url: 'draw'
     });
   }
 }

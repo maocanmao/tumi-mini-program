@@ -60,7 +60,7 @@ page {
     <scroll-view class='question-container' scroll-y='true'>
       <view class='question-wrapper border' @tap="toDetail({{item.id}})" wx:for="{{newsList}}">
         <view class='question-number-wrapper border'>
-          <image class="icon" src="images/activity_dark.png" />
+          <image class="icon" src="images/activity.png" />
           <image class="icon" src="" />
         </view>
         <view class='question-text-wrapper border'>

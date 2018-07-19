@@ -1,14 +1,14 @@
 <style lang="less">
 page {
-  background: #778899;
+  background: #041516;
 }
 .container {
-  background: #778899;
+  background: #041516;
   width: 750rpx;
   height: 100%;
 }
 .border {
-  border-color: #b0c4de;
+  border-color: #d7be71;
   border-width: 2rpx;
   border-style: solid;
 }
@@ -22,14 +22,14 @@ page {
 .question-wrapper {
   display: flex;
   width: 600rpx;
-  height: 250rpx;
+  height: 200rpx;
   margin-left: 25rpx;
   margin-right: 25rpx;
   margin: 0 auto;
+  margin-top: 15%;
 }
 .question-number-wrapper {
   width: 100rpx;
-  background: #b0c4de;
 }
 .question-text-wrapper {
   width: 500rpx;
@@ -43,17 +43,18 @@ page {
   font-stretch: normal;
   line-height: normal;
   letter-spacing: normal;
-  color: #ffffff;
+  color: #d7be71;
 }
 .confirm-btn-container {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-around;
+  justify-content: center;
   position: fixed;
   bottom: 0%;
   width: 100%;
-  height: 16%;
-  background-color: #778899;
+  height: 56%;
+  background-color: #041516;
 }
 .confirm-btn {
   width: 100rpx;
@@ -61,48 +62,25 @@ page {
   margin-top: 50rpx;
   margin-bottom: 50rpx;
 }
-.mask {
-  position: fixed;
-  bottom: 16.5%;
-  width: 750rpx;
-  height: 10rpx;
-  background-color: #b0c4de;
-}
-.mask-top {
-  position: fixed;
-  bottom: 600rpx;
-  width: 750rpx;
-  height: 10rpx;
-  background-color: #b0c4de;
-}
-.panel-btn {
-  width: 90rpx;
-  height: 56rpx;
-  position: fixed;
-  bottom: 16.5%;
-  right: 10%;
-}
-.panel-btn.down {
-  width: 90rpx;
-  height: 56rpx;
-  position: fixed;
-  bottom: 554rpx;
-  right: 10%;
-}
-.popup__content {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 600rpx;
-  background: #778899;
-}
 .popup-image-content {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   width: 100%;
   height: 360rpx;
-  margin-top: 90rpx;
-  background: #b0c4de;
+  margin-top: 60rpx;
+  background: #041516;
+  flex-wrap: wrap;
+}
+.answer-image-wrapper {
+  width: 25%;
+  height: 174rpx;
+  background: #041516;
+}
+.answer-image {
+  width: 96%;
+  height: 100%;
+  border: solid 1rpx #d7be71;
 }
 .warn {
   width: 100rpx;
@@ -119,31 +97,20 @@ page {
         </wxc-cc>
         <view class='question-text-wrapper border'>
           <text class='question-text'>
-                准备好了吗？
-                点击返回键回到第一题！
-                点击确认键开始最后步骤！
-            </text>
+                    准备好了吗？
+                    点击下方按钮开始创作!
+                </text>
         </view>
       </view>
     </scroll-view>
-    <view class="mask"></view>
-    <image class="panel-btn" src="images/triangle.png" @tap="showPopUp()" />
     <view class="confirm-btn-container">
-      <image class="confirm-btn" src="images/back.png" />
-      <image class="confirm-btn" src="images/check.png" @tap="confirm()"/>
-    </view>
-    <wxc-popup class="J_Popup" animation-mode="bottom" align="bottom" locked="true">
-      <view class="popup__content">
-        <view class="mask-top"></view>
-        <image class="panel-btn down" src="images/triangle_down.png" @tap="hidePopUp()" />
-        <view class="popup-image-content">
-        </view>
-        <view class="confirm-btn-container">
-          <image class="confirm-btn" src="images/back.png" />
-          <image class="confirm-btn" src="images/check.png"  @tap="confirm()"/>
+      <view class="popup-image-content">
+        <view class="answer-image-wrapper" wx:for="{{userAnswer}}">
+          <image mode="aspectFit" src="{{item.imageSrc}}" class="answer-image" />
         </view>
       </view>
-    </wxc-popup>
+      <image class="confirm-btn" src="images/check.png" @tap="confirm()" />
+    </view>
   </view>
 </template>
 
@@ -152,13 +119,15 @@ import wepy from 'wepy';
 export default class AnswerQuestionComplete extends wepy.page {
   config = {
     navigationBarTitleText: '',
-    navigationBarBackgroundColor: '#778899',
+    navigationBarBackgroundColor: '#041516',
     usingComponents: {
       'wxc-cc': '../../packages/@minui/wxc-cc/dist/index',
       'wxc-popup': '../../packages/@minui/wxc-popup/dist/index'
     }
   };
-  data = {};
+  data = {
+    userAnswer: []
+  };
   methods = {
     showPopUp() {
       let popupComponent = this.$wxpage.selectComponent('.J_Popup');
@@ -170,11 +139,14 @@ export default class AnswerQuestionComplete extends wepy.page {
     },
     confirm() {
       console.log('to draw');
-      wepy.navigateTo({ url: 'draw' });
+      wepy.navigateTo({
+        url: 'draw'
+      });
     }
   };
   onLoad() {
     console.log('AnswerQuestion completed onLoad');
+    this.userAnswer = this.$parent.globalData.userAnswer;
   }
 }
 </script>

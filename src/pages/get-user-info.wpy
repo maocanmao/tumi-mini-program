@@ -31,7 +31,7 @@ page {
 <template>
   <view class="container">
     <view class="button-container">
-      <button class="weui-btn checkin-btn" open-type="getUserInfo" bindgetuserinfo="onGotUserInfo">获取用户信息</button>
+      <button class="weui-btn checkin-btn" open-type="getUserInfo" bindgetuserinfo="onGotUserInfo">允许获取用户信息</button>
     </view>
   </view>
 </template>

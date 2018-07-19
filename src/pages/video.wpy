@@ -24,7 +24,6 @@ page {
 }
 .question-number-wrapper {
   width: 100rpx;
-  background: #ffffff;
 }
 .question-text-wrapper {
   width: 500rpx;
@@ -64,7 +63,7 @@ page {
     <scroll-view class='question-container' scroll-y='true'>
       <view class='question-wrapper border' @tap="toDetail({{item}})" wx:for="{{videoList}}">
         <wxc-cc class='question-number-wrapper border'>
-          <image class="icon" src="images/play-with-badge.png" />
+          <image class="icon" src="{{iconSrc}}" />
         </wxc-cc>
         <view class='question-text-wrapper border'>
           <wxc-elip class='question-text' line="2">{{item.title}}</wxc-elip>
@@ -111,12 +110,14 @@ export default class Video extends wepy.page {
   };
   data = {
     videoList: [],
-    videoSrc: ''
+    videoSrc: '',
+    iconSrc: 'images/play-with-badge.png'
   };
   methods = {
     toDetail(item) {
       this.videoSrc = item.url;
       console.log('this.videoSrc: ', this.videoSrc);
+      this.iconSrc = 'images/play-red.png';
     }
   };
   onLoad() {}

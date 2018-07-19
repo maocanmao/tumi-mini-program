@@ -60,7 +60,8 @@ export default class extends wepy.app {
   };
   globalData = {
     userInfo: null,
-    ossImageUrl: 'https://tumi-miniprogram.oss-cn-beijing.aliyuncs.com/images/'
+    ossImageUrl: 'https://tumi-miniprogram.oss-cn-beijing.aliyuncs.com/images/'，
+    userAnswer: []
   };
   onLaunch() {
     console.log('on launch');

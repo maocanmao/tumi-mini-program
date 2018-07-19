@@ -131,16 +131,15 @@ page {
   background: #041516;
   flex-wrap: wrap;
 }
-.answer-iamge-wrapper {
-  width: 24.8%;
-  height: 179rpx;
+.answer-image-wrapper {
+  width: 25%;
+  height: 174rpx;
   background: #041516;
 }
-.answer-iamge {
-  width: 100%;
+.answer-image {
+  width: 96%;
   height: 100%;
-  // border-left: solid 1rpx #778899;
-  // border-bottom: solid 1rpx #778899;
+  border: solid 1rpx #d7be71;
 }
 </style>
 
@@ -174,8 +173,8 @@ page {
         <view class="mask-top"></view>
         <image class="panel-btn down" src="images/triangle_down.png" @tap="hidePopUp()" />
         <view class="popup-image-content">
-          <view class="answer-iamge-wrapper" wx:for="{{userAnswer}}">
-            <image mode="aspectFill" src="{{item.imageSrc}}" class="answer-iamge" />
+          <view class="answer-image-wrapper" wx:for="{{userAnswer}}">
+            <image mode="aspectFit" src="{{item.imageSrc}}" class="answer-image" />
           </view>
 
 
@@ -247,6 +246,8 @@ export default class AnswerQuestion extends wepy.page {
       if (this.answerSelected) {
         //TODO
         if (this.currentQuestionIndex == 7) {
+          //set global data
+          this.$parent.globalData.userAnswer = this.userAnswer;
           //answer completed
           wepy.redirectTo({ url: 'answer-question-complete' });
 
@@ -296,7 +297,7 @@ export default class AnswerQuestion extends wepy.page {
 
   setAnswerImage() {
     for (let i = 0; i < this.answerList.length; i++) {
-      this.answerList[i].imageSrc = './images/IMG_0928.PNG';
+      this.answerList[i].imageSrc = './images/IMG_0929.PNG';
     }
   }
 

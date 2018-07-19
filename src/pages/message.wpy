@@ -53,7 +53,7 @@ page {
   font-stretch: normal;
   line-height: normal;
   letter-spacing: normal;
-  color: #ffffff;
+  color: #d6bd76;
 }
 .small {
   font-size: 28rpx;

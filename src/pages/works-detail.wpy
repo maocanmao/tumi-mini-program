@@ -1,10 +1,9 @@
 <style lang="less">
-@import '../wxparse/wxParse.wxss';
 page {
-  background: #4f4f4f;
+  background: #041516;
 }
 .container {
-  background: #4f4f4f;
+  background: #041516;
   width: 750rpx;
 }
 .content {
@@ -14,12 +13,12 @@ page {
 .confirm-btn-container {
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: center;
   position: fixed;
   bottom: 0%;
   width: 100%;
   height: 16%;
-  background-color: #4f4f4f;
+  background-color: #041516;
 }
 .confirm-btn {
   width: 100rpx;
@@ -46,8 +45,7 @@ page {
       </wxc-cc>
     </scroll-view>
     <view class="confirm-btn-container">
-      <image class="confirm-btn" src="images/back_dark.png" @tap="back()" />
-      <button class="share-btn" src="images/share_dark.png" style="background-image:url(images/share_dark.png);" plain='true' open-type="share" />
+      <button class="share-btn" src="images/share.png" style="background-image:url(images/share.png);" plain='true' open-type="share" />
     </view>
   </view>
 </template>
@@ -56,7 +54,7 @@ page {
 import wepy from 'wepy';
 export default class WorksDetail extends wepy.page {
   config = {
-    navigationBarBackgroundColor: '#4f4f4f',
+    navigationBarBackgroundColor: '#041516',
     navigationBarTitleText: '作品',
     usingComponents: {
       'wxc-cc': '../../packages/@minui/wxc-cc/dist/index'
