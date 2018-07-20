@@ -22,7 +22,8 @@ export default class extends wepy.app {
       'pages/user-wroks',
       'pages/works-detail',
       'pages/draw',
-      'pages/get-user-info'
+      'pages/get-user-info',
+      'pages/draw-result'
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -60,7 +61,7 @@ export default class extends wepy.app {
   };
   globalData = {
     userInfo: null,
-    ossImageUrl: 'https://tumi-miniprogram.oss-cn-beijing.aliyuncs.com/images/'，
+    ossImageUrl: 'https://tumi-miniprogram.oss-cn-beijing.aliyuncs.com/images/',
     userAnswer: []
   };
   onLaunch() {

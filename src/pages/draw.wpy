@@ -101,7 +101,7 @@ page {
   position: fixed;
   bottom: 0%;
   width: 100%;
-  height: 16%;
+  height: 11%;
   background-color: #041516;
 }
 .mask {
@@ -141,15 +141,23 @@ page {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  flex-wrap: wrap;
+  width: 100%; // height: 400rpx;
+  background: #041516;
+}
+.bottom-popup-image-first-line-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
   width: 100%;
-  height: 720rpx;
-  margin-top: 90rpx;
+  height: 116rpx;
+  padding-top: 150rpx;
   background: #041516;
 }
 .bottom-popup-mask-top {
   position: fixed;
   bottom: 800rpx;
-  width: 2800rpx;
+  width: 100%;
   height: 10rpx;
   background-color: #d7be71;
 }
@@ -163,6 +171,12 @@ page {
 .small-image {
   width: 180rpx;
   height: 180rpx;
+  border: solid 1rpx #d7be71;
+  padding: 1rpx;
+}
+.small-image-first-line {
+  width: 147rpx;
+  height: 116rpx;
   border: solid 1rpx #d7be71;
 }
 .image-background {
@@ -222,6 +236,10 @@ page {
   background: #041516;
   width: 560rpx;
 }
+.background-image {
+  height: 100%;
+  width: 100%;
+}
 </style>
 
 <template lang="wxml" minapp="wepy">
@@ -233,11 +251,10 @@ page {
       <view class="popup__content top-popup-content-wrapper">
         <view class="top-popup-mask-bottom "></view>
         <image class="panel-btn-popup.top" src="images/triangle_dark.png" @tap="hideTopPopUp()" />
-        <scroll-view class="top-scrollview"  scroll-x="true">
+        <scroll-view class="top-scrollview" scroll-x="true">
           <view class="top-popup-image-content">
-            <image class="image-background" wx:for="{{smallImageList}}" src="{{item.tempFilePath}}" @tap="addBackground({{item}})" />
+            <image class="image-background" wx:for="{{backgroundImg}}" src="{{item.imgUrl}}" @tap="addBackground({{item}})" />
           </view>
-
         </scroll-view>
         <view class="top-popup-image-button-content">
           <image class="btn-image" src="images/question.png" @tap="toVideoPage()" />
@@ -246,13 +263,14 @@ page {
       </view>
     </wxc-popup>
     <view class="container" bindtap="bindtap">
-      <view class="touchWrap" style="transform: scale({{item.scale}});top:{{item.top}}px;left:{{item.left}}px; " wx:for="{{itemList}}" wx:key="{{item.id}}">
-        <view class="imgWrap {{item.active?'touchActive':''}}" style="transform: rotate({{item.angle}}deg);">
-          <image bindload="loadImg" bindtouchend="WraptouchEnd" bindtouchmove="WraptouchMove" bindtouchstart="WraptouchStart" data-id="{{item.id}}" src="{{item.image}}" style="width:{{item.width}}px;height:{{item.height}}px;" />
-          <image bindtap="deleteItem" class="x" data-id="{{item.id}}" src="./images/x.png" style="transform: scale({{item.oScale}});transform-origin:center;" />
-          <image bindtouchend="touchEnd" bindtouchmove="touchMove" bindtouchstart="touchStart" class="o" data-id="{{item.id}}" src="./images/o.png" style="transform: scale({{item.oScale}});transform-origin:center;" />
+      <image class="background-image" src="{{currentBackground}}">
+        <view class="touchWrap" style="transform: scale({{item.scale}});top:{{item.top}}px;left:{{item.left}}px; " wx:for="{{itemList}}" wx:key="{{item.id}}">
+          <view class="imgWrap {{item.active?'touchActive':''}}" style="transform: rotate({{item.angle}}deg);">
+            <image bindload="loadImg" bindtouchend="WraptouchEnd" bindtouchmove="WraptouchMove" bindtouchstart="WraptouchStart" data-id="{{item.id}}" src="{{item.image}}" style="width:{{item.width}}px;height:{{item.height}}px;" />
+            <image bindtap="deleteItem" class="x" data-id="{{item.id}}" src="./images/x.png" style="transform: scale({{item.oScale}});transform-origin:center;" />
+            <image bindtouchend="touchEnd" bindtouchmove="touchMove" bindtouchstart="touchStart" class="o" data-id="{{item.id}}" src="./images/o.png" style="transform: scale({{item.oScale}});transform-origin:center;" />
+          </view>
         </view>
-      </view>
     </view>
     <view class="confirm-btn-container">
       <view class="mask bottom top"></view>
@@ -263,6 +281,9 @@ page {
       <view class="popup__content">
         <view class="bottom-popup-mask-top "></view>
         <image class="panel-btn-popup.down" src="images/triangle_down_dark.png" @tap="hideBottomPopUp()" />
+        <view class="bottom-popup-image-first-line-content">
+          <image class="small-image-first-line" wx:for="{{basicImageList}}" src="{{item.tempFilePath}}" @tap="addImage({{item}})" />
+        </view>
         <view class="bottom-popup-image-content">
           <image class="small-image" wx:for="{{smallImageList}}" src="{{item.tempFilePath}}" @tap="addImage({{item}})" />
         </view>
@@ -285,7 +306,7 @@ import wepy from 'wepy';
 export default class DrawPanel extends wepy.page {
   config = {
     navigationBarTitleText: '画板 ',
-    navigationBarBackgroundColor: '#4f4f4f',
+    navigationBarBackgroundColor: '#041516',
     usingComponents: {
       'wxc-mask': '../../packages/@minui/wxc-mask/dist/index',
       'wxc-popup': '../../packages/@minui/wxc-popup/dist/index'
@@ -297,12 +318,41 @@ export default class DrawPanel extends wepy.page {
     index: null,
     sysData: null,
     canvasTemImg: null,
-    canvasWidth: 79,
+    canvasWidth: 90,
     canvasHeight: null,
     maskStatus: 'hide',
     showCanvas: false,
     bottomPopStatus: 'hide',
     topPopStatus: 'hide',
+    backgroundImg: [],
+    currentBackground: null,
+    basicImageList: [
+      {
+        id: 1,
+        tempFilePath: './images/IMG_0928.PNG', //图片地址
+        width: 90
+      },
+      {
+        id: 2,
+        tempFilePath: './images/IMG_0930.PNG', //图片地址
+        width: 90
+      },
+      {
+        id: 3,
+        tempFilePath: './images/IMG_0929.PNG', //图片地址
+        width: 90
+      },
+      {
+        id: 4,
+        tempFilePath: './images/IMG_0928.PNG',
+        width: 90
+      },
+      {
+        id: 5,
+        tempFilePath: './images/IMG_0928.PNG',
+        width: 90
+      }
+    ],
     smallImageList: [
       {
         id: 1,
@@ -345,13 +395,23 @@ export default class DrawPanel extends wepy.page {
         width: 90
       },
       {
-        id: 9,
-        tempFilePath: './images/IMG_0928.PNG',
+        id: 8,
+        tempFilePath: '',
         width: 90
       },
       {
-        id: 10,
-        tempFilePath: './images/IMG_0928.PNG',
+        id: 8,
+        tempFilePath: '',
+        width: 90
+      },
+      {
+        id: 8,
+        tempFilePath: '',
+        width: 90
+      },
+      {
+        id: 8,
+        tempFilePath: '',
         width: 90
       }
     ]
@@ -374,6 +434,13 @@ export default class DrawPanel extends wepy.page {
     },
     hideTopPopUp() {
       this.topPopStatus = 'hide';
+    },
+    addBackground(item) {
+      console.log('currentBackground: ', item);
+      this.currentBackground = item.imgUrl;
+    },
+    confirmComplete() {
+      this.save();
     }
   };
   loadImg(t) {
@@ -543,6 +610,14 @@ export default class DrawPanel extends wepy.page {
     // this.initImage();
     this.sysData = wx.getSystemInfoSync();
     console.log('this.sysData: ', this.sysData);
+    this.getBackgroundImgs();
+  }
+  getBackgroundImgs() {
+    for (let i = 0; i < 14; i++) {
+      this.backgroundImg.push({
+        imgUrl: this.$parent.globalData.ossImageUrl + 'background/bkg1.png'
+      });
+    }
   }
   countDeg(cx, cy, pointer_x, pointer_y) {
     var ox = pointer_x - cx;
@@ -644,7 +719,11 @@ export default class DrawPanel extends wepy.page {
     this.canvasHeight = 0.85 * this.sysData.windowHeight;
     var s = wx.createCanvasContext('maskCanvas');
     var e = this.sysData.windowWidth * this.canvasWidth / 100;
-    var a = 0.77 * e / (0.75 * this.sysData.windowHeight);
+    var a = 0.77 * e / (0.75 * this.sysData.windowWidth);
+    console.log('a: ', a);
+    var c = 1.77;
+    s.drawImage(this.currentBackground, 0, 0, 0.77 * e, 0.77 * e * c);
+
     for (var r = 0; r < this.itemList.length; r++) {
       s.save();
       s.translate(e * (1 - 0.77) / 2, 10);
@@ -666,17 +745,17 @@ export default class DrawPanel extends wepy.page {
     }
     var that = this;
     s.draw(true, function(t) {
-      wx.canvasToTempFilePath(
-        {
-          canvasId: 'maskCanvas',
-          success: function(t) {
-            console.log(t);
-            that.canvasTemImg = t.tempFilePath;
-            console.log(that.canvasTemImg);
-          }
-        },
-        this
-      );
+      wx.canvasToTempFilePath({
+        canvasId: 'maskCanvas',
+        success: function(t) {
+          console.log(t);
+          that.canvasTemImg = t.tempFilePath;
+          console.log(that.canvasTemImg);
+          wepy.navigateTo({
+            url: 'draw-result?imgUrl=' + that.canvasTemImg
+          });
+        }
+      });
     });
   }
   disappearCanvas() {

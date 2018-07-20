@@ -76,8 +76,7 @@ page {
   justify-content: center;
   position: fixed;
   bottom: 0%;
-  width: 100%;
-  // height: 16%;
+  width: 100%; // height: 16%;
   background-color: #041516;
 }
 .confirm-btn {
@@ -176,8 +175,6 @@ page {
           <view class="answer-image-wrapper" wx:for="{{userAnswer}}">
             <image mode="aspectFit" src="{{item.imageSrc}}" class="answer-image" />
           </view>
-
-
         </view>
         <view class="confirm-btn-container">
           <image class="confirm-btn" src="{{answerSelected?'images/check.png':'images/unCheck.png'}}" />
@@ -249,11 +246,9 @@ export default class AnswerQuestion extends wepy.page {
           //set global data
           this.$parent.globalData.userAnswer = this.userAnswer;
           //answer completed
-          wepy.redirectTo({ url: 'answer-question-complete' });
-
-          // wx.navigateTo({
-          //   url: 'answer-question-complete'
-          // });
+          wepy.redirectTo({
+            url: 'answer-question-complete'
+          });
         } else if (this.currentQuestionIndex < 7) {
           this.toNextQuestion();
         }
@@ -293,21 +288,19 @@ export default class AnswerQuestion extends wepy.page {
     this.answerList = [];
     this.answerList = this.questionsList[this.currentQuestionIndex].answers;
     this.setAnswerImage();
+    console.log('this.answerList: ', this.answerList);
   }
-
+  //设置云盘图片地址 eg:1-1.png
   setAnswerImage() {
     for (let i = 0; i < this.answerList.length; i++) {
-      this.answerList[i].imageSrc = './images/IMG_0929.PNG';
+      this.answerList[i].imageSrc =
+        this.$parent.globalData.ossImageUrl +
+        'answerImage/' +
+        this.answerList[i].index +
+        '.png';
     }
   }
-
   initUserAnswer() {
-    // let answer = {
-    //   imageSrc: '',
-    //   question: '',
-    //   answer: '',
-    //   index: ''
-    // };
     for (let i = 0; i < 8; i++) {
       this.userAnswer.push({
         imageSrc: '',

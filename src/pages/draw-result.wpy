@@ -1,0 +1,100 @@
+<style lang="less">
+page {
+  background: #041516;
+}
+.container {
+  background: #041516;
+  width: 750rpx;
+  height: 100%;
+}
+
+.confirm-btn-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  position: fixed;
+  bottom: 0%;
+  width: 100%;
+  height: 16%;
+  background-color: #041516;
+}
+.confirm-btn {
+  width: 100rpx;
+  height: 100rpx;
+  margin-top: 50rpx;
+  margin-bottom: 50rpx;
+}
+.share-btn {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  margin-left: 0;
+  margin-right: 0;
+  background-size: 100rpx 100rpx;
+  background-repeat: no-repeat;
+  border: none;
+}
+.image {
+  width: 652rpx;
+  height: 1000rpx;
+}
+</style>
+
+<template>
+  <view>
+    <wxc-cc class="container">
+      <image class="image" src="{{imageUrl}}" @tap="bindtap()" />
+    </wxc-cc>
+    <view class="confirm-btn-container">
+      <image class="confirm-btn" src="images/back.png" @tap="back()" />
+      <image class="share-btn" src="images/check.png" @tap="toNext()" />
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+export default class DrawResult extends wepy.page {
+  config = {
+    navigationBarTitleText: '',
+    usingComponents: {
+      'wxc-cc': '../../packages/@minui/wxc-cc/dist/index'
+    }
+  };
+  data = {
+    imageUrl: null
+  };
+  methods = {
+    back() {
+      wepy.navigateBack({
+        delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+      });
+    }
+  };
+  onLoad(option) {
+    this.imageUrl = option.imgUrl;
+  }
+  toNext() {}
+
+  saveImg() {
+    wepy
+      .saveImageToPhotosAlbum({
+        filePath: this.canvasTemImg
+      })
+      .then(success => {
+        console.log('success: ', success);
+        wx.showModal({
+          content: '图片已保存到相册',
+          showCancel: false,
+          success: function(res) {
+            if (res.confirm) {
+              console.log('用户点击确定');
+            }
+          }
+        });
+      })
+      .catch(error => console.log(error));
+    console.log('this.canvasTemImg: ', this.canvasTemImg);
+  }
+}
+</script>
