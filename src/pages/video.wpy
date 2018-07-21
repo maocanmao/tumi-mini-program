@@ -72,28 +72,7 @@ page {
           </view>
         </view>
       </view>
-      <!-- <view class='question-wrapper border' @tap="toDetail()">
-          <wxc-cc class='question-number-wrapper border'>
-            <image class="icon" src="images/play-with-badge.png" />
-          </wxc-cc>
-          <view class='question-text-wrapper border'>
-            <wxc-elip class='question-text' line="2">【壮阔东方潮 奋进新时代——开放40年】建设高素质高颜值的经济特区</wxc-elip>
-            <view style="margin-top:20rpx">
-              <wxc-elip class='question-text small' line="3">改革开放40年来，位于东南沿海前沿的厦门经济特区，始终秉持“先行先试、敢为天下先”的精神，在经济、社会、生态等多个</wxc-elip>
-            </view>
-          </view>
-        </view>
-        <view class='question-wrapper border' @tap="toDetail()">
-          <wxc-cc class='question-number-wrapper border'>
-            <image class="icon" src="images/play-with-badge.png" />
-          </wxc-cc>
-          <view class='question-text-wrapper border'>
-            <wxc-elip class='question-text' line="2">【壮阔东方潮 奋进新时代——开放40年】建设高素质高颜值的经济特区</wxc-elip>
-            <view style="margin-top:20rpx">
-              <wxc-elip class='question-text small' line="3">改革开放40年来，位于东南沿海前沿的厦门经济特区，始终秉持“先行先试、敢为天下先”的精神，在经济、社会、生态等多个</wxc-elip>
-            </view>
-          </view>
-        </view> -->
+
     </scroll-view>
   </view>
 </template>
@@ -103,6 +82,7 @@ import wepy from 'wepy';
 export default class Video extends wepy.page {
   config = {
     navigationBarTitleText: '教学',
+    disableScroll: true,
     usingComponents: {
       'wxc-cc': '../../packages/@minui/wxc-cc/dist/index',
       'wxc-elip': '../../packages/@minui/wxc-elip/dist/index'

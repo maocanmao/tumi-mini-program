@@ -79,6 +79,7 @@ import wepy from 'wepy';
 export default class OfflineActivity extends wepy.page {
   config = {
     navigationBarTitleText: '线下活动',
+    disableScroll: true,
     navigationBarBackgroundColor: '#041516',
     usingComponents: {
       'wxc-cc': '../../packages/@minui/wxc-cc/dist/index',

@@ -56,7 +56,7 @@ page {
   color: #d1e3f1;
 }
 .touchActive {
-  border: 4rpx #fff dashed;
+  // border: 4rpx #fff dashed;
   z-index: 400;
 }
 .touchActive .x {
@@ -131,7 +131,7 @@ page {
   margin: 0 auto;
 }
 .panel-btn.down {
-  bottom: 1%;
+  bottom: 0.2%;
 }
 .panel-btn.top {
   top: 0%;
@@ -151,7 +151,7 @@ page {
   justify-content: flex-start;
   width: 100%;
   height: 116rpx;
-  padding-top: 150rpx;
+  padding-top: 130rpx;
   background: #041516;
 }
 .bottom-popup-mask-top {
@@ -165,7 +165,7 @@ page {
   width: 90rpx;
   height: 56rpx;
   position: fixed;
-  bottom: 755rpx;
+  bottom: 756rpx;
   right: 43%;
 }
 .small-image {
@@ -237,8 +237,8 @@ page {
   width: 560rpx;
 }
 .background-image {
-  height: 100%;
-  width: 100%;
+  height: 95%;
+  width: 95%;
 }
 </style>
 
@@ -289,15 +289,6 @@ page {
         </view>
       </view>
     </wxc-popup>
-    <view bindtap="disappearCanvas" class="canvasWrap" wx:if="{{showCanvas}}">
-      <canvas bindlongtap="saveImg" canvasId="maskCanvas" class="maskCanvas" style="width:{{canvasWidth}}%; height:{{canvasHeight}}px;"></canvas>
-      <button bindtap="saveImg" class="btn">点我生成图片</button>
-    </view>
-    <wxc-mask status="{{maskStatus}}" locked="true">
-      <view class="mask-demo_content">
-        <button bindtap="hideMask">点击我关闭</button>
-      </view>
-    </wxc-mask>
   </view>
 </template>
 
@@ -306,6 +297,7 @@ import wepy from 'wepy';
 export default class DrawPanel extends wepy.page {
   config = {
     navigationBarTitleText: '画板 ',
+    disableScroll: true,
     navigationBarBackgroundColor: '#041516',
     usingComponents: {
       'wxc-mask': '../../packages/@minui/wxc-mask/dist/index',
@@ -329,69 +321,74 @@ export default class DrawPanel extends wepy.page {
     basicImageList: [
       {
         id: 1,
-        tempFilePath: './images/IMG_0928.PNG', //图片地址
+        tempFilePath:
+          'https://tumi-miniprogram.oss-cn-beijing.aliyuncs.com/images/answerImage/1-2.png', //图片地址
         width: 90
       },
       {
         id: 2,
-        tempFilePath: './images/IMG_0930.PNG', //图片地址
+        tempFilePath:
+          'https://tumi-miniprogram.oss-cn-beijing.aliyuncs.com/images/answerImage/1-4.png', //图片地址
         width: 90
       },
       {
         id: 3,
-        tempFilePath: './images/IMG_0929.PNG', //图片地址
+        tempFilePath:
+          'https://tumi-miniprogram.oss-cn-beijing.aliyuncs.com/images/answerImage/1-2.png', //图片地址
         width: 90
       },
       {
         id: 4,
-        tempFilePath: './images/IMG_0928.PNG',
+        tempFilePath: '',
         width: 90
       },
       {
         id: 5,
-        tempFilePath: './images/IMG_0928.PNG',
+        tempFilePath: '',
         width: 90
       }
     ],
     smallImageList: [
       {
-        id: 1,
-        tempFilePath: './images/IMG_0928.PNG', //图片地址
-        width: 90
-      },
-      {
-        id: 2,
-        tempFilePath: './images/IMG_0930.PNG', //图片地址
-        width: 90
-      },
-      {
-        id: 3,
-        tempFilePath: './images/IMG_0929.PNG', //图片地址
-        width: 90
-      },
-      {
-        id: 4,
-        tempFilePath: './images/IMG_0928.PNG',
-        width: 90
-      },
-      {
-        id: 5,
-        tempFilePath: './images/IMG_0928.PNG',
-        width: 90
-      },
-      {
         id: 6,
-        tempFilePath: './images/IMG_0928.PNG',
+        tempFilePath:
+          'https://tumi-miniprogram.oss-cn-beijing.aliyuncs.com/images/answerImage/1-3.png', //图片地址
         width: 90
       },
       {
         id: 7,
-        tempFilePath: './images/IMG_0928.PNG',
+        tempFilePath:
+          'https://tumi-miniprogram.oss-cn-beijing.aliyuncs.com/images/answerImage/1-5.png', //图片地址
         width: 90
       },
       {
         id: 8,
-        tempFilePath: './images/IMG_0928.PNG',
+        tempFilePath: '', //图片地址
+        width: 90
+      },
+      {
+        id: 9,
+        tempFilePath: '',
+        width: 90
+      },
+      {
+        id: 5,
+        tempFilePath: '',
+        width: 90
+      },
+      {
+        id: 6,
+        tempFilePath: '',
+        width: 90
+      },
+      {
+        id: 7,
+        tempFilePath: '',
+        width: 90
+      },
+      {
+        id: 8,
+        tempFilePath: '',
         width: 90
       },
       {
@@ -437,28 +434,30 @@ export default class DrawPanel extends wepy.page {
     },
     addBackground(item) {
       console.log('currentBackground: ', item);
-      this.currentBackground = item.imgUrl;
+      wepy.showLoading({
+        title: '请等待', //提示的内容,
+        mask: true, //显示透明蒙层，防止触摸穿透,
+        success: res => {}
+      });
+      var that = this;
+      wx.downloadFile({
+        url: item.imgUrl, //仅为示例，并非真实的资源
+        success: function(res) {
+          // 只要服务器有响应数据，就会把响应内容写入文件并进入 success 回调，业务需要自行判断是否下载到了想要的内容
+          if (res.statusCode === 200) {
+            wepy.hideLoading();
+            console.log('download success.' + res);
+            that.$parent.globalData.currentBackground = res.tempFilePath;
+            that.currentBackground = that.$parent.globalData.currentBackground;
+          }
+        }
+      });
     },
     confirmComplete() {
-      this.save();
+      this.toCompletePage();
     }
   };
-  loadImg(t) {
-    // console.log("loadImg", t);
-    // console.log(this.items[this.items.length - 1]);
-    // this.items[this.items.length - 1].hdw = t.detail.height / t.detail.width;
-    // this.items[this.items.length - 1].height =
-    //   this.items[this.items.length - 1].width *
-    //   this.items[this.items.length - 1].hdw;
-    // this.items[this.items.length - 1].x =
-    //   this.items[this.items.length - 1].left +
-    //   this.items[this.items.length - 1].width / 2;
-    // this.items[this.items.length - 1].y =
-    //   this.items[this.items.length - 1].top +
-    //   this.items[this.items.length - 1].height / 2;
-    // this.itemList = this.items;
-    // console.log("this.itemList : ", this.itemList);
-  }
+  loadImg(t) {}
   bindtap(e) {
     // 检测tap事件
     // console.log('检测tap事件');
@@ -509,10 +508,7 @@ export default class DrawPanel extends wepy.page {
       this.items[this.index]._tx,
       this.items[this.index]._ty - 10
     );
-    // console.log(
-    //   " this.items[this.index].disPtoO: ",
-    //   this.items[this.index].disPtoO
-    // );
+
     this.items[this.index].scale =
       this.items[this.index].disPtoO / this.items[this.index].r; //手指滑动的点到圆心的距离与半径的比值作为图片的放大比例
     this.items[this.index].oScale = 1 / this.items[this.index].scale; //图片放大响应的右下角按钮同比缩小
@@ -538,10 +534,7 @@ export default class DrawPanel extends wepy.page {
       this.items[this.index].tx,
       this.items[this.index].ty
     );
-    //赋值setData渲染
-    // this.setData({
-    //     itemList: items
-    // })
+
     this.itemList = this.items;
   }
   touchEnd(t) {}
@@ -556,12 +549,8 @@ export default class DrawPanel extends wepy.page {
     }
     this.items[this.index].lx = e.touches[0].clientX; // 记录点击时的坐标值
     this.items[this.index].ly = e.touches[0].clientY;
-    // this.setData({
-    //   //赋值
-    //   itemList: items
-    // });
+
     this.itemList = this.items;
-    // console.log("this.itemList: ", this.itemList);
   }
   WraptouchMove(e) {
     //移动时的坐标值也写图片的属性里
@@ -579,12 +568,8 @@ export default class DrawPanel extends wepy.page {
     //把新的值赋给老的值
     this.items[this.index].lx = e.touches[0].clientX;
     this.items[this.index].ly = e.touches[0].clientY;
-    // this.setData({
-    //   //赋值就移动了
-    //   itemList: items
-    // });
+
     this.itemList = this.items;
-    // console.log("this.itemList: ", this.itemList);
   }
   WraptouchEnd() {}
   onLoad(option) {
@@ -607,7 +592,8 @@ export default class DrawPanel extends wepy.page {
     });
   }
   init() {
-    // this.initImage();
+    // this.initImage();]
+    this.$parent.globalData.drawItems = [];
     this.sysData = wx.getSystemInfoSync();
     console.log('this.sysData: ', this.sysData);
     this.getBackgroundImgs();
@@ -615,7 +601,7 @@ export default class DrawPanel extends wepy.page {
   getBackgroundImgs() {
     for (let i = 0; i < 14; i++) {
       this.backgroundImg.push({
-        imgUrl: this.$parent.globalData.ossImageUrl + 'background/bkg1.png'
+        imgUrl: this.$parent.globalData.ossImageUrl + 'background/bkg2.png'
       });
     }
   }
@@ -674,7 +660,25 @@ export default class DrawPanel extends wepy.page {
     // var imageList = this.getImageList();
     // for (var i = 0; i < imageList.length; i++) {
     let image = {};
-    image.image = item.tempFilePath;
+    var that = this;
+    wepy.showLoading({
+      title: '请等待', //提示的内容,
+      mask: true, //显示透明蒙层，防止触摸穿透,
+      success: res => {}
+    });
+
+    wx.downloadFile({
+      url: item.tempFilePath, //仅为示例，并非真实的资源
+      success: function(res) {
+        // 只要服务器有响应数据，就会把响应内容写入文件并进入 success 回调，业务需要自行判断是否下载到了想要的内容
+        if (res.statusCode === 200) {
+          console.log('download success.');
+          image.image = res.tempFilePath;
+          wepy.hideLoading();
+        }
+      }
+    });
+    // image.image = item.tempFilePath;
     image.id = item.id;
     /**image.itemid = t.itemid,**/
     image.top = 100;
@@ -693,79 +697,15 @@ export default class DrawPanel extends wepy.page {
     // }
     this.itemList = this.items;
   }
-  saveImg() {
-    wepy
-      .saveImageToPhotosAlbum({
-        filePath: this.canvasTemImg
-      })
-      .then(success => {
-        console.log('success: ', success);
-        wx.showModal({
-          content: '图片已保存到相册',
-          showCancel: false,
-          success: function(res) {
-            if (res.confirm) {
-              console.log('用户点击确定');
-            }
-          }
-        });
-      })
-      .catch(error => console.log(error));
-    console.log('this.canvasTemImg: ', this.canvasTemImg);
-  }
-  save() {
-    this.showCanvas = true;
-    console.log('this.sysData: ', this.sysData);
-    this.canvasHeight = 0.85 * this.sysData.windowHeight;
-    var s = wx.createCanvasContext('maskCanvas');
-    var e = this.sysData.windowWidth * this.canvasWidth / 100;
-    var a = 0.77 * e / (0.75 * this.sysData.windowWidth);
-    console.log('a: ', a);
-    var c = 1.77;
-    s.drawImage(this.currentBackground, 0, 0, 0.77 * e, 0.77 * e * c);
 
-    for (var r = 0; r < this.itemList.length; r++) {
-      s.save();
-      s.translate(e * (1 - 0.77) / 2, 10);
-      s.beginPath();
-      s.translate(this.items[r].x * a, this.items[r].y * a);
-      s.rotate(this.items[r].angle * Math.PI / 180);
-      s.translate(
-        -this.items[r].width * this.items[r].scale * a / 2,
-        -this.items[r].height * this.items[r].scale * a / 2
-      );
-      s.drawImage(
-        this.items[r].image,
-        0,
-        0,
-        this.items[r].width * this.items[r].scale * a,
-        this.items[r].height * this.items[r].scale * a
-      );
-      s.restore();
-    }
-    var that = this;
-    s.draw(true, function(t) {
-      wx.canvasToTempFilePath({
-        canvasId: 'maskCanvas',
-        success: function(t) {
-          console.log(t);
-          that.canvasTemImg = t.tempFilePath;
-          console.log(that.canvasTemImg);
-          wepy.navigateTo({
-            url: 'draw-result?imgUrl=' + that.canvasTemImg
-          });
-        }
-      });
+  toCompletePage() {
+    this.topPopStatus = 'hide';
+    this.$parent.globalData.drawItems = [];
+    this.$parent.globalData.drawItems = this.itemList;
+
+    wepy.navigateTo({
+      url: 'draw-result'
     });
-  }
-  disappearCanvas() {
-    this.showCanvas = false;
-  }
-  showMask() {
-    this.maskStatus = 'show';
-  }
-  hideMask() {
-    this.maskStatus = 'hide';
   }
 }
 </script>

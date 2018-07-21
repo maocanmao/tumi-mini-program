@@ -10,6 +10,8 @@ page {
   display: inherit;
   width: 100%;
   margin-top: 50rpx; // padding-bottom: 40%;
+  height: 1000rpx;
+  padding-bottom: 20rpx;
 }
 .question-wrapper {
   display: flex;
@@ -78,6 +80,7 @@ import wepy from 'wepy';
 export default class OnlineActivity extends wepy.page {
   config = {
     navigationBarTitleText: '线上活动',
+    disableScroll: true,
     navigationBarBackgroundColor: '#041516',
     usingComponents: {
       'wxc-cc': '../../packages/@minui/wxc-cc/dist/index',

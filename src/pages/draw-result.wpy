@@ -1,13 +1,18 @@
 <style lang="less">
 page {
-  background: #041516;
+  background: #051516;
 }
 .container {
-  background: #041516;
+  background: #051516;
+  width: 750rpx;
+  height: 0;
+  overflow: hidden;
+}
+.container1 {
+  background: #051516;
   width: 750rpx;
   height: 100%;
 }
-
 .confirm-btn-container {
   display: flex;
   align-items: center;
@@ -15,8 +20,8 @@ page {
   position: fixed;
   bottom: 0%;
   width: 100%;
-  height: 16%;
-  background-color: #041516;
+  height: 12%;
+  background-color: #051516;
 }
 .confirm-btn {
   width: 100rpx;
@@ -35,19 +40,23 @@ page {
   border: none;
 }
 .image {
-  width: 652rpx;
+  width: 750rpx;
   height: 1000rpx;
+  // margin-top: 40rpx;
 }
 </style>
 
 <template>
   <view>
-    <wxc-cc class="container">
-      <image class="image" src="{{imageUrl}}" @tap="bindtap()" />
+    <wxc-cc class="container1">
+      <canvas canvasId="maskCanvas" class="image"></canvas>
     </wxc-cc>
+    <!-- <wxc-cc class="container1">
+      <image class="image" src="{{imageUrl}}"/>
+    </wxc-cc> -->
     <view class="confirm-btn-container">
       <image class="confirm-btn" src="images/back.png" @tap="back()" />
-      <image class="share-btn" src="images/check.png" @tap="toNext()" />
+      <image class="share-btn" src="images/check.png" @tap="saveImg()" />
     </view>
   </view>
 </template>
@@ -57,12 +66,15 @@ import wepy from 'wepy';
 export default class DrawResult extends wepy.page {
   config = {
     navigationBarTitleText: '',
+    disableScroll: true,
     usingComponents: {
       'wxc-cc': '../../packages/@minui/wxc-cc/dist/index'
     }
   };
   data = {
-    imageUrl: null
+    imageUrl: null,
+    sysData: null,
+    items: []
   };
   methods = {
     back() {
@@ -71,15 +83,81 @@ export default class DrawResult extends wepy.page {
       });
     }
   };
-  onLoad(option) {
-    this.imageUrl = option.imgUrl;
+  onLoad(option) {}
+  onShow() {
+    this.sysData = wx.getSystemInfoSync();
+    // this.imageUrl = option.imgUrl;
+    this.items = this.$parent.globalData.drawItems;
+    this.save();
   }
   toNext() {}
+  save() {
+    wepy.showLoading({
+      title: '请等待', //提示的内容,
+      mask: true, //显示透明蒙层，防止触摸穿透,
+      success: res => {}
+    });
 
+    console.log('this.sysData: ', this.sysData);
+    // this.canvasHeight = 0.85 * this.sysData.windowHeight;
+    var s = wx.createCanvasContext('maskCanvas');
+    //下面两个参数决定图片的位置
+    var e = this.sysData.windowWidth * 0.8;
+    var a = 0.77 * e / (0.75 * this.sysData.windowWidth);
+    // console.log('a: ', a);
+    // var c = 1.77;
+    s.drawImage(
+      this.$parent.globalData.currentBackground,
+      0,
+      0,
+      this.rpx(750),
+      500
+    );
+
+    for (var r = 0; r < this.items.length; r++) {
+      s.save();
+      s.translate(e * (1 - 0.77) / 2, 10);
+      s.beginPath();
+      s.translate(this.items[r].x * a, this.items[r].y * a);
+      s.rotate(this.items[r].angle * Math.PI / 180);
+      s.translate(
+        -this.items[r].width * this.items[r].scale * a / 2,
+        -this.items[r].height * this.items[r].scale * a / 2
+      );
+      s.drawImage(
+        this.items[r].image,
+        0,
+        0,
+        this.items[r].width * this.items[r].scale * a,
+        this.items[r].height * this.items[r].scale * a
+      );
+      s.restore();
+      s.setFillStyle('#d7be71');
+      s.setFontSize(20);
+      s.fillText('这是乌拉圭的第5张作品', this.rpx(20), this.rpx(900));
+    }
+    var that = this;
+    s.draw(true, function(t) {
+      setTimeout(function() {
+        wx.canvasToTempFilePath({
+          canvasId: 'maskCanvas',
+          width: that.rpx(800),
+          height: that.rpx(1000),
+          destWidth: that.rpx(3200),
+          destHeight: that.rpx(4000),
+          success: function(t) {
+            that.imageUrl = t.tempFilePath;
+            console.log(that.imageUrl);
+            wepy.hideLoading();
+          }
+        });
+      }, 2000);
+    });
+  }
   saveImg() {
     wepy
       .saveImageToPhotosAlbum({
-        filePath: this.canvasTemImg
+        filePath: this.imageUrl
       })
       .then(success => {
         console.log('success: ', success);
@@ -94,7 +172,9 @@ export default class DrawResult extends wepy.page {
         });
       })
       .catch(error => console.log(error));
-    console.log('this.canvasTemImg: ', this.canvasTemImg);
+  }
+  rpx(param) {
+    return Number((this.sysData.windowWidth / 750 * param).toFixed(2));
   }
 }
 </script>

@@ -62,7 +62,10 @@ export default class extends wepy.app {
   globalData = {
     userInfo: null,
     ossImageUrl: 'https://tumi-miniprogram.oss-cn-beijing.aliyuncs.com/images/',
-    userAnswer: []
+    userAnswer: [],
+    currentBackground:
+      'https://tumi-miniprogram.oss-cn-beijing.aliyuncs.com/images/background/bkg1.png',
+    drawItems: []
   };
   onLaunch() {
     console.log('on launch');

@@ -110,6 +110,7 @@ import wepy from 'wepy';
 export default class Message extends wepy.page {
   config = {
     navigationBarTitleText: '',
+    disableScroll: true,
     usingComponents: {
       'wxc-cc': '../../packages/@minui/wxc-cc/dist/index',
       'wxc-elip': '../../packages/@minui/wxc-elip/dist/index'

@@ -46,7 +46,7 @@ page {
       <!-- <html2wxml :parserName="name" :parserContent.sync="textContent" :parserType="html"></html2wxml> -->
     </scroll-view>
     <view class="confirm-btn-container">
-      <button class="share-btn" src="images/share.png" style="background-image:url(images/share.png);" plain='true' open-type="share" />
+      <button class="share-btn" src="./images/share.png" style="background-image:url(./images/share.png);" plain='true' open-type="share" />
     </view>
   </view>
 </template>
