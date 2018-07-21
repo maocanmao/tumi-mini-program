@@ -36,12 +36,16 @@ page {
   background-repeat: no-repeat;
   border: none;
 }
+.image {
+  height: 1000rpx;
+  width: 750rpx;
+}
 </style>
 <template lang="wxml" minapp="wepy">
   <view class="container">
     <scroll-view class="content" scroll-y="{{true}}">
       <wxc-cc class="container">
-        <image src="images/works_exanple.png" />
+        <image class="image" src="images/works_exanple.png" />
       </wxc-cc>
     </scroll-view>
     <view class="confirm-btn-container">
