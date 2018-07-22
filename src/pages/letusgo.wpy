@@ -37,7 +37,7 @@ export default class LetusGo extends wepy.page {
     if (this.welcome <= 3) {
       this.welcome++;
     }
-    wx.navigateTo({
+    wx.redirectTo({
       url: 'answer-question'
     });
   }

@@ -129,14 +129,6 @@ export default class AnswerQuestionComplete extends wepy.page {
     userAnswer: []
   };
   methods = {
-    showPopUp() {
-      let popupComponent = this.$wxpage.selectComponent('.J_Popup');
-      popupComponent && popupComponent.show();
-    },
-    hidePopUp() {
-      let popupComponent = this.$wxpage.selectComponent('.J_Popup');
-      popupComponent && popupComponent.hide();
-    },
     confirm() {
       console.log('to draw');
       wepy.navigateTo({
@@ -146,6 +138,9 @@ export default class AnswerQuestionComplete extends wepy.page {
   };
   onLoad() {
     console.log('AnswerQuestion completed onLoad');
+  }
+
+  onShow() {
     this.userAnswer = this.$parent.globalData.userAnswer;
   }
 }

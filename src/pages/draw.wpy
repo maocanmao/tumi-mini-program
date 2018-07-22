@@ -282,7 +282,7 @@ page {
         <view class="bottom-popup-mask-top "></view>
         <image class="panel-btn-popup.down" src="images/triangle_down_dark.png" @tap="hideBottomPopUp()" />
         <view class="bottom-popup-image-first-line-content">
-          <image class="small-image-first-line" wx:for="{{basicImageList}}" src="{{item.tempFilePath}}" @tap="addImage({{item}})" />
+          <image class="small-image-first-line"  wx:for="{{basicImageList}}" src="{{item.tempFilePath}}" @tap="addImage({{item}})" />
         </view>
         <view class="bottom-popup-image-content">
           <image class="small-image" wx:for="{{smallImageList}}" src="{{item.tempFilePath}}" @tap="addImage({{item}})" />
@@ -318,100 +318,8 @@ export default class DrawPanel extends wepy.page {
     topPopStatus: 'hide',
     backgroundImg: [],
     currentBackground: null,
-    basicImageList: [
-      {
-        id: 1,
-        tempFilePath:
-          'https://tumi-miniprogram.oss-cn-beijing.aliyuncs.com/images/answerImage/1-2.png', //图片地址
-        width: 90
-      },
-      {
-        id: 2,
-        tempFilePath:
-          'https://tumi-miniprogram.oss-cn-beijing.aliyuncs.com/images/answerImage/1-4.png', //图片地址
-        width: 90
-      },
-      {
-        id: 3,
-        tempFilePath:
-          'https://tumi-miniprogram.oss-cn-beijing.aliyuncs.com/images/answerImage/1-2.png', //图片地址
-        width: 90
-      },
-      {
-        id: 4,
-        tempFilePath: '',
-        width: 90
-      },
-      {
-        id: 5,
-        tempFilePath: '',
-        width: 90
-      }
-    ],
-    smallImageList: [
-      {
-        id: 6,
-        tempFilePath:
-          'https://tumi-miniprogram.oss-cn-beijing.aliyuncs.com/images/answerImage/1-3.png', //图片地址
-        width: 90
-      },
-      {
-        id: 7,
-        tempFilePath:
-          'https://tumi-miniprogram.oss-cn-beijing.aliyuncs.com/images/answerImage/1-5.png', //图片地址
-        width: 90
-      },
-      {
-        id: 8,
-        tempFilePath: '', //图片地址
-        width: 90
-      },
-      {
-        id: 9,
-        tempFilePath: '',
-        width: 90
-      },
-      {
-        id: 5,
-        tempFilePath: '',
-        width: 90
-      },
-      {
-        id: 6,
-        tempFilePath: '',
-        width: 90
-      },
-      {
-        id: 7,
-        tempFilePath: '',
-        width: 90
-      },
-      {
-        id: 8,
-        tempFilePath: '',
-        width: 90
-      },
-      {
-        id: 8,
-        tempFilePath: '',
-        width: 90
-      },
-      {
-        id: 8,
-        tempFilePath: '',
-        width: 90
-      },
-      {
-        id: 8,
-        tempFilePath: '',
-        width: 90
-      },
-      {
-        id: 8,
-        tempFilePath: '',
-        width: 90
-      }
-    ]
+    basicImageList: [],
+    smallImageList: []
   };
   methods = {
     showBottomPopUp() {
@@ -592,11 +500,12 @@ export default class DrawPanel extends wepy.page {
     });
   }
   init() {
-    // this.initImage();]
     this.$parent.globalData.drawItems = [];
     this.sysData = wx.getSystemInfoSync();
     console.log('this.sysData: ', this.sysData);
     this.getBackgroundImgs();
+    this.getBasicImgs();
+    this.getAnswersImgs();
   }
   getBackgroundImgs() {
     for (let i = 0; i < 14; i++) {
@@ -604,6 +513,38 @@ export default class DrawPanel extends wepy.page {
         imgUrl: this.$parent.globalData.ossImageUrl + 'background/bkg2.png'
       });
     }
+  }
+  getBasicImgs() {
+    for (let i = 1; i <= 5; i++) {
+      this.basicImageList.push({
+        id: 'b' + i,
+        tempFilePath:
+          'https://tumi-miniprogram.oss-cn-beijing.aliyuncs.com/images/answerImage/b' +
+          i +
+          '.png', //图片地址
+        width: 90
+      });
+    }
+  }
+  getAnswersImgs() {
+    for (let i = 0; i < this.$parent.globalData.userAnswer.length; i++) {
+      //8 answers
+      this.smallImageList.push({
+        id: this.$parent.globalData.userAnswer[i].index,
+        tempFilePath: this.$parent.globalData.userAnswer[i].imageSrc, //图片地址
+        width: 90
+      });
+    }
+
+    //4 placeholders
+    for (let i = 0; i <= 3; i++) {
+      this.smallImageList.push({
+        id: 's' + i,
+        tempFilePath: '', //图片地址
+        width: 90
+      });
+    }
+    console.log('this.smallImageList:', this.smallImageList);
   }
   countDeg(cx, cy, pointer_x, pointer_y) {
     var ox = pointer_x - cx;

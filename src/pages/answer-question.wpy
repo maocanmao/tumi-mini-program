@@ -246,7 +246,7 @@ export default class AnswerQuestion extends wepy.page {
           //set global data
           this.$parent.globalData.userAnswer = this.userAnswer;
           //answer completed
-          wepy.redirectTo({
+          wepy.navigateTo({
             url: 'answer-question-complete'
           });
         } else if (this.currentQuestionIndex < 7) {
