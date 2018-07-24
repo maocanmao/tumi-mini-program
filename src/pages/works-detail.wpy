@@ -45,7 +45,7 @@ page {
   <view class="container">
     <scroll-view class="content" scroll-y="{{true}}">
       <wxc-cc class="container">
-        <image class="image" src="images/works_exanple.png" />
+        <image class="image" src="{{url}}" />
       </wxc-cc>
     </scroll-view>
     <view class="confirm-btn-container">
@@ -65,7 +65,9 @@ export default class WorksDetail extends wepy.page {
     }
   };
 
-  data = {};
+  data = {
+    url: null
+  };
   methods = {
     back() {
       wepy.navigateBack({
@@ -73,6 +75,8 @@ export default class WorksDetail extends wepy.page {
       });
     }
   };
-  onLoad() {}
+  onLoad(option) {
+    this.url = option.imgUrl;
+  }
 }
 </script>

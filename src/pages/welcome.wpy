@@ -39,7 +39,7 @@ export default class Welcome extends wepy.page {
       this.clickTimes++;
       this.imageUrl = 'images/welcome' + this.clickTimes + '.png';
     } else {
-      wx.navigateTo({
+      wx.redirectTo({
         url: 'letusgo'
       });
     }

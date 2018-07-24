@@ -166,12 +166,53 @@ export default class DrawResult extends wepy.page {
           showCancel: false,
           success: function(res) {
             if (res.confirm) {
-              console.log('用户点击确定');
+              this.uploadImage();
             }
           }
         });
       })
       .catch(error => console.log(error));
+  }
+
+  uploadImage() {
+    wepy.showLoading({
+      title: '保存中', //提示的内容,
+      mask: true, //显示透明蒙层，防止触摸穿透,
+      success: res => {}
+    });
+
+    this.$parent.getToken().then(token => {
+      wepy
+        .uploadFile({
+          url: this.$parent.config.baseUrl + 'user/answers?token=' + token,
+          filePath: this.imageUrl,
+          name: 'image',
+          formData: this.getRequestData()
+        })
+        .then(res => {
+          wepy.hideLoading();
+          console.log('checkin with image successfully.' + JSON.stringify(res));
+        })
+        .catch(error => {
+          wepy.hideLoading();
+          console.log(error);
+        });
+    });
+  }
+  getRequestData() {
+    var jsonArray = [];
+    for (var i = 0; i < this.$parent.globalData.userAnswer.length; i++) {
+      jsonArray.push({
+        question: this.$parent.globalData.userAnswer[i].question,
+        answer: {
+          answerIndex: this.$parent.globalData.userAnswer[i].index,
+          answer: this.$parent.globalData.userAnswer[i].answer
+        }
+      });
+    }
+    return {
+      answer: JSON.stringify(jsonArray)
+    };
   }
   rpx(param) {
     return Number((this.sysData.windowWidth / 750 * param).toFixed(2));

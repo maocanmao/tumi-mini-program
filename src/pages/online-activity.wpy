@@ -111,7 +111,9 @@ export default class OnlineActivity extends wepy.page {
     wepy.showNavigationBarLoading();
     this.$parent.getToken().then(token => {
       wepy
-        .request(this.$parent.config.baseUrl + 'news?type=0&token=' + token)
+        .request(
+          this.$parent.config.baseUrl + 'user/news?type=0&token=' + token
+        )
         .then(res => {
           wepy.hideNavigationBarLoading();
           console.log('get news: ', res);

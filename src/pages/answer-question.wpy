@@ -167,13 +167,13 @@ page {
     <view class="confirm-btn-container">
       <image class="confirm-btn" src="{{answerSelected?'images/check.png':'images/unCheck.png'}}" @tap="confirmAnswer()" />
     </view>
-    <wxc-popup class="J_Popup" animation-mode="bottom" align="bottom" locked="true">
+    <wxc-popup class="J_Popup" animation-mode="none" align="bottom" locked="true">
       <view class="popup__content">
         <view class="mask-top"></view>
         <image class="panel-btn down" src="images/triangle_down.png" @tap="hidePopUp()" />
         <view class="popup-image-content">
           <view class="answer-image-wrapper" wx:for="{{userAnswer}}">
-            <image mode="aspectFit" src="{{item.imageSrc}}" class="answer-image" />
+            <image mode="aspectFit" src="{{item.imageSrc}}" class="answer-image" lazy-load="{{true}}" />
           </view>
         </view>
         <view class="confirm-btn-container">
@@ -201,6 +201,7 @@ export default class AnswerQuestion extends wepy.page {
     userAnswer: [],
     currentQuestionIndex: null,
     canMutipleChoose: false,
+    currentAnswerSelectedIndex: null,
     answerSelected: false
   };
   methods = {
@@ -212,24 +213,7 @@ export default class AnswerQuestion extends wepy.page {
       }
       this.answerList[index].selected = true;
       this.answerSelected = true;
-      console.log(
-        'this.userAnswer[this.currentQuestionIndex]: ',
-        this.userAnswer[this.currentQuestionIndex]
-      );
-      //赋值用户答题数据
-      this.userAnswer[this.currentQuestionIndex].imageSrc = this.answerList[
-        index
-      ].imageSrc;
-      this.userAnswer[this.currentQuestionIndex].question = this.questionsList[
-        this.currentQuestionIndex
-      ].question;
-      this.userAnswer[this.currentQuestionIndex].answer = this.answerList[
-        index
-      ].name;
-      this.userAnswer[this.currentQuestionIndex].index = this.answerList[
-        index
-      ].index;
-      console.log('userAnswer: ', this.userAnswer);
+      this.currentAnswerSelectedIndex = index;
     },
     showPopUp() {
       let popupComponent = this.$wxpage.selectComponent('.J_Popup');
@@ -243,14 +227,27 @@ export default class AnswerQuestion extends wepy.page {
       if (this.answerSelected) {
         //TODO
         if (this.currentQuestionIndex == 7) {
-          //set global data
-          this.$parent.globalData.userAnswer = this.userAnswer;
-          //answer completed
-          wepy.navigateTo({
-            url: 'answer-question-complete'
+          this.downAnswerImage().then(success => {
+            wepy.hideNavigationBarLoading();
+            //set global data
+            this.$parent.globalData.userAnswer = this.userAnswer;
+            //answer completed
+            wepy.redirectTo({
+              url: 'answer-question-complete'
+            });
           });
         } else if (this.currentQuestionIndex < 7) {
-          this.toNextQuestion();
+          wepy.showNavigationBarLoading();
+          this.downAnswerImage()
+            .then(success => {
+              wepy.hideNavigationBarLoading();
+              this.toNextQuestion();
+              this.$apply();
+            })
+            .catch(error => {
+              console.log('download image error: ', error);
+              wepy.hideNavigationBarLoading();
+            });
         }
       }
     }
@@ -261,11 +258,41 @@ export default class AnswerQuestion extends wepy.page {
     this.initUserAnswer();
     this.getQuestions();
   }
+
+  downAnswerImage() {
+    return new Promise((resolve, reject) => {
+      // wepy.showNavigationBarLoading();
+      let that = this;
+      wx.downloadFile({
+        url: this.answerList[that.currentAnswerSelectedIndex].imageSrc, //仅为示例，并非真实的资源
+        success: function(res) {
+          // 只要服务器有响应数据，就会把响应内容写入文件并进入 success 回调，业务需要自行判断是否下载到了想要的内容
+          if (res.statusCode === 200) {
+            console.log('download success.');
+            that.userAnswer[that.currentQuestionIndex].imageSrc =
+              res.tempFilePath;
+            that.userAnswer[that.currentQuestionIndex].question =
+              that.questionsList[that.currentQuestionIndex].question;
+            that.userAnswer[that.currentQuestionIndex].answer =
+              that.answerList[that.currentAnswerSelectedIndex].name;
+            that.userAnswer[that.currentQuestionIndex].index =
+              that.answerList[that.currentAnswerSelectedIndex].index;
+            console.log('userAnswer: ', that.userAnswer);
+            resolve('success');
+          }
+        },
+        fail: function(error) {
+          reject(error);
+        }
+      });
+    });
+  }
+
   getQuestions() {
     wepy.showNavigationBarLoading();
     this.$parent.getToken().then(token => {
       wepy
-        .request(this.$parent.config.baseUrl + 'questions?token=' + token)
+        .request(this.$parent.config.baseUrl + 'user/questions?token=' + token)
         .then(res => {
           wepy.hideNavigationBarLoading();
           console.log('get questions: ', res);
@@ -295,7 +322,7 @@ export default class AnswerQuestion extends wepy.page {
     for (let i = 0; i < this.answerList.length; i++) {
       this.answerList[i].imageSrc =
         this.$parent.globalData.ossImageUrl +
-        'answerImage/' +
+        'answerImageSmall/' +
         this.answerList[i].index +
         '.png';
     }

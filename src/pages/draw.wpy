@@ -253,7 +253,7 @@ page {
         <image class="panel-btn-popup.top" src="images/triangle_dark.png" @tap="hideTopPopUp()" />
         <scroll-view class="top-scrollview" scroll-x="true">
           <view class="top-popup-image-content">
-            <image class="image-background" wx:for="{{backgroundImg}}" src="{{item.imgUrl}}" @tap="addBackground({{item}})" />
+            <image class="image-background" lazy-load="{{true}}" wx:for="{{backgroundImg}}" src="{{item.imgUrl}}" @tap="addBackground({{item}})" />
           </view>
         </scroll-view>
         <view class="top-popup-image-button-content">
@@ -282,10 +282,10 @@ page {
         <view class="bottom-popup-mask-top "></view>
         <image class="panel-btn-popup.down" src="images/triangle_down_dark.png" @tap="hideBottomPopUp()" />
         <view class="bottom-popup-image-first-line-content">
-          <image class="small-image-first-line"  wx:for="{{basicImageList}}" src="{{item.tempFilePath}}" @tap="addImage({{item}})" />
+          <image class="small-image-first-line" lazy-load="{{true}}" wx:for="{{basicImageList}}" src="{{item.tempFilePath}}" @tap="addImage({{item}})" />
         </view>
         <view class="bottom-popup-image-content">
-          <image class="small-image" wx:for="{{smallImageList}}" src="{{item.tempFilePath}}" @tap="addImage({{item}})" />
+          <image class="small-image" lazy-load="{{true}}" wx:for="{{smallImageList}}" src="{{item.tempFilePath}}" @tap="addImage({{item}})" />
         </view>
       </view>
     </wxc-popup>
@@ -333,6 +333,8 @@ export default class DrawPanel extends wepy.page {
     addImage(item) {
       console.log('item: ', item);
       this.initImage(item);
+      this.$apply();
+      this.bottomPopStatus = 'hide';
     },
     showTopPopUp() {
       this.topPopStatus = 'show';
@@ -357,6 +359,8 @@ export default class DrawPanel extends wepy.page {
             console.log('download success.' + res);
             that.$parent.globalData.currentBackground = res.tempFilePath;
             that.currentBackground = that.$parent.globalData.currentBackground;
+            that.topPopStatus = 'hide';
+            that.$apply();
           }
         }
       });
@@ -366,13 +370,7 @@ export default class DrawPanel extends wepy.page {
     }
   };
   loadImg(t) {}
-  bindtap(e) {
-    // 检测tap事件
-    // console.log('检测tap事件');
-    // console.log('e.touches[0].x: ', e.touches[0].clientX);
-    // console.log('e.touches[0].y: ', e.touches[0].clientY);
-    // console.log(e.currentTarget.dataset.id);
-  }
+  bindtap(e) {}
   // 触摸开始事件  items是this.data.itemList的全局变量，便于赋值  所有的值都应给到对应的对象里
   touchStart(e) {
     //找到点击的那个图片对象，并记录
@@ -416,7 +414,6 @@ export default class DrawPanel extends wepy.page {
       this.items[this.index]._tx,
       this.items[this.index]._ty - 10
     );
-
     this.items[this.index].scale =
       this.items[this.index].disPtoO / this.items[this.index].r; //手指滑动的点到圆心的距离与半径的比值作为图片的放大比例
     this.items[this.index].oScale = 1 / this.items[this.index].scale; //图片放大响应的右下角按钮同比缩小
@@ -442,7 +439,6 @@ export default class DrawPanel extends wepy.page {
       this.items[this.index].tx,
       this.items[this.index].ty
     );
-
     this.itemList = this.items;
   }
   touchEnd(t) {}
@@ -457,7 +453,6 @@ export default class DrawPanel extends wepy.page {
     }
     this.items[this.index].lx = e.touches[0].clientX; // 记录点击时的坐标值
     this.items[this.index].ly = e.touches[0].clientY;
-
     this.itemList = this.items;
   }
   WraptouchMove(e) {
@@ -476,10 +471,26 @@ export default class DrawPanel extends wepy.page {
     //把新的值赋给老的值
     this.items[this.index].lx = e.touches[0].clientX;
     this.items[this.index].ly = e.touches[0].clientY;
-
     this.itemList = this.items;
   }
   WraptouchEnd() {}
+  deleteItem(e) {
+    let temp = [];
+    for (let a = 0; a < this.items.length; a++) {
+      if (e.currentTarget.dataset.id != this.items[a].id) {
+        temp.push(this.items[a]);
+      }
+    }
+
+    if (temp.length > 0) {
+      temp[temp.length - 1].active = true;
+      this.items = temp;
+      this.itemList = this.items;
+    } else {
+      this.items = temp;
+      this.itemList = this.items;
+    }
+  }
   onLoad(option) {
     this.init();
   }
@@ -508,9 +519,10 @@ export default class DrawPanel extends wepy.page {
     this.getAnswersImgs();
   }
   getBackgroundImgs() {
-    for (let i = 0; i < 14; i++) {
+    for (let i = 1; i < 14; i++) {
       this.backgroundImg.push({
-        imgUrl: this.$parent.globalData.ossImageUrl + 'background/bkg2.png'
+        imgUrl:
+          this.$parent.globalData.ossImageUrl + 'background/beij-0' + i + '.png'
       });
     }
   }
@@ -519,7 +531,7 @@ export default class DrawPanel extends wepy.page {
       this.basicImageList.push({
         id: 'b' + i,
         tempFilePath:
-          'https://tumi-miniprogram.oss-cn-beijing.aliyuncs.com/images/answerImage/b' +
+          'https://tumi-miniprogram.oss-cn-beijing.aliyuncs.com/images/answerImageSmall/b' +
           i +
           '.png', //图片地址
         width: 90
@@ -535,7 +547,6 @@ export default class DrawPanel extends wepy.page {
         width: 90
       });
     }
-
     //4 placeholders
     for (let i = 0; i <= 3; i++) {
       this.smallImageList.push({
@@ -573,53 +584,9 @@ export default class DrawPanel extends wepy.page {
     // console.log("ox.oy:", ox, oy);
     return Math.sqrt(ox * ox + oy * oy);
   }
-  getImageList() {
-    return [
-      {
-        id: 1,
-        tempFilePath: './images/IMG_0928.PNG', //图片地址
-        width: 90
-      },
-      {
-        id: 2,
-        tempFilePath: './images/IMG_0930.PNG', //图片地址
-        width: 90
-      },
-      {
-        id: 3,
-        tempFilePath: './images/IMG_0929.PNG', //图片地址
-        width: 90
-      },
-      {
-        id: 4,
-        tempFilePath: './images/IMG_0928.PNG',
-        width: 90
-      }
-    ];
-  }
   initImage(item) {
-    // var imageList = this.getImageList();
-    // for (var i = 0; i < imageList.length; i++) {
     let image = {};
-    var that = this;
-    wepy.showLoading({
-      title: '请等待', //提示的内容,
-      mask: true, //显示透明蒙层，防止触摸穿透,
-      success: res => {}
-    });
-
-    wx.downloadFile({
-      url: item.tempFilePath, //仅为示例，并非真实的资源
-      success: function(res) {
-        // 只要服务器有响应数据，就会把响应内容写入文件并进入 success 回调，业务需要自行判断是否下载到了想要的内容
-        if (res.statusCode === 200) {
-          console.log('download success.');
-          image.image = res.tempFilePath;
-          wepy.hideLoading();
-        }
-      }
-    });
-    // image.image = item.tempFilePath;
+    image.image = item.tempFilePath;
     image.id = item.id;
     /**image.itemid = t.itemid,**/
     image.top = 100;
@@ -638,12 +605,14 @@ export default class DrawPanel extends wepy.page {
     // }
     this.itemList = this.items;
   }
-
   toCompletePage() {
     this.topPopStatus = 'hide';
     this.$parent.globalData.drawItems = [];
     this.$parent.globalData.drawItems = this.itemList;
-
+    console.log(
+      'this.$parent.globalData.drawItems: ',
+      this.$parent.globalData.drawItems
+    );
     wepy.navigateTo({
       url: 'draw-result'
     });

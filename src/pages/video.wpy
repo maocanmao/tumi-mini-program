@@ -108,7 +108,7 @@ export default class Video extends wepy.page {
     wepy.showNavigationBarLoading();
     this.$parent.getToken().then(token => {
       wepy
-        .request(this.$parent.config.baseUrl + 'videos?token=' + token)
+        .request(this.$parent.config.baseUrl + 'user/videos?token=' + token)
         .then(res => {
           wepy.hideNavigationBarLoading();
           this.videoList = res.data.data;

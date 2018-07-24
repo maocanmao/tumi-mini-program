@@ -37,9 +37,9 @@ page {
 <template lang="wxml" minapp="wepy">
   <view class="container">
     <scroll-view class='question-container' scroll-y='true'>
-      <view class='question-wrapper' @tap="toWorksDetail()">
+      <view class='question-wrapper' >
         <view class='question-text-wrapper image-container'>
-          <image class="works-image " wx:for="{{worksImageList}}" src="{{item}}" />
+          <image class="works-image " wx:for="{{worksImageList}}" src="{{item.img_url}}" @tap="toWorksDetail({{item.img_url}})"/>
         </view>
       </view>
     </scroll-view>
@@ -56,15 +56,7 @@ export default class UserWorks extends wepy.page {
     usingComponents: {}
   };
   data = {
-    worksImageList: [
-      'images/works_exanple.png',
-      'images/works_exanple.png',
-      'images/works_exanple.png',
-      'images/works_exanple.png',
-      'images/works_exanple.png',
-      'images/works_exanple.png',
-      'images/works_exanple.png'
-    ]
+    worksImageList: []
   };
   methods = {
     back() {
@@ -72,12 +64,32 @@ export default class UserWorks extends wepy.page {
         delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
       });
     },
-    toWorksDetail() {
+    toWorksDetail(url) {
       wepy.navigateTo({
-        url: 'works-detail'
+        url: 'works-detail?imgUrl=' + url
       });
     }
   };
-  onLoad() {}
+  onLoad() {
+    this.getImages();
+  }
+
+  getImages() {
+    wepy.showNavigationBarLoading();
+    this.$parent.getToken().then(token => {
+      wepy
+        .request(this.$parent.config.baseUrl + 'user/answers?token=' + token)
+        .then(res => {
+          wepy.hideNavigationBarLoading();
+          console.log('get questions: ', res);
+          this.worksImageList = res.data.data;
+          this.$apply();
+        })
+        .catch(error => {
+          wepy.hideNavigationBarLoading();
+          console.log('get images error: ', error);
+        });
+    });
+  }
 }
 </script>

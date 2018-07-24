@@ -106,7 +106,7 @@ export default class MessageDetail extends wepy.page {
       wepy
         .request(
           this.$parent.config.baseUrl +
-            'news/' +
+            'user/news/' +
             this.newsId +
             '?token=' +
             token
