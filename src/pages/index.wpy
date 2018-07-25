@@ -24,11 +24,46 @@ import wepy from 'wepy';
 export default class Index extends wepy.page {
   config = {
     navigationBarTitleText: '',
+    disableScroll: true,
     usingComponents: {
       'wxc-cc': '../../packages/@minui/wxc-cc/dist/index'
     }
   };
-  onLoad() {}
+  onLoad() {
+    this.$parent.getToken().then(token => {
+      wepy
+        .request(
+          this.$parent.config.baseUrl + 'user/answers/count?token=' + token
+        )
+        .then(res => {
+          wepy.hideNavigationBarLoading();
+          console.log('get images count: ', res);
+          //image count
+          this.$parent.globalData.userImagesCount = res.data.data.count;
+          //user info
+          this.$parent.globalData.userInfo = wx.getStorageSync('userInfo');
+          if (
+            this.$parent.globalData.userInfo == undefined ||
+            this.$parent.globalData.userInfo == null ||
+            this.$parent.globalData.userInfo == ''
+          ) {
+            wx.reLaunch({
+              url: 'get-user-info'
+            });
+          }
+          console.log(
+            'this.$parent.globalData.userInfo: ',
+            this.$parent.globalData.userInfo
+          );
+
+          this.$apply();
+        })
+        .catch(error => {
+          wepy.hideNavigationBarLoading();
+          console.log('get images count error: ', error);
+        });
+    });
+  }
 
   bindtap() {
     wx.navigateTo({

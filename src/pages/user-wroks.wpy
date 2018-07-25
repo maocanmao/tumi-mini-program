@@ -24,13 +24,14 @@ page {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
-  padding-left: 10rpx;
-  padding-right: 10rpx;
+
   padding-bottom: 20rpx;
+  margin: 0 auto;
 }
 .works-image {
   width: 250rpx;
   height: 400rpx;
+  padding: 20rpx;
 }
 </style>
 
@@ -52,7 +53,6 @@ export default class UserWorks extends wepy.page {
   config = {
     navigationBarTitleText: '作品展示',
     navigationBarBackgroundColor: '#041516',
-    disableScroll: true,
     usingComponents: {}
   };
   data = {

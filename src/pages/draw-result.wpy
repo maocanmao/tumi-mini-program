@@ -134,7 +134,15 @@ export default class DrawResult extends wepy.page {
       s.restore();
       s.setFillStyle('#d7be71');
       s.setFontSize(20);
-      s.fillText('这是乌拉圭的第5张作品', this.rpx(20), this.rpx(900));
+      s.fillText(
+        '这是' +
+          this.$parent.globalData.userInfo.nickName +
+          '的第' +
+          this.$parent.globalData.userImagesCount +
+          '张作品',
+        this.rpx(20),
+        this.rpx(950)
+      );
     }
     var that = this;
     s.draw(true, function(t) {
@@ -161,12 +169,13 @@ export default class DrawResult extends wepy.page {
       })
       .then(success => {
         console.log('success: ', success);
+        var that = this;
         wx.showModal({
           content: '图片已保存到相册',
           showCancel: false,
           success: function(res) {
             if (res.confirm) {
-              this.uploadImage();
+              that.uploadImage();
             }
           }
         });
@@ -192,6 +201,7 @@ export default class DrawResult extends wepy.page {
         .then(res => {
           wepy.hideLoading();
           console.log('checkin with image successfully.' + JSON.stringify(res));
+          wepy.navigateTo({ url: 'user-wroks' });
         })
         .catch(error => {
           wepy.hideLoading();

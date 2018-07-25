@@ -111,7 +111,7 @@ page {
   background-color: #d7be71;
 }
 .mask.bottom {
-  bottom: 0%;
+  bottom: 1%;
 }
 .mask.bottom.top {
   bottom: 10%;
@@ -131,7 +131,7 @@ page {
   margin: 0 auto;
 }
 .panel-btn.down {
-  bottom: 0.2%;
+  bottom: 1%;
 }
 .panel-btn.top {
   top: 0%;
@@ -238,7 +238,8 @@ page {
 }
 .background-image {
   height: 95%;
-  width: 95%;
+  width: 100%;
+  margin-top: 3%;
 }
 </style>
 
@@ -322,6 +323,11 @@ export default class DrawPanel extends wepy.page {
     smallImageList: []
   };
   methods = {
+    toVideoPage() {
+      wepy.switchTab({
+        url: 'video'
+      });
+    },
     showBottomPopUp() {
       console.log('showBottomPopUp: ');
       this.bottomPopStatus = 'show';
@@ -481,7 +487,6 @@ export default class DrawPanel extends wepy.page {
         temp.push(this.items[a]);
       }
     }
-
     if (temp.length > 0) {
       temp[temp.length - 1].active = true;
       this.items = temp;
@@ -494,6 +499,16 @@ export default class DrawPanel extends wepy.page {
   onLoad(option) {
     this.init();
   }
+
+  onShow() {
+    wepy.showToast({
+      title: '上方拉栏可选择辅助背景或确认,下方拉栏中，可向画板中添加符号', //提示的内容,
+      icon: 'none', //图标,
+      duration: 6000, //延迟时间,
+      success: res => {}
+    });
+  }
+
   setNavBar() {
     wx.setNavigationBarTitle({
       title: 'TEST'
@@ -531,7 +546,8 @@ export default class DrawPanel extends wepy.page {
       this.basicImageList.push({
         id: 'b' + i,
         tempFilePath:
-          'https://tumi-miniprogram.oss-cn-beijing.aliyuncs.com/images/answerImageSmall/b' +
+          this.$parent.globalData.ossImageUrl +
+          'answerImageSmall/b' +
           i +
           '.png', //图片地址
         width: 90
@@ -547,11 +563,25 @@ export default class DrawPanel extends wepy.page {
         width: 90
       });
     }
-    //4 placeholders
-    for (let i = 0; i <= 3; i++) {
+    //第四个问题的拆分图
+    for (let i = 1; i <= 4; i++) {
+      console.log(
+        this.$parent.globalData.ossImageUrl +
+          'answerImageSmall/' +
+          this.$parent.globalData.userAnswer[3].index +
+          '-' +
+          i +
+          '.png'
+      );
       this.smallImageList.push({
         id: 's' + i,
-        tempFilePath: '', //图片地址
+        tempFilePath:
+          this.$parent.globalData.ossImageUrl +
+          'answerImageSmall/' +
+          this.$parent.globalData.userAnswer[3].index +
+          '-' +
+          i +
+          '.png', //图片地址
         width: 90
       });
     }
@@ -586,7 +616,29 @@ export default class DrawPanel extends wepy.page {
   }
   initImage(item) {
     let image = {};
-    image.image = item.tempFilePath;
+    if (item.tempFilePath.startsWith('https')) {
+      wepy.showLoading({
+        title: '请等待', //提示的内容,
+        mask: true, //显示透明蒙层，防止触摸穿透,
+        success: res => {}
+      });
+      var that = this;
+      wx.downloadFile({
+        url: item.tempFilePath, //仅为示例，并非真实的资源
+        success: function(res) {
+          // 只要服务器有响应数据，就会把响应内容写入文件并进入 success 回调，业务需要自行判断是否下载到了想要的内容
+          if (res.statusCode === 200) {
+            wepy.hideLoading();
+            console.log('download success.' + res);
+            image.image = res.tempFilePath;
+            that.topPopStatus = 'hide';
+            that.$apply();
+          }
+        }
+      });
+    } else {
+      image.image = item.tempFilePath;
+    }
     image.id = item.id;
     /**image.itemid = t.itemid,**/
     image.top = 100;

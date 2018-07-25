@@ -23,7 +23,7 @@ page {
   margin-top: 40rpx;
   width: 500rpx;
   margin-bottom: 20rpx;
-  background-color: #041516;
+  background-color: #07565a;
   color: #d7be71;
 }
 </style>
@@ -45,7 +45,10 @@ export default class GetUserInfo extends wepy.page {
   data = {};
   methods = {
     onGotUserInfo(e) {
-      this.$parent.globalData.userInfo = e.detail.userInfo;
+      try {
+        wx.setStorageSync('userInfo', e.detail.userInfo);
+      } catch (e) {}
+      this.$parent.globalData.userInfo = wx.getStorageSync('userInfo');
       wx.reLaunch({
         url: 'index'
       });

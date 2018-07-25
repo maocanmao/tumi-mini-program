@@ -65,7 +65,8 @@ export default class extends wepy.app {
     userAnswer: [],
     currentBackground:
       'https://tumi-miniprogram.oss-cn-beijing.aliyuncs.com/images/background/bkg1.png',
-    drawItems: []
+    drawItems: [],
+    userImagesCount: 0
   };
   onLaunch() {
     console.log('on launch');
@@ -99,13 +100,7 @@ export default class extends wepy.app {
             });
           } catch (e) {}
         }
-        if (p.data.code == 40001) {
-          console.log('to on boarding page.');
-          //register user
-          wx.navigateTo({
-            url: 'on-boarding'
-          });
-        }
+
         if (p.statusCode != 200) {
           // wx.showModal({
           //   content: '内部错误，请稍后再试',
