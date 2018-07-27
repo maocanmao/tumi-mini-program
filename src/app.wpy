@@ -63,8 +63,7 @@ export default class extends wepy.app {
     userInfo: null,
     ossImageUrl: 'https://tumi-miniprogram.oss-cn-beijing.aliyuncs.com/images/',
     userAnswer: [],
-    currentBackground:
-      'https://tumi-miniprogram.oss-cn-beijing.aliyuncs.com/images/background/bkg1.png',
+    currentBackground: null,
     drawItems: [],
     userImagesCount: 0
   };

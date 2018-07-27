@@ -111,7 +111,7 @@ export default class DrawResult extends wepy.page {
       0,
       0,
       this.rpx(750),
-      500
+      this.rpx(950)
     );
 
     for (var r = 0; r < this.items.length; r++) {
@@ -133,15 +133,21 @@ export default class DrawResult extends wepy.page {
       );
       s.restore();
       s.setFillStyle('#d7be71');
-      s.setFontSize(20);
+      s.setFontSize(13);
       s.fillText(
-        '这是' +
-          this.$parent.globalData.userInfo.nickName +
-          '的第' +
-          this.$parent.globalData.userImagesCount +
-          '张作品',
-        this.rpx(20),
-        this.rpx(950)
+        this.$parent.globalData.userInfo.nickName +
+          '的个人图腾创作 NO.' +
+          this.$parent.globalData.userImagesCount,
+        this.rpx(80),
+        this.rpx(890)
+      );
+
+      s.setFillStyle('#d7be71');
+      s.setFontSize(8);
+      s.fillText(
+        'TUMI TATOO PATTERN  VERSION NO.1',
+        this.rpx(10),
+        this.rpx(930)
       );
     }
     var that = this;

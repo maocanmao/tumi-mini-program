@@ -70,7 +70,7 @@ page {
       <view class='question-wrapper border' @tap="toUserWorks()" >
         <view class='question-number-wrapper border'>
           <image class="icon" src="images/user.png" />
-          <image class="icon" src="images/more.png" />
+          <image class="icon" src="{{worksImageMore}}" />
         </view>
         <view class='question-text-wrapper border image-container'>
           <image class="works-image" src="{{worksImageList[0].img_url}}" />
@@ -80,7 +80,7 @@ page {
       <view class='question-wrapper border' @tap="toOnline()">
         <view class='question-number-wrapper border'>
           <image class="icon" src="images/phone.png" />
-          <image class="icon" src="images/more.png"  />
+          <image class="icon" src="{{onlineMore}}"  />
         </view>
         <view class='question-text-wrapper border'>
           <wxc-elip class='question-text' line="2">{{onlineNewsList[0].title}}</wxc-elip>
@@ -92,7 +92,7 @@ page {
       <view class='question-wrapper border' @tap="toOffline()">
         <view class='question-number-wrapper border'>
           <image class="icon" src="images/activity.png" />
-          <image class="icon" src="images/more.png"  />
+          <image class="icon" src="{{offlineMore}}"  />
         </view>
         <view class='question-text-wrapper border'>
           <wxc-elip class='question-text' line="2">{{offlineNewsList[0].title}}</wxc-elip>
@@ -119,20 +119,26 @@ export default class Message extends wepy.page {
   data = {
     onlineNewsList: [],
     worksImageList: [],
-    offlineNewsList: []
+    offlineNewsList: [],
+    worksImageMore: 'images/more-with-badge.png',
+    onlineMore: 'images/more-with-badge.png',
+    offlineMore: 'images/more-with-badge.png'
   };
   methods = {
     toOnline() {
+      this.onlineMore = 'images/more.png';
       wepy.navigateTo({
         url: 'online-activity'
       });
     },
     toOffline() {
+      this.offlineMore = 'images/more.png';
       wepy.navigateTo({
         url: 'offline-activity'
       });
     },
     toUserWorks() {
+      this.worksImageMore = 'images/more.png';
       wepy.navigateTo({ url: 'user-wroks' });
     }
   };

@@ -1,9 +1,9 @@
 <style lang="less">
 page {
-  background: #041516;
+  background: #051516;
 }
 .container {
-  background: #041516;
+  background: #051516;
   width: 750rpx;
   height: 100%;
 }
