@@ -8,8 +8,8 @@ page {
   height: 100%;
 }
 .image {
-  width: 652rpx;
-  height: 1000rpx;
+  width: 662rpx;
+  height: 1100rpx;
 }
 </style>
 <template>

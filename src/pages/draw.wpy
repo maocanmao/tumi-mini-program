@@ -180,8 +180,10 @@ page {
   border: solid 1rpx #d7be71;
 }
 .image-background {
-  width: 225rpx;
-  height: 360rpx; // border: solid 1rpx #d7be71;
+  width: 250rpx;
+  height: 320rpx;
+  margin-top: 10rpx;
+  border-right: solid 1rpx #242018;
 }
 .top-popup-content-wrapper {
   display: flex;
@@ -320,7 +322,8 @@ export default class DrawPanel extends wepy.page {
     backgroundImg: [],
     currentBackground: null,
     basicImageList: [],
-    smallImageList: []
+    smallImageList: [],
+    idCounter: 0
   };
   methods = {
     toVideoPage() {
@@ -534,7 +537,7 @@ export default class DrawPanel extends wepy.page {
     this.getAnswersImgs();
   }
   getBackgroundImgs() {
-    for (let i = 1; i < 14; i++) {
+    for (let i = 1; i <= 15; i++) {
       this.backgroundImg.push({
         imgUrl:
           this.$parent.globalData.ossImageUrl + 'background/beij-0' + i + '.png'
@@ -639,7 +642,8 @@ export default class DrawPanel extends wepy.page {
     } else {
       image.image = item.tempFilePath;
     }
-    image.id = item.id;
+    image.id = item.id + this.idCounter;
+    this.idCounter++;
     /**image.itemid = t.itemid,**/
     image.top = 100;
     image.left = 100;
