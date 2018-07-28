@@ -109,7 +109,7 @@ page {
 import wepy from 'wepy';
 export default class Message extends wepy.page {
   config = {
-    navigationBarTitleText: '',
+    navigationBarTitleText: '消息',
     disableScroll: true,
     usingComponents: {
       'wxc-cc': '../../packages/@minui/wxc-cc/dist/index',

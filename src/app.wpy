@@ -31,7 +31,7 @@ export default class extends wepy.app {
       navigationBarTitleText: '',
       navigationBarTextStyle: 'white'
     },
-    baseUrl: 'http://tumi.vipgz1.idcfengye.com/tumi/',
+    baseUrl: 'https://leiwenhao.com/tumi/',
     tabBar: {
       color: '#979797',
       selectedColor: '#5f9920',
@@ -61,9 +61,10 @@ export default class extends wepy.app {
   };
   globalData = {
     userInfo: null,
-    ossImageUrl: 'https://tumi-miniprogram.oss-cn-beijing.aliyuncs.com/images/',
+    ossImageUrl: 'https://files.leiwenhao.com/images/',
     userAnswer: [],
-    currentBackground: null,
+    currentBackground:
+      'https://files.leiwenhao.com/images/background/beij-0.png',
     drawItems: [],
     userImagesCount: 0
   };
