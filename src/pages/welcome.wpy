@@ -8,8 +8,8 @@ page {
   height: 100%;
 }
 .image {
-  width: 652rpx;
-  height: 1000rpx;
+  width: 700rpx;
+  height: 1200rpx;
 }
 </style>
 <template>
@@ -23,6 +23,7 @@ import wepy from 'wepy';
 export default class Welcome extends wepy.page {
   config = {
     navigationBarTitleText: '',
+    disableScroll: true,
     usingComponents: {
       'wxc-cc': '../../packages/@minui/wxc-cc/dist/index'
     }

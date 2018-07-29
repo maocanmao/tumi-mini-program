@@ -137,7 +137,8 @@ export default class DrawResult extends wepy.page {
       s.fillText(
         this.$parent.globalData.userInfo.nickName +
           '的个人图腾创作 NO.' +
-          this.$parent.globalData.userImagesCount,
+          this.$parent.globalData.userImagesCount +
+          1,
         this.rpx(80),
         this.rpx(890)
       );
