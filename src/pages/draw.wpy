@@ -502,7 +502,6 @@ export default class DrawPanel extends wepy.page {
   onLoad(option) {
     this.init();
   }
-
   onShow() {
     wepy.showToast({
       title: '上方拉栏可选择辅助背景或确认,下方拉栏中，可向画板中添加符号', //提示的内容,
@@ -511,7 +510,6 @@ export default class DrawPanel extends wepy.page {
       success: res => {}
     });
   }
-
   setNavBar() {
     wx.setNavigationBarTitle({
       title: 'TEST'
@@ -545,17 +543,17 @@ export default class DrawPanel extends wepy.page {
     }
   }
   getBasicImgs() {
-    for (let i = 1; i <= 5; i++) {
-      this.basicImageList.push({
-        id: 'b' + i,
-        tempFilePath:
-          this.$parent.globalData.ossImageUrl +
-          'answerImageSmall/b' +
-          i +
-          '.png', //图片地址
-        width: 90
-      });
-    }
+    // for (let i = 1; i <= 5; i++) {
+    //   this.basicImageList.push({
+    //     id: 'b' + i,
+    //     tempFilePath:
+    //       this.$parent.globalData.ossImageUrl +
+    //       'answerImageSmall/b' +
+    //       i +
+    //       '.png', //图片地址
+    //     width: 90
+    //   });
+    // }
   }
   getAnswersImgs() {
     for (let i = 0; i < this.$parent.globalData.userAnswer.length; i++) {
@@ -565,7 +563,38 @@ export default class DrawPanel extends wepy.page {
         tempFilePath: this.$parent.globalData.userAnswer[i].imageSrc, //图片地址
         width: 90
       });
+      //第一行拆分图
+      if (i != 3 && i != 1 && i != 0 && this.basicImageList.length <= 4) {
+        this.basicImageList.push({
+          id: 'b' + i,
+          tempFilePath:
+            this.$parent.globalData.ossImageUrl +
+            'answerImageSmall/' +
+            this.$parent.globalData.userAnswer[i].index +
+            '-1.png', //图片地址
+
+          width: 90
+        });
+
+        if (
+          this.$parent.globalData.userAnswer[i].index == '5-4' ||
+          this.$parent.globalData.userAnswer[i].index == '8-31' ||
+          this.$parent.globalData.userAnswer[i].index == '5-14'
+        ) {
+          this.basicImageList.push({
+            id: 'b' + i,
+            tempFilePath:
+              this.$parent.globalData.ossImageUrl +
+              'answerImageSmall/' +
+              this.$parent.globalData.userAnswer[i].index +
+              '-2.png', //图片地址
+            width: 90
+          });
+        }
+      }
     }
+
+    console.log(' this.basicImageList: ', this.basicImageList);
     //第四个问题的拆分图
     for (let i = 1; i <= 4; i++) {
       console.log(
