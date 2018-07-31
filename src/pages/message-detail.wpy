@@ -29,7 +29,7 @@ page {
 }
 .share-btn {
   position: absolute;
-  width: 100%;
+  width: 30%;
   height: 100rpx;
   border-radius: 50%;
   margin-left: 0;
@@ -43,12 +43,15 @@ page {
   width: 100rpx;
   height: 100rpx;
 }
+.rich-text {
+  padding: 20rpx;
+}
 </style>
 
 <template lang="wxml" minapp="wepy">
   <view class="container">
     <scroll-view class="content" scroll-y="{{true}}">
-      <rich-text nodes="{{mock}}"></rich-text>
+      <rich-text class="rich-text" nodes="{{mock}}"></rich-text>
       <!-- <html2wxml :parserName="name" :parserContent.sync="textContent" :parserType="html"></html2wxml> -->
     </scroll-view>
     <view class="confirm-btn-container">
