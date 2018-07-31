@@ -39,7 +39,8 @@ export default class Index extends wepy.page {
           wepy.hideNavigationBarLoading();
           console.log('get images count: ', res);
           //image count
-          this.$parent.globalData.userImagesCount = res.data.data.count;
+          this.$parent.globalData.userImagesCount =
+            parseInt(res.data.data.count) + parseInt(1);
           //user info
           this.$parent.globalData.userInfo = wx.getStorageSync('userInfo');
           if (
