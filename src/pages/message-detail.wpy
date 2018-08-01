@@ -5,7 +5,8 @@ page {
 }
 .container {
   background: #041516;
-  width: 750rpx;
+  width: 700rpx;
+  padding: 30rpx;
 }
 .content {
   margin-bottom: 16%;

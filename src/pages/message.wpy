@@ -36,6 +36,12 @@ page {
   flex-wrap: nowrap;
   justify-content: space-around;
 }
+.no-image-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 .works-image {
   width: 200rpx;
   height: 250rpx;
@@ -67,14 +73,18 @@ page {
 <template lang="wxml" minapp="wepy">
   <view class="container">
     <scroll-view class='question-container' scroll-y='true'>
-      <view class='question-wrapper border' @tap="toUserWorks()" >
+      <view class='question-wrapper border'  >
         <view class='question-number-wrapper border'>
           <image class="icon" src="images/user.png" />
           <image class="icon" src="{{worksImageMore}}" />
         </view>
-        <view class='question-text-wrapper border image-container'>
+        <view class='question-text-wrapper border image-container' wx:if="{{hasWorksImages}}" @tap="toUserWorks()">
           <image class="works-image" src="{{worksImageList[0].img_url}}" />
           <image class="works-image" src="{{worksImageList[1].img_url}}" />
+        </view>
+        <view class='question-text-wrapper border no-image-container' wx:if="{{!hasWorksImages}}"  @tap="toAnswerQuestion()">
+          <image class="icon" src="./images/pen.png" />
+          <text class="question-text"> 还没有作品，点击开始答题</text>
         </view>
       </view>
       <view class='question-wrapper border' @tap="toOnline()">
@@ -120,6 +130,7 @@ export default class Message extends wepy.page {
     onlineNewsList: [],
     worksImageList: [],
     offlineNewsList: [],
+    hasWorksImages: false,
     worksImageMore: 'images/more-with-badge.png',
     onlineMore: 'images/more-with-badge.png',
     offlineMore: 'images/more-with-badge.png'
@@ -140,6 +151,9 @@ export default class Message extends wepy.page {
     toUserWorks() {
       this.worksImageMore = 'images/more.png';
       wepy.navigateTo({ url: 'user-wroks' });
+    },
+    toAnswerQuestion() {
+      wepy.navigateTo({ url: 'agreement' });
     }
   };
   onLoad() {
@@ -160,6 +174,12 @@ export default class Message extends wepy.page {
           wepy.hideNavigationBarLoading();
           console.log('get questions: ', res);
           this.worksImageList = res.data.data;
+          if (this.worksImageList.length != 0) {
+            this.hasWorksImages = true;
+          } else {
+            this.hasWorksImages = false;
+            this.worksImageMore = 'images/more.png';
+          }
           this.$apply();
         })
         .catch(error => {
