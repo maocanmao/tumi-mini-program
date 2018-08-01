@@ -211,6 +211,13 @@ export default class DrawResult extends wepy.page {
         })
         .catch(error => {
           wepy.hideLoading();
+          wepy.showToast({
+            title: '发生错误，上传图片失败 ', //提示的内容,
+            icon: 'none', //图标,
+            duration: 4000, //延迟时间,
+            mask: false, //显示透明蒙层，防止触摸穿透,
+            success: res => {}
+          });
           console.log(error);
         });
     });

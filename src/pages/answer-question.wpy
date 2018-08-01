@@ -254,6 +254,13 @@ export default class AnswerQuestion extends wepy.page {
             })
             .catch(error => {
               console.log('download image error: ', error);
+              wepy.showToast({
+                title: '发生错误，下载图片失败 ', //提示的内容,
+                icon: 'none', //图标,
+                duration: 4000, //延迟时间,
+                mask: false, //显示透明蒙层，防止触摸穿透,
+                success: res => {}
+              });
               wepy.hideNavigationBarLoading();
               this.toNextQuestion();
               this.$apply();
