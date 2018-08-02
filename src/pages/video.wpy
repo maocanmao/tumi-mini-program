@@ -81,7 +81,7 @@ page {
 import wepy from 'wepy';
 export default class Video extends wepy.page {
   config = {
-    navigationBarTitleText: '教学',
+    navigationBarTitleText: '创作者说',
     disableScroll: true,
     usingComponents: {
       'wxc-cc': '../../packages/@minui/wxc-cc/dist/index',

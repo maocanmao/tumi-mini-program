@@ -144,7 +144,7 @@ page {
 
 <template>
   <view class="container">
-    <scroll-view class='question-container' scroll-y='true'>
+    <scroll-view class='question-container' scroll-y='true' scroll-top="{{scrollViewTop}}" @scroll="scroll()">
       <view class='question-wrapper border'>
         <wxc-cc class='question-number-wrapper border'>
           <text class='question-number'>{{currentQuestionIndex+1}}</text>
@@ -203,7 +203,8 @@ export default class AnswerQuestion extends wepy.page {
     currentQuestionIndex: null,
     canMutipleChoose: false,
     currentAnswerSelectedIndex: null,
-    answerSelected: false
+    answerSelected: false,
+    scrollViewTop: 0
   };
   methods = {
     answerChoosen(index) {
@@ -223,6 +224,9 @@ export default class AnswerQuestion extends wepy.page {
     hidePopUp() {
       let popupComponent = this.$wxpage.selectComponent('.J_Popup');
       popupComponent && popupComponent.hide();
+    },
+    scroll(e) {
+      this.scrollViewTop = e.scrollTop;
     },
     confirmAnswer() {
       if (this.answerSelected) {
@@ -328,11 +332,13 @@ export default class AnswerQuestion extends wepy.page {
   toNextQuestion() {
     this.answerSelected = false;
     this.currentQuestionIndex++;
-    console.log('this.currentQuestionIndex: ', this.currentQuestionIndex);
+    // console.log('this.currentQuestionIndex: ', this.currentQuestionIndex);
     this.answerList = [];
     this.answerList = this.questionsList[this.currentQuestionIndex].answers;
     this.setAnswerImage();
-    console.log('this.answerList: ', this.answerList);
+    // console.log('this.answerList: ', this.answerList);
+    this.scrollViewTop = 0;
+    console.log('this.scrollViewTop: ', this.scrollViewTop);
   }
   //设置云盘图片地址 eg:1-1.png
   setAnswerImage() {

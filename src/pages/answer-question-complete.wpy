@@ -97,8 +97,8 @@ page {
         </wxc-cc>
         <view class='question-text-wrapper border'>
           <text class='question-text'>
-                    准备好了吗？
-                    点击下方按钮开始创作!
+                   恭喜你已凑齐答案图形码，点击下方确认键
+                   开始拼组你的个人图腾
                 </text>
         </view>
       </view>
