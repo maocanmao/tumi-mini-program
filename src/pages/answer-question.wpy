@@ -1,10 +1,12 @@
 <style lang="less">
 page {
   background: #041516;
+  height: 100%;
 }
 .container {
   background: #041516;
   width: 750rpx;
+  height: 100%;
 }
 .border {
   border-color: #d7be71;
@@ -15,7 +17,7 @@ page {
   display: inherit;
   width: 100%;
   margin-top: 50rpx;
-  height: 900rpx;
+  height: 75%;
   padding-bottom: 20rpx;
 }
 .question-wrapper {
@@ -150,7 +152,7 @@ page {
           <text class='question-number'>{{currentQuestionIndex+1}}</text>
         </wxc-cc>
         <view class='question-text-wrapper border'>
-          <text class='question-text'>{{questionsList[currentQuestionIndex].question}}</text>
+          <text class='question-text' wx:if="{{questionsList.length>0}}">{{questionsList[currentQuestionIndex].question}},请在下面{{questionsList[currentQuestionIndex].answers.length}}项中选择</text>
         </view>
       </view>
       <view class='question-wrapper answer-wrapper' wx:for="{{answerList}}" @tap="answerChoosen({{index}})">

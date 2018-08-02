@@ -73,18 +73,33 @@ page {
   flex-wrap: wrap;
 }
 .answer-image-wrapper {
-  width: 25%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 24%;
   height: 174rpx;
   background: #041516;
+  border: solid 1rpx #d7be71;
 }
 .answer-image {
   width: 96%;
-  height: 100%;
-  border: solid 1rpx #d7be71;
+  height: 80%;
 }
 .warn {
   width: 100rpx;
   height: 100rpx;
+}
+.answer-text {
+  font-family: PingFangSC;
+  font-size: 16px;
+  font-weight: 500;
+  width: 90%;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #d7be71;
 }
 </style>
 
@@ -107,6 +122,7 @@ page {
       <view class="popup-image-content">
         <view class="answer-image-wrapper" wx:for="{{userAnswer}}">
           <image mode="aspectFit" src="{{item.imageSrc}}" class="answer-image" />
+          <wxc-elip class='answer-text'>{{item.answer}}</wxc-elip>
         </view>
       </view>
       <image class="confirm-btn" src="images/check.png" @tap="confirm()" />
@@ -122,7 +138,8 @@ export default class AnswerQuestionComplete extends wepy.page {
     navigationBarBackgroundColor: '#041516',
     usingComponents: {
       'wxc-cc': '../../packages/@minui/wxc-cc/dist/index',
-      'wxc-popup': '../../packages/@minui/wxc-popup/dist/index'
+      'wxc-popup': '../../packages/@minui/wxc-popup/dist/index',
+      'wxc-elip': '../../packages/@minui/wxc-elip/dist/index'
     }
   };
   data = {
