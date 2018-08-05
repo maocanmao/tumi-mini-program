@@ -149,7 +149,7 @@ export default class AnswerQuestionComplete extends wepy.page {
     confirm() {
       console.log('to draw');
       wepy.navigateTo({
-        url: 'draw'
+        url: 'pre-draw'
       });
     }
   };

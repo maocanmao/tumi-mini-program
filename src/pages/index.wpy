@@ -1,6 +1,7 @@
 <style lang="less">
 page {
   background: #041516;
+  height: 100%;
 }
 .container {
   background: #041516;
@@ -9,7 +10,7 @@ page {
 }
 .image {
   width: 652rpx;
-  height: 1000rpx;
+  height: 95%;
 }
 </style>
 <template>

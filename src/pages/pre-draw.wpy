@@ -21,7 +21,7 @@ page {
 
 <script>
 import wepy from 'wepy';
-export default class Welcome extends wepy.page {
+export default class PreDraw extends wepy.page {
   config = {
     navigationBarTitleText: '',
     disableScroll: true,
@@ -30,21 +30,15 @@ export default class Welcome extends wepy.page {
     }
   };
   data = {
-    clickTimes: 1,
     imageUrl: null
   };
   onLoad() {
-    this.imageUrl = 'images/welcome' + this.clickTimes + '.png';
+    this.imageUrl = 'images/pre_draw.png';
   }
   bindtap() {
-    if (this.clickTimes < 4) {
-      this.clickTimes++;
-      this.imageUrl = 'images/welcome' + this.clickTimes + '.png';
-    } else {
-      wx.navigateTo({
-        url: 'answer-question'
-      });
-    }
+    wx.navigateTo({
+      url: 'draw'
+    });
   }
 }
 </script>

@@ -203,7 +203,8 @@ page {
 .top-popup-image-button-content {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: center;
+  align-items: center;
   width: 190rpx;
   height: 370rpx;
   background: #041516;
@@ -243,6 +244,16 @@ page {
   width: 100%;
   margin-top: 3%;
 }
+.text {
+  font-family: PingFangSC;
+  font-size: 32rpx;
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #d6bd76;
+}
 </style>
 
 <template lang="wxml" minapp="wepy">
@@ -260,8 +271,9 @@ page {
           </view>
         </scroll-view>
         <view class="top-popup-image-button-content">
-          <image class="btn-image" src="images/question.png" @tap="toVideoPage()" />
+          <!-- <image class="btn-image" src="images/question.png" @tap="toVideoPage()" /> -->
           <image class="btn-image" src="images/check.png" @tap="confirmComplete()" />
+          <text class="text">保存图片</text>
         </view>
       </view>
     </wxc-popup>
@@ -326,11 +338,11 @@ export default class DrawPanel extends wepy.page {
     idCounter: 0
   };
   methods = {
-    toVideoPage() {
-      wepy.switchTab({
-        url: 'video'
-      });
-    },
+    // toVideoPage() {
+    //   wepy.switchTab({
+    //     url: 'video'
+    //   });
+    // },
     showBottomPopUp() {
       console.log('showBottomPopUp: ');
       this.bottomPopStatus = 'show';

@@ -87,7 +87,7 @@ page {
           <text class="question-text"> 还没有作品，点击开始答题</text>
         </view>
       </view>
-      <view class='question-wrapper border' @tap="toOnline()">
+      <view class='question-wrapper border' @tap="toOnline()" wx:if="{{onlineNewsList.length > 0}}">
         <view class='question-number-wrapper border'>
           <image class="icon" src="images/phone.png" />
           <image class="icon" src="{{onlineMore}}"  />
@@ -99,7 +99,7 @@ page {
           </view>
         </view>
       </view>
-      <view class='question-wrapper border' @tap="toOffline()">
+      <view class='question-wrapper border' @tap="toOffline()" wx:if="{{offlineNewsList.length > 0}}">
         <view class='question-number-wrapper border'>
           <image class="icon" src="images/activity.png" />
           <image class="icon" src="{{offlineMore}}"  />

@@ -59,7 +59,7 @@ page {
 
 <template lang="wxml" minapp="wepy">
   <view class="container">
-    <video class="video" src="{{videoSrc}}" objectFit="fill" />
+    <video class="video" src="{{videoSrc}}" objectFit="fill" wx:if="{{videoSrc!=''}}"/>
     <scroll-view class='question-container' scroll-y='true'>
       <view class='question-wrapper border' @tap="toDetail({{item}})" wx:for="{{videoList}}">
         <wxc-cc class='question-number-wrapper border'>
@@ -113,7 +113,10 @@ export default class Video extends wepy.page {
           wepy.hideNavigationBarLoading();
           this.videoList = res.data.data;
           console.log('this.videoList: ', this.videoList);
-          this.videoSrc = this.videoList[0].src;
+          if (this.videoList.length > 0) {
+            this.videoSrc = this.videoList[0].src;
+          }
+
           this.$apply();
         })
         .catch(error => {

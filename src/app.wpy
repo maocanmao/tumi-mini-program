@@ -23,7 +23,8 @@ export default class extends wepy.app {
       'pages/works-detail',
       'pages/draw',
       'pages/get-user-info',
-      'pages/draw-result'
+      'pages/draw-result',
+      'pages/pre-draw'
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -62,6 +63,7 @@ export default class extends wepy.app {
   globalData = {
     userInfo: null,
     ossImageUrl: 'https://files.leiwenhao.com/images/',
+    // ossImageUrl: 'https://tumi-miniprogram.oss-cn-beijing.aliyuncs.com/images/',
     userAnswer: [],
     currentBackground:
       'https://files.leiwenhao.com/images/background/beij-0.png',
