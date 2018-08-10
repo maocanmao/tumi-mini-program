@@ -147,8 +147,9 @@ export default class DrawResult extends wepy.page {
       s.fillText(
         this.$parent.globalData.userInfo.nickName +
           '的个人图腾创作 NO.' +
-          this.$parent.globalData.userImagesCount,
-        this.rpx(10),
+          this.$parent.globalData.userImagesCount +
+          '   图靡小程序出品',
+        this.rpx(100),
         this.rpx(930)
       );
     }
@@ -241,6 +242,17 @@ export default class DrawResult extends wepy.page {
   }
   rpx(param) {
     return Number((this.sysData.windowWidth / 750 * param).toFixed(2));
+  }
+
+  onShareAppMessage(res) {
+    if (res.from === 'button') {
+      // 来自页面内转发按钮
+      console.log(res.target);
+    }
+    return {
+      title: '图靡小程序',
+      path: '/pages/index'
+    };
   }
 }
 </script>

@@ -227,5 +227,16 @@ export default class Message extends wepy.page {
         });
     });
   }
+
+  onShareAppMessage(res) {
+    if (res.from === 'button') {
+      // 来自页面内转发按钮
+      console.log(res.target);
+    }
+    return {
+      title: '图靡小程序',
+      path: '/pages/index'
+    };
+  }
 }
 </script>
