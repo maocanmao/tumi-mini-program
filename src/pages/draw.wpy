@@ -156,7 +156,7 @@ page {
 }
 .bottom-popup-mask-top {
   position: fixed;
-  bottom: 800rpx;
+  bottom: 1130rpx;
   width: 100%;
   height: 10rpx;
   background-color: #d7be71;
@@ -165,7 +165,7 @@ page {
   width: 90rpx;
   height: 56rpx;
   position: fixed;
-  bottom: 756rpx;
+  bottom: 1086rpx;
   right: 43%;
 }
 .small-image {
@@ -594,10 +594,8 @@ export default class DrawPanel extends wepy.page {
             'answerImageSmall/' +
             this.$parent.globalData.userAnswer[i].index +
             '-1.png', //图片地址
-
           width: 90
         });
-
         if (
           this.$parent.globalData.userAnswer[i].index == '5-4' ||
           this.$parent.globalData.userAnswer[i].index == '8-31' ||
@@ -615,18 +613,17 @@ export default class DrawPanel extends wepy.page {
         }
       }
     }
-
     console.log(' this.basicImageList: ', this.basicImageList);
     //第四个问题的拆分图
     for (let i = 1; i <= 4; i++) {
-      console.log(
-        this.$parent.globalData.ossImageUrl +
-          'answerImageSmall/' +
-          this.$parent.globalData.userAnswer[3].index +
-          '-' +
-          i +
-          '.png'
-      );
+      // console.log(
+      //   this.$parent.globalData.ossImageUrl +
+      //     'answerImageSmall/' +
+      //     this.$parent.globalData.userAnswer[3].index +
+      //     '-' +
+      //     i +
+      //     '.png'
+      // );
       this.smallImageList.push({
         id: 's' + i,
         tempFilePath:
@@ -639,6 +636,35 @@ export default class DrawPanel extends wepy.page {
         width: 90
       });
     }
+    //新加两排拆分图
+    for (let i = 3; i <= 7; i++) {
+      this.smallImageList.push({
+        id: 's1' + i,
+        tempFilePath:
+          this.$parent.globalData.ossImageUrl +
+          'answerImageSmall/' +
+          this.$parent.globalData.userAnswer[i].index +
+          '-' +
+          2 +
+          '.png', //图片地址
+        width: 90
+      });
+    }
+
+    for (let i = 5; i <= 7; i++) {
+      this.smallImageList.push({
+        id: 's2' + i,
+        tempFilePath:
+          this.$parent.globalData.ossImageUrl +
+          'answerImageSmall/' +
+          this.$parent.globalData.userAnswer[3].index +
+          '-' +
+          i +
+          '.png', //图片地址
+        width: 90
+      });
+    }
+
     console.log('this.smallImageList:', this.smallImageList);
   }
   countDeg(cx, cy, pointer_x, pointer_y) {
@@ -734,7 +760,6 @@ export default class DrawPanel extends wepy.page {
       url: 'draw-result'
     });
   }
-
   onShareAppMessage(res) {
     if (res.from === 'button') {
       // 来自页面内转发按钮
