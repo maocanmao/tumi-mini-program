@@ -526,7 +526,7 @@ export default class DrawPanel extends wepy.page {
   }
   onShow() {
     wepy.showToast({
-      title: '上方拉栏可选择辅助背景或确认,下方拉栏中，可向画板中添加符号', //提示的内容,
+      title: '1.上方箭头选择背景，2.下方箭头添加素材，3.上方箭头保存图片', //提示的内容,
       icon: 'none', //图标,
       duration: 6000, //延迟时间,
       success: res => {}
